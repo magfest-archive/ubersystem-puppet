@@ -4,21 +4,9 @@ This module is the latest version that works with uber2.0 (post-Magfest 8.5)
 
 Examples
 
+Put this in your 
 ```
-import 'firewall.pp'
-import 'ssh.pp'
-
 class uber_server {
-
-  include '::ntp'
-
-  class { 'timezone':
-    timezone => 'America/New_York',
-  }
-
-  include firewall_webserver
-  include firewall_sshserver
-  include ssh
   include uber
 
   class { 'postgresql::server':
@@ -30,14 +18,14 @@ class uber_server {
 
   class { 'nginx': }
 
-  # users in this group can sudo
-  group { 'admin':
-    ensure => present
-  }
-
   # look up info for what ubersystems we should create (if any)
   # in our hiera/nodes/{hostname}.yaml file
   $ubersystem_instances = hiera_hash('uber_instances', {})
   create_resources('uber::instance', $ubersystem_instances)
+}
+
+
+node 'whatever.magfest.org' inherits default  {
+  include uber_server
 }
 ```
