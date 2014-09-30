@@ -1,4 +1,4 @@
-class uber85::install {
+class uber::install {
 
   # TODO install UTF lcoale stuff from Eli's Vagrant script
   if defined(Package['git']) == false {
@@ -25,5 +25,5 @@ class uber85::install {
     }
   }
 
-  class {'uber85::python': }
+  class {'uber::python': }
 }

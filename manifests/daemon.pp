@@ -1,4 +1,4 @@
-define uber85::daemon (
+define uber::daemon (
   $user = 'uber',
   $group = 'uber',
   $ensure = present,

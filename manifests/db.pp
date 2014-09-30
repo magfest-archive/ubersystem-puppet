@@ -3,7 +3,7 @@
 # Document the class here
 #
 # No newline after comment
-define uber85::db (
+define uber::db (
   $user,
   $pass,
   $dbname,

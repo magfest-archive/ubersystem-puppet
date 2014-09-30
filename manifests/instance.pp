@@ -1,4 +1,4 @@
-define uber85::instance
+define uber::instance
 (
   $uber_path = '/usr/local/uber',
   $git_repo = 'https://github.com/EliAndrewC/magfest',
@@ -6,8 +6,8 @@ define uber85::instance
   $uber_user = 'uber',
   $uber_group = 'apps',
 
-  $ssl_crt_bundle = 'puppet:///modules/uber85/magfest.org.crt-bundle',
-  $ssl_crt_key = 'puppet:///modules/uber85/magfest.org.key',
+  $ssl_crt_bundle = 'puppet:///modules/uber/magfest.org.crt-bundle',
+  $ssl_crt_key = 'puppet:///modules/uber/magfest.org.key',
 
   $db_host = 'localhost',
   $db_user = 'm13',
@@ -76,13 +76,13 @@ define uber85::instance
   # TODO: don't hardcode 'python 3.4' in here, set it up in ::uber
   $venv_site_pkgs_path = "${venv_path}/lib/python3.4/site-packages"
 
-  uber85::user_group { "users and groups ${name}":
+  uber::user_group { "users and groups ${name}":
     user   => $uber_user,
     group  => $uber_group,
-    notify => Uber85::Db["uber_db_${name}"]
+    notify => Uber::Db["uber_db_${name}"]
   }
 
-  uber85::db { "uber_db_${name}":
+  uber::db { "uber_db_${name}":
     user             => $db_user,
     pass             => $db_pass,
     dbname           => $db_name,
@@ -92,7 +92,7 @@ define uber85::instance
 
   exec { "stop_daemon_${name}" :
     command     => "/usr/local/bin/supervisorctl stop ${name}",
-    notify   => [ Class['uber85::install'], Vcsrepo[$uber_path] ]
+    notify   => [ Class['uber::install'], Vcsrepo[$uber_path] ]
   }
 
   vcsrepo { $uber_path:
@@ -108,21 +108,21 @@ define uber85::instance
   file { "${uber_path}/production.conf":
     ensure  => present,
     mode    => 660,
-    content => template('uber85/production.conf.erb'),
+    content => template('uber/production.conf.erb'),
     notify   => File["${uber_path}/event.conf"],
   }
 
   file { "${uber_path}/event.conf":
     ensure  => present,
     mode    => 660,
-    content => template('uber85/event.conf.erb'),
+    content => template('uber/event.conf.erb'),
     notify  => Exec["uber_virtualenv_${name}"]
   }
 
 
   # seems puppet's virtualenv support is broken for python3, so roll our own
   exec { "uber_virtualenv_${name}":
-    command => "${uber85::python_cmd} -m venv ${venv_path} --without-pip",
+    command => "${uber::python_cmd} -m venv ${venv_path} --without-pip",
     cwd     => $uber_path,
     path    => '/usr/bin',
     creates => "${venv_path}",
@@ -140,10 +140,10 @@ define uber85::instance
     command => "${venv_python} setup.py develop",
     cwd     => "${uber_path}",
     creates => "${venv_site_pkgs_path}/uber.egg-link",
-    notify  => Uber85::Init_db["${name}"],
+    notify  => Uber::Init_db["${name}"],
   }
 
-  uber85::init_db { "${name}":
+  uber::init_db { "${name}":
     venv_python         => $venv_python,
     uber_path           => $uber_path,
     db_replication_mode => $db_replication_mode,
@@ -160,11 +160,11 @@ define uber85::instance
   $mode = 'o-rwx,g-w,u+rw'
   exec { "setup_perms_$name":
     command => "/bin/chmod -R $mode ${uber_path}",
-    #notify  => Uber85::Replication["${name}_replication"],
-    notify  => Uber85::Daemon["${name}_daemon"],
+    #notify  => Uber::Replication["${name}_replication"],
+    notify  => Uber::Daemon["${name}_daemon"],
   }
 
-  uber85::replication { "${name}_replication":
+  uber::replication { "${name}_replication":
     db_name                  => $db_name,
     db_replication_mode      => $db_replication_mode,
     db_replication_user      => $db_replication_user,
@@ -172,26 +172,26 @@ define uber85::instance
     db_replication_master_ip => $db_replication_master_ip,
     uber_db_util_path        => $uber_db_util_path,
     slave_ips                => $slave_ips,
-    #notify                  => Uber85::Daemon["${name}_daemon"],
+    #notify                  => Uber::Daemon["${name}_daemon"],
     # subscribe                => Postgresql::Server::Db["${db_name}"]
   }
 
   # run as a daemon with supervisor
-  uber85::daemon { "${name}_daemon": 
+  uber::daemon { "${name}_daemon": 
     user       => $uber_user,
     group      => $uber_group,
     python_cmd => $venv_python,
     uber_path  => $uber_path,
-    notify     => Uber85::Firewall["${name}_firewall"],
+    notify     => Uber::Firewall["${name}_firewall"],
   }
 
-  uber85::firewall { "${name}_firewall":
+  uber::firewall { "${name}_firewall":
     socket_port        => $socket_port,
     open_firewall_port => $open_firewall_port,
-    notify             => Uber85::Vhost[$name],
+    notify             => Uber::Vhost[$name],
   }
 
-  uber85::vhost { $name:
+  uber::vhost { $name:
     hostname       => $hostname,
     ssl_crt_bundle => $ssl_crt_bundle,
     ssl_crt_key    => $ssl_crt_key,
@@ -209,7 +209,7 @@ define uber85::instance
   }
 }
 
-define uber85::init_db (
+define uber::init_db (
   $venv_python,
   $uber_path,
   $db_replication_mode = 'none',
@@ -226,7 +226,7 @@ define uber85::init_db (
   }
 }
 
-define uber85::replication (
+define uber::replication (
   # DB replication common settings
   $db_name,
   $db_replication_mode, # none, master, or slave
@@ -247,7 +247,7 @@ define uber85::replication (
       fail("can't do database replication without setting a replication passwd")
     }
 
-    uber85::dbreplicationmaster { "${db_name}_replication_master":
+    uber::dbreplicationmaster { "${db_name}_replication_master":
       dbname               => $db_name,
       replication_user     => $db_replication_user,
       replication_password => $db_replication_password,
@@ -264,7 +264,7 @@ define uber85::replication (
       fail("can't do DB slave replication without a master IP address")
     }
 
-    uber85::db-replication-slave { "${db_name}_replication_slave":
+    uber::db-replication-slave { "${db_name}_replication_slave":
       dbname               => $db_name,
       replication_user     => $db_replication_user,
       replication_password => $db_replication_password,
@@ -275,7 +275,7 @@ define uber85::replication (
 }
 
 
-define uber85::vhost (
+define uber::vhost (
   $hostname,
   $ssl_crt_bundle,
   $ssl_crt_key,
@@ -291,7 +291,7 @@ define uber85::vhost (
   }
 }
 
-define uber85::firewall (
+define uber::firewall (
   $socket_port,
   $open_firewall_port = false,
 ) {
@@ -309,7 +309,7 @@ define uber85::firewall (
 #
 # 
 
-define uber85::allow-replication-from-ip (
+define uber::allow-replication-from-ip (
   $dbname,
   $username,
 ) {
@@ -330,7 +330,7 @@ define uber85::allow-replication-from-ip (
   }
 }
 
-define uber85::dbreplicationmaster (
+define uber::dbreplicationmaster (
   $dbname,
   $replication_user = 'replicator',
   $replication_password,
@@ -351,13 +351,13 @@ define uber85::dbreplicationmaster (
      'wal_keep_segments':    value => '8';
   }
 
-  uber85::allow-replication-from-ip { $slave_ips:
+  uber::allow-replication-from-ip { $slave_ips:
     dbname   => $dbname,
     username => $replication_user,
   }
 }
 
-define uber85::db-replication-slave (
+define uber::db-replication-slave (
   $dbname,
   $replication_user = 'replicator',
   $replication_password,
@@ -387,7 +387,7 @@ define uber85::db-replication-slave (
     owner   => "postgres",
     group   => "postgres",
     mode    => 600,
-    content => template('uber85/pg-recovery.conf.erb'),
+    content => template('uber/pg-recovery.conf.erb'),
     notify  => File["${uber_db_util_path}/pg-start-replication.sh"],
   }
 
@@ -396,7 +396,7 @@ define uber85::db-replication-slave (
     owner    => "postgres",
     group    => "postgres",
     mode     => 700,
-    content  => template('uber85/pg-start-replication.sh.erb'),
+    content  => template('uber/pg-start-replication.sh.erb'),
     notify => File["${uber_db_util_path}/sync-to-master.sh"],
   }
 
@@ -405,7 +405,7 @@ define uber85::db-replication-slave (
     owner    => "postgres",
     group    => "postgres",
     mode     => 700,
-    content  => template('uber85/pg-sync.sh.erb'),
+    content  => template('uber/pg-sync.sh.erb'),
     # notify => File["${uber_path}/event.conf"],
   }
 }

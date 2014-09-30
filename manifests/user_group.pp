@@ -1,4 +1,4 @@
-define uber85::user_group(
+define uber::user_group(
   $user,
   $group, 
 ){

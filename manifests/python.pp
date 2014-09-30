@@ -1,7 +1,7 @@
-class uber85::python {
+class uber::python {
   class { '::python':
     # ensure   => present,
-    version    => $uber85::python_ver,
+    version    => $uber::python_ver,
     dev        => true,
     pip        => true,
     virtualenv => true,
