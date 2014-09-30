@@ -18,7 +18,6 @@ define uber::plugins
 # git repos
 define uber::plugin 
 (
-  # $repo_install_path = $name,
   $plugins_dir,
   $user,
   $group,
@@ -36,12 +35,12 @@ define uber::plugin
 
 define uber::plugin_repo
 (
-  # path = $name
   $user,
   $group,
   $git_repo,
   $git_branch,
 )
+# $name is the path to install the plugin to
 {
   vcsrepo { $name:
     ensure   => latest,
@@ -56,7 +55,7 @@ define uber::plugin_repo
 define uber::instance
 (
   $uber_path = '/usr/local/uber',
-  $sideboard_repo,
+  $sideboard_repo = 'https://github.com/magfest/sideboard',
   $sideboard_branch = 'master',
   $uber_user = 'uber',
   $uber_group = 'apps',
@@ -170,7 +169,7 @@ define uber::instance
     notify => Uber::Plugins["${name}_plugins"],
   }
 
-  # TODO development.ini for each plugin
+  # TODO eventually need to add a development.ini for each plugin
 
   uber::plugins { "${name}_plugins":
     plugins     => $sideboard_plugins,
@@ -226,22 +225,20 @@ define uber::instance
     command => "${venv_python} setup.py develop",
     cwd     => "${uber_path}",
     creates => "${venv_site_pkgs_path}/sideboard.egg-link",
-    notify  => Uber::Init_db["${name}"],
+    notify  => Exec["uber_paver_${name}"],
   }
 
-  # TODO: NEED TO FIX!!!!! DONT CHECK IN
-  uber::init_db { "${name}":
-    venv_python         => $venv_python,
-    uber_path           => $uber_path,
-    db_replication_mode => $db_replication_mode,
-    notify              => Exec["setup_owner_$name"],
-  }
-  
-  # TODO: NEED TO FIX!!!!!  DONT CHECK IN
   exec { "uber_paver_${name}":
     command => "${venv_paver} install_deps",
     cwd     => "${uber_path}",
     # creates => "TODO",
+    notify  => Uber::Init_db["${name}"],
+  }
+
+  uber::init_db { "${name}":
+    venv_python         => $venv_python,
+    uber_path           => $uber_path,
+    db_replication_mode => $db_replication_mode,
     notify  => Exec["setup_owner_$name"],
   }
 
@@ -313,11 +310,13 @@ define uber::init_db (
   # i.e. there's no chance we'll clobber production data accidentally.
   if $db_replication_mode != 'slave' 
   {
-    exec { "uber_init_db_${name}" :
-      command     => "${venv_python} uber/init_db.py",
-      cwd         => "${uber_path}",
-      refreshonly => true,
-    }
+    # we don't explicitly need to init the DB with sideboard anymore.
+
+    #exec { "uber_init_db_${name}" :
+    #  command     => "${venv_python} uber/init_db.py",
+    #  cwd         => "${uber_path}",
+    #  refreshonly => true,
+    #}
   }
 }
 
