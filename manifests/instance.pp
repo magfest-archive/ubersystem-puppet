@@ -1,18 +1,78 @@
+define uber::plugins
+(
+  $plugins,
+  $plugins_dir,
+  $user,
+  $group,
+)
+{
+  $plugin_defaults = {
+    'user'        => $user,
+    'group'       => $group,
+    'plugins_dir' => $plugins_dir,
+  }
+  create_resources(uber::plugin, $plugins, $plugin_defaults)
+}
+
+# sideboard can install a bunch of plugins which each pull their own
+# git repos
+define uber::plugin 
+(
+  # $repo_install_path = $name,
+  $plugins_dir,
+  $user,
+  $group,
+  $git_repo,
+  $git_branch,
+)
+{
+  uber::plugin_repo { "${plugins_dir}/${name}":
+    user       => $user,
+    group      => $group,
+    git_repo   => $git_repo,
+    git_branch => $git_branch,
+  }
+}
+
+define uber::plugin_repo
+(
+  # path = $name
+  $user,
+  $group,
+  $git_repo,
+  $git_branch,
+)
+{
+  vcsrepo { $name:
+    ensure   => latest,
+    owner    => $user,
+    group    => $group,
+    provider => git,
+    source   => $git_repo,
+    revision => $git_branch
+  }
+}
+
 define uber::instance
 (
   $uber_path = '/usr/local/uber',
-  $git_repo = 'https://github.com/EliAndrewC/magfest',
-  $git_branch = 'master',
+  $sideboard_repo,
+  $sideboard_branch = 'master',
   $uber_user = 'uber',
   $uber_group = 'apps',
 
   $ssl_crt_bundle = 'puppet:///modules/uber/magfest.org.crt-bundle',
   $ssl_crt_key = 'puppet:///modules/uber/magfest.org.key',
 
+  $sideboard_debug_enabled = false,
+
   $db_host = 'localhost',
+  $db_port = '5432',
   $db_user = 'm13',
   $db_pass = 'm13',
   $db_name = 'm13',
+  
+  $sideboard_plugins = {},
 
   # DB replication common mode settings
   $db_replication_mode = 'none', # none, master, or slave
@@ -36,28 +96,26 @@ define uber::instance
   $open_firewall_port = false, # if using apache/nginx, you dont want this.
 
   # config file settings only below
-  $theme = 'magfest',
   $event_name = 'MAGFest',
   $organization_name = 'MAGFest',
   $year = 1,
-  $show_affiliates_and_extras = True,
-  $group_reg_available = True,
-  $group_reg_open = True,
+  #$show_affiliates_and_extras = True,
+  #$group_reg_available = True,
+  #$group_reg_open = True,
   $send_emails = False,
   $aws_access_key = '',
   $aws_secret_key = '',
   $stripe_secret_key = '',
   $stripe_public_key = '',
   $dev_box = False,
-  $supporter_badge_type_enabled = True,
-  $prereg_opening,
-  $prereg_takedown,
-  $uber_takedown,
-  $epoch,
-  $eschaton,
-  $email_categories_allowed_to_send = [ 'all' ],
-  $prereg_price = 45,
-  $at_door_price = 60,
+  #$supporter_badge_type_enabled = True,
+  $prereg_open,
+  #$prereg_takedown,
+  #$uber_takedown,
+  #$epoch,
+  #$eschaton,
+  #$prereg_price = 45,
+  #$at_door_price = 60,
   $at_the_con = False,
   $max_badge_sales = 9999999,
   $hide_schedule = True,
@@ -72,6 +130,7 @@ define uber::instance
   $venv_path = "${uber_path}/env"
   $venv_bin = "${venv_path}/bin"
   $venv_python = "${venv_bin}/python"
+  $venv_paver = "${venv_bin}/paver"
 
   # TODO: don't hardcode 'python 3.4' in here, set it up in ::uber
   $venv_site_pkgs_path = "${venv_path}/lib/python3.4/site-packages"
@@ -95,30 +154,51 @@ define uber::instance
     notify   => [ Class['uber::install'], Vcsrepo[$uber_path] ]
   }
 
+  # sideboard
   vcsrepo { $uber_path:
     ensure   => latest,
     owner    => $uber_user,
     group    => $uber_group,
     provider => git,
-    source   => $git_repo,
-    revision => $git_branch,
-    notify   => File["${uber_path}/production.conf"],
+    source   => $sideboard_repo,
+    revision => $sideboard_branch,
+    notify  => File["${uber_path}/plugins/"],
   }
 
-  file { "${uber_path}/production.conf":
-    ensure  => present,
-    mode    => 660,
-    content => template('uber/production.conf.erb'),
-    notify   => File["${uber_path}/event.conf"],
+  file { [ "${uber_path}/plugins/" ]:
+    ensure => "directory",
+    notify => Uber::Plugins["${name}_plugins"],
   }
 
-  file { "${uber_path}/event.conf":
+  # TODO development.ini for each plugin
+
+  uber::plugins { "${name}_plugins":
+    plugins     => $sideboard_plugins,
+    plugins_dir => "${uber_path}/plugins",
+    user        => $uber_user,
+    group       => $uber_group,
+    notify      => File["${uber_path}/development.ini"],
+  }
+
+  # sideboard's development.ini
+  # note: plugins can also have their own development.ini,
+  # we need to take that into account.
+  file { "${uber_path}/development.ini":
     ensure  => present,
     mode    => 660,
-    content => template('uber/event.conf.erb'),
+    content => template('uber/sb-development.ini.erb'),
+    notify  => File["${uber_path}/plugins/uber/development.ini"],
+  }
+
+  # uber's development.ini
+  # TODO: this is being hardcoded here.  it should instead install
+  # with the plugins stuff.  each plugin might have an INI
+  file { "${uber_path}/plugins/uber/development.ini":
+    ensure  => present,
+    mode    => 660,
+    content => template('uber/uber-development.ini.erb'),
     notify  => Exec["uber_virtualenv_${name}"]
   }
-
 
   # seems puppet's virtualenv support is broken for python3, so roll our own
   exec { "uber_virtualenv_${name}":
@@ -126,6 +206,12 @@ define uber::instance
     cwd     => $uber_path,
     path    => '/usr/bin',
     creates => "${venv_path}",
+    notify  => File["${uber_path}/distribute_setup.py"],
+  }
+
+  file { "${uber_path}/distribute_setup.py":
+    ensure => present,
+    source => "${uber_path}/plugins/uber/distribute_setup.py",
     notify  => Exec["uber_distribute_setup_${name}"],
   }
 
@@ -139,15 +225,24 @@ define uber::instance
   exec { "uber_setup_${name}" :
     command => "${venv_python} setup.py develop",
     cwd     => "${uber_path}",
-    creates => "${venv_site_pkgs_path}/uber.egg-link",
+    creates => "${venv_site_pkgs_path}/sideboard.egg-link",
     notify  => Uber::Init_db["${name}"],
   }
 
+  # TODO: NEED TO FIX!!!!! DONT CHECK IN
   uber::init_db { "${name}":
     venv_python         => $venv_python,
     uber_path           => $uber_path,
     db_replication_mode => $db_replication_mode,
     notify              => Exec["setup_owner_$name"],
+  }
+  
+  # TODO: NEED TO FIX!!!!!  DONT CHECK IN
+  exec { "uber_paver_${name}":
+    command => "${venv_paver} install_deps",
+    cwd     => "${uber_path}",
+    # creates => "TODO",
+    notify  => Exec["setup_owner_$name"],
   }
 
   # setup owner
@@ -192,7 +287,7 @@ define uber::instance
   }
 
   uber::vhost { $name:
-    hostname       => $hostname,
+    hostname       => $hostname_to_use,
     ssl_crt_bundle => $ssl_crt_bundle,
     ssl_crt_key    => $ssl_crt_key,
     # notify       => Nginx::Resource::Location["${hostname}-${name}"],
@@ -200,11 +295,11 @@ define uber::instance
 
   $proxy_url = "http://127.0.0.1:${socket_port}/${url_prefix}/"
 
-  nginx::resource::location { "${hostname}-${name}":
+  nginx::resource::location { "${hostname_to_use}-${name}":
     ensure   => present,
     proxy    => $proxy_url,
     location => "/${url_prefix}/",
-    vhost    => $hostname,
+    vhost    => $hostname_to_use,
     ssl      => true,
   }
 }
