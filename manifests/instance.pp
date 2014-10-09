@@ -60,8 +60,8 @@ define uber::instance
   $uber_user = 'uber',
   $uber_group = 'apps',
 
-  $ssl_crt_bundle = 'puppet:///modules/uber/magfest.org.crt-bundle',
-  $ssl_crt_key = 'puppet:///modules/uber/magfest.org.key',
+  $ssl_crt_bundle = 'puppet:///modules/uber/selfsigned-testonly.crt',
+  $ssl_crt_key = 'puppet:///modules/uber/selfsigned-testonly.key',
 
   $sideboard_debug_enabled = false,
 
@@ -321,12 +321,14 @@ define uber::instance
   uber::create_index_html { "${name}":
     public_url => $public_url,
     event_name => $event_name,
+    year => $year,
   }
 }
 
 define uber::create_index_html (
   $public_url,
   $event_name,
+  $year,
 ) {
   if ! defined(Uber::Concat['/var/www/index.html']) {
       concat { '/var/www/index.html':
@@ -341,14 +343,14 @@ define uber::create_index_html (
     concat::fragment { "uberindexfilehtml_footer_${name}":
       target  => '/var/www/index.html',
       content => "</body></html>",
-      order   => '100',
+      order   => '03',
     }
   }
 
   concat::fragment { "uberindexfilehtml_${name}":
     target  => '/var/www/index.html',
-    content => "<p><a href=\"${public_url}\">${event_name} Ubersystem</a></p>",
-    order   => '10',
+    content => "<p><a href=\"${public_url}\">${event_name} ${year} Ubersystem</a></p>",
+    order   => '02',
   }
 }
 
