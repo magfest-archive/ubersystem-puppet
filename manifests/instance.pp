@@ -201,10 +201,18 @@ define uber::instance
 
   # seems puppet's virtualenv support is broken for python3, so roll our own
   exec { "uber_virtualenv_${name}":
-    command => "${uber::python_cmd} -m venv ${venv_path} --without-pip",
+    command => "${uber::python_cmd} -m venv ${venv_path} --without-pip --copies",
     cwd     => $uber_path,
     path    => '/usr/bin',
     creates => "${venv_path}",
+    notify  => Exec[ "setup_perms_venv_$name" ],
+  }
+
+  # setup permissions for the env/bin directory (on vagrant, these are affected by weird folder sharing settings)
+  # this solves the problem of env/bin/python not being set as executable
+  $venv_mode = 'a+x'
+  exec { "setup_perms_venv_$name":
+    command => "/bin/chmod -R ${venv_mode} ${venv_bin}",
     notify  => File["${uber_path}/distribute_setup.py"],
   }
 
@@ -291,6 +299,7 @@ define uber::instance
   }
 
   $proxy_url = "http://127.0.0.1:${socket_port}/${url_prefix}/"
+  $public_url = "https://${hostname_to_use}/${url_prefix}/"
 
   nginx::resource::location { "${hostname_to_use}-${name}":
     ensure   => present,
@@ -298,6 +307,47 @@ define uber::instance
     location => "/${url_prefix}/",
     vhost    => $hostname_to_use,
     ssl      => true,
+    notify   => File["${nginx::params::nx_conf_dir}/conf.d/default.conf"],
+  }
+
+  # delete the default.conf to ensure that our virtualhost file gets the requests for localhost.
+  # this is needed if you try and access the server in a browser but not by $hostname_to_use
+  file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
+    ensure => absent,
+    notify => Uber::Create_index_html["${name}"],
+  }
+
+  uber::create_index_html { "${name}":
+    public_url => $public_url,
+    event_name => $event_name,
+  }
+}
+
+define uber::create_index_html (
+  $public_url,
+  $event_name,
+) {
+  if ! defined(Uber::Concat['/var/www/index.html']) {
+      concat { '/var/www/index.html':
+    }
+
+    concat::fragment { "uberindexfilehtml_header_${name}":
+      target  => '/var/www/index.html',
+      content => "<html><body><h1>Ubersystem</h1><br/>",
+      order   => '01',
+    }
+
+    concat::fragment { "uberindexfilehtml_footer_${name}":
+      target  => '/var/www/index.html',
+      content => "</body></html>",
+      order   => '100',
+    }
+  }
+
+  concat::fragment { "uberindexfilehtml_${name}":
+    target  => '/var/www/index.html',
+    content => "<p><a href=\"${public_url}\">${event_name} Ubersystem</a></p>",
+    order   => '10',
   }
 }
 
@@ -306,11 +356,12 @@ define uber::init_db (
   $uber_path,
   $db_replication_mode = 'none',
 ) {
-  # note: init_db.py will only init the DB if it doesn't already exist
-  # i.e. there's no chance we'll clobber production data accidentally.
-  if $db_replication_mode != 'slave' 
+  if $db_replication_mode != 'slave'
   {
-    # we don't explicitly need to init the DB with sideboard anymore.
+    # we don't explicitly need to init the DB with sideboard anymore,
+    # the empty tables will be created if they don't exist already.
+    # However, I'd like to keep this section so that if we need to do any
+    # initial DB init or migration, we can put it here.  -Dom
 
     #exec { "uber_init_db_${name}" :
     #  command     => "${venv_python} uber/init_db.py",
