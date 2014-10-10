@@ -319,23 +319,24 @@ define uber::instance
   # this is needed if you try and access the server in a browser but not by $hostname_to_use
   file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
     ensure => absent,
-    notify => Uber::Create_index_html["${name}"],
+    # notify => Uber::Create_index_html["${name}"], # TODO, but it doesn't work
   }
 
-  uber::create_index_html { "${name}":
-    public_url => $public_url,
-    event_name => $event_name,
-    year => $year,
-  }
+  #uber::create_index_html { "${name}":
+  #  public_url => $public_url,
+  #  event_name => $event_name,
+  #  year => $year,
+  #}
 }
 
+# doesn't work right now.
 define uber::create_index_html (
   $public_url,
   $event_name,
   $year,
 ) {
   if ! defined(Uber::Concat['/var/www/index.html']) {
-      concat { '/var/www/index.html':
+    concat { '/var/www/index.html':
     }
 
     concat::fragment { "uberindexfilehtml_header_${name}":
