@@ -215,6 +215,7 @@ define uber::instance
   exec { "setup_perms_venv_$name":
     command => "/bin/chmod -R ${venv_mode} ${venv_bin}",
     notify  => File["${uber_path}/distribute_setup.py"],
+    timeout => 3600, # this can take a while on vagrant, set it high
   }
 
   file { "${uber_path}/distribute_setup.py":
@@ -228,6 +229,7 @@ define uber::instance
     cwd     => "${uber_path}",
     creates => "${venv_site_pkgs_path}/setuptools.pth",
     notify  => Exec["uber_setup_${name}"],
+    timeout => 3600, # this can take a while on vagrant, set it high
   }
 
   exec { "uber_setup_${name}" :
@@ -235,6 +237,7 @@ define uber::instance
     cwd     => "${uber_path}",
     creates => "${venv_site_pkgs_path}/sideboard.egg-link",
     notify  => Exec["uber_paver_${name}"],
+    timeout => 3600, # this can take a while on vagrant, set it high
   }
 
   exec { "uber_paver_${name}":
@@ -242,6 +245,7 @@ define uber::instance
     cwd     => "${uber_path}",
     # creates => "TODO",
     notify  => Uber::Init_db["${name}"],
+    timeout => 3600, # this can take a while on vagrant, set it high
   }
 
   uber::init_db { "${name}":
