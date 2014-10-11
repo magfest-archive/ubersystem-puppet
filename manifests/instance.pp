@@ -1,24 +1,4 @@
-define uber::plugin_repo
-(
-  $user,
-  $group,
-  $git_repo,
-  $git_branch,
-)
-# $name is the path to install the plugin to
-{
-  vcsrepo { $name:
-    ensure   => latest,
-    owner    => $user,
-    group    => $group,
-    provider => git,
-    source   => $git_repo,
-    revision => $git_branch
-  }
-}
-
-define uber::instance
-(
+define uber::instance (
   $uber_path = '/usr/local/uber',
   $sideboard_repo = 'https://github.com/magfest/sideboard',
   $sideboard_branch = 'master',
