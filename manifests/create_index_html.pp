@@ -4,21 +4,22 @@ define uber::create_index_html (
   $event_name,
   $year,
 ) {
-  if ! defined(Uber::Concat['/var/www/index.html']) {
+  if ! defined(Concat['/var/www/index.html']) {
     concat { '/var/www/index.html':
+      ensure => present,
     }
+  }
 
-    concat::fragment { "uberindexfilehtml_header_${name}":
-      target  => '/var/www/index.html',
-      content => "<html><body><h1>Ubersystem</h1><br/>",
-      order   => '01',
-    }
+  concat::fragment { "uberindexfilehtml_header_${name}":
+    target  => '/var/www/index.html',
+    content => "<html><body><h1>Ubersystem</h1><br/>",
+    order   => '01',
+  }
 
-    concat::fragment { "uberindexfilehtml_footer_${name}":
-      target  => '/var/www/index.html',
-      content => "</body></html>",
-      order   => '03',
-    }
+  concat::fragment { "uberindexfilehtml_footer_${name}":
+    target  => '/var/www/index.html',
+    content => "</body></html>",
+    order   => '03',
   }
 
   concat::fragment { "uberindexfilehtml_${name}":
