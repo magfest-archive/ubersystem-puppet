@@ -1,19 +1,3 @@
-define uber::plugins
-(
-  $plugins,
-  $plugins_dir,
-  $user,
-  $group,
-)
-{
-  $plugin_defaults = {
-    'user'        => $user,
-    'group'       => $group,
-    'plugins_dir' => $plugins_dir,
-  }
-  create_resources(uber::plugin, $plugins, $plugin_defaults)
-}
-
 # sideboard can install a bunch of plugins which each pull their own
 # git repos
 define uber::plugin 
