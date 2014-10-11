@@ -1,6 +1,6 @@
 define uber::user_group(
   $user,
-  $group, 
+  $group,
 ){
 
   if ! defined(Group[$group]) {

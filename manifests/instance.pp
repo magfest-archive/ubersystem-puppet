@@ -1,59 +1,4 @@
-define uber::plugins
-(
-  $plugins,
-  $plugins_dir,
-  $user,
-  $group,
-)
-{
-  $plugin_defaults = {
-    'user'        => $user,
-    'group'       => $group,
-    'plugins_dir' => $plugins_dir,
-  }
-  create_resources(uber::plugin, $plugins, $plugin_defaults)
-}
-
-# sideboard can install a bunch of plugins which each pull their own
-# git repos
-define uber::plugin 
-(
-  $plugins_dir,
-  $user,
-  $group,
-  $git_repo,
-  $git_branch,
-)
-{
-  uber::plugin_repo { "${plugins_dir}/${name}":
-    user       => $user,
-    group      => $group,
-    git_repo   => $git_repo,
-    git_branch => $git_branch,
-  }
-}
-
-define uber::plugin_repo
-(
-  $user,
-  $group,
-  $git_repo,
-  $git_branch,
-)
-# $name is the path to install the plugin to
-{
-  vcsrepo { $name:
-    ensure   => latest,
-    owner    => $user,
-    group    => $group,
-    provider => git,
-    source   => $git_repo,
-    revision => $git_branch
-  }
-}
-
-define uber::instance
-(
+define uber::instance (
   $uber_path = '/usr/local/uber',
   $sideboard_repo = 'https://github.com/magfest/sideboard',
   $sideboard_branch = 'master',
@@ -70,7 +15,7 @@ define uber::instance
   $db_user = 'm13',
   $db_pass = 'm13',
   $db_name = 'm13',
-  
+
   $sideboard_plugins = {},
 
   # DB replication common mode settings
@@ -268,7 +213,6 @@ define uber::instance
     #notify  => Uber::Replication["${name}_replication"],
     notify  => Uber::Daemon["${name}_daemon"],
   }
-
   uber::replication { "${name}_replication":
     db_name                  => $db_name,
     db_replication_mode      => $db_replication_mode,
@@ -282,7 +226,7 @@ define uber::instance
   }
 
   # run as a daemon with supervisor
-  uber::daemon { "${name}_daemon": 
+  uber::daemon { "${name}_daemon":
     user       => $uber_user,
     group      => $uber_group,
     python_cmd => $venv_python,
@@ -327,238 +271,4 @@ define uber::instance
   #  event_name => $event_name,
   #  year => $year,
   #}
-}
-
-# doesn't work right now.
-define uber::create_index_html (
-  $public_url,
-  $event_name,
-  $year,
-) {
-  if ! defined(Uber::Concat['/var/www/index.html']) {
-    concat { '/var/www/index.html':
-    }
-
-    concat::fragment { "uberindexfilehtml_header_${name}":
-      target  => '/var/www/index.html',
-      content => "<html><body><h1>Ubersystem</h1><br/>",
-      order   => '01',
-    }
-
-    concat::fragment { "uberindexfilehtml_footer_${name}":
-      target  => '/var/www/index.html',
-      content => "</body></html>",
-      order   => '03',
-    }
-  }
-
-  concat::fragment { "uberindexfilehtml_${name}":
-    target  => '/var/www/index.html',
-    content => "<p><a href=\"${public_url}\">${event_name} ${year} Ubersystem</a></p>",
-    order   => '02',
-  }
-}
-
-define uber::init_db (
-  $venv_python,
-  $uber_path,
-  $db_replication_mode = 'none',
-) {
-  if $db_replication_mode != 'slave'
-  {
-    # we don't explicitly need to init the DB with sideboard anymore,
-    # the empty tables will be created if they don't exist already.
-    # However, I'd like to keep this section so that if we need to do any
-    # initial DB init or migration, we can put it here.  -Dom
-
-    #exec { "uber_init_db_${name}" :
-    #  command     => "${venv_python} uber/init_db.py",
-    #  cwd         => "${uber_path}",
-    #  refreshonly => true,
-    #}
-  }
-}
-
-define uber::replication (
-  # DB replication common settings
-  $db_name,
-  $db_replication_mode, # none, master, or slave
-  $db_replication_user,
-  $db_replication_password,
-
-  # DB replication slave settings ONLY
-  $db_replication_master_ip, # IP of the master server
-  $uber_db_util_path,
-
-  # DB replication master settings ONLY
-  $slave_ips,
-) {
-  # setup replication
-  if $db_replication_mode == 'master'
-  {
-    if $db_replication_password == '' {
-      fail("can't do database replication without setting a replication passwd")
-    }
-
-    uber::dbreplicationmaster { "${db_name}_replication_master":
-      dbname               => $db_name,
-      replication_user     => $db_replication_user,
-      replication_password => $db_replication_password,
-      slave_ips            => $slave_ips,
-    }
-  }
-  if $db_replication_mode == 'slave'
-  {
-    if $db_replication_password == '' {
-      fail("can't do database replication without setting a replication passwd")
-    }
-
-    if $db_replication_master_ip == '' {
-      fail("can't do DB slave replication without a master IP address")
-    }
-
-    uber::db-replication-slave { "${db_name}_replication_slave":
-      dbname               => $db_name,
-      replication_user     => $db_replication_user,
-      replication_password => $db_replication_password,
-      master_ip            => $db_replication_master_ip,
-      uber_db_util_path    => $uber_db_util_path,
-    }
-  }
-}
-
-
-define uber::vhost (
-  $hostname,
-  $ssl_crt_bundle,
-  $ssl_crt_key,
-) {
-  if ! defined(Nginx::Resource::Vhost[$hostname]) {
-    nginx::resource::vhost { $hostname:
-      www_root    => '/var/www/',
-      rewrite_to_https => true,
-      ssl              => true,
-      ssl_cert         => $ssl_crt_bundle,
-      ssl_key          => $ssl_crt_key,
-    }
-  }
-}
-
-define uber::firewall (
-  $socket_port,
-  $open_firewall_port = false,
-) {
-  if $open_firewall_port {
-    ufw::allow { $title:
-      port => $socket_port,
-    }
-  }
-}
-
-
-# Class uber::db-replication
-#
-# Handles replication stuff for ubersystem
-#
-# 
-
-define uber::allow-replication-from-ip (
-  $dbname,
-  $username,
-) {
-  postgresql::server::pg_hba_rule { "rep access for ${name}":
-    description => "Open up postgresql for access from ${name}",
-    type        => 'hostssl',
-    database    => 'replication', #$dbname,
-    user        => $username,
-    address     => "${name}/32",
-    auth_method => 'md5',
-  }
-
-  # open this port on the firewall for this IP
-  ufw::allow { "allow postgres from $name":
-    from  => "$name",
-    proto => 'tcp',
-    port  => 5432,
-  }
-}
-
-define uber::dbreplicationmaster (
-  $dbname,
-  $replication_user = 'replicator',
-  $replication_password,
-  $slave_ips,
-) {
-  postgresql::server::role { $replication_user:
-    password_hash => postgresql_password($replication_user, $replication_password),
-    replication   => true,
-    #notify        => Postgresql::Server::Config_Entry['wal_level'],
-    subscribe      => Postgresql::Server::Db["${dbname}"]
-  }
-
-  postgresql::server::config_entry { 
-     # 'listen_address':       value => "*";
-     'wal_level':            value => 'hot_standby';
-     'max_wal_senders':      value => '3';
-     'checkpoint_segments':  value => '8';
-     'wal_keep_segments':    value => '8';
-  }
-
-  uber::allow-replication-from-ip { $slave_ips:
-    dbname   => $dbname,
-    username => $replication_user,
-  }
-}
-
-define uber::db-replication-slave (
-  $dbname,
-  $replication_user = 'replicator',
-  $replication_password,
-  $master_ip,
-  $uber_db_util_path = '/usr/local/uberdbutil'
-) {
-
-  postgresql::server::config_entry { 
-    'wal_level':            value => 'hot_standby';
-    'max_wal_senders':      value => '3';
-    'checkpoint_segments':  value => '8';
-    'wal_keep_segments':    value => '8';
-    'hot_standby':          value => 'on';
-  }
-
-  # a fuller example, including permissions and ownership
-  file { "${uber_db_util_path}":
-    ensure => "directory",
-    owner  => "postgres",
-    group  => "postgres",
-    mode   => 700,
-    notify  => File["${uber_db_util_path}/recovery.conf"],
-  }
-
-  file { "${uber_db_util_path}/recovery.conf":
-    ensure  => present,
-    owner   => "postgres",
-    group   => "postgres",
-    mode    => 600,
-    content => template('uber/pg-recovery.conf.erb'),
-    notify  => File["${uber_db_util_path}/pg-start-replication.sh"],
-  }
-
-  file { "${uber_db_util_path}/pg-start-replication.sh":
-    ensure   => present,
-    owner    => "postgres",
-    group    => "postgres",
-    mode     => 700,
-    content  => template('uber/pg-start-replication.sh.erb'),
-    notify => File["${uber_db_util_path}/sync-to-master.sh"],
-  }
-
-  file { "${uber_db_util_path}/sync-to-master.sh":
-    ensure   => present,
-    owner    => "postgres",
-    group    => "postgres",
-    mode     => 700,
-    content  => template('uber/pg-sync.sh.erb'),
-    # notify => File["${uber_path}/event.conf"],
-  }
 }
