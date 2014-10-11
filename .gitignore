@@ -1,0 +1,6 @@
+files/*.crt
+files/*.crt-bundle
+files/*.key
+!files/selfsigned-testonly.key
+!files/selfsigned-testonly.crt
+!files/selfsigned-testonly.crt-bundle
