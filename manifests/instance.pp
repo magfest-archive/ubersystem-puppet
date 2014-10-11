@@ -15,7 +15,7 @@ define uber::instance (
   $db_user = 'm13',
   $db_pass = 'm13',
   $db_name = 'm13',
-  
+
   $sideboard_plugins = {},
 
   # DB replication common mode settings
@@ -213,7 +213,6 @@ define uber::instance (
     #notify  => Uber::Replication["${name}_replication"],
     notify  => Uber::Daemon["${name}_daemon"],
   }
-
   uber::replication { "${name}_replication":
     db_name                  => $db_name,
     db_replication_mode      => $db_replication_mode,
@@ -227,7 +226,7 @@ define uber::instance (
   }
 
   # run as a daemon with supervisor
-  uber::daemon { "${name}_daemon": 
+  uber::daemon { "${name}_daemon":
     user       => $uber_user,
     group      => $uber_group,
     python_cmd => $venv_python,
@@ -376,7 +375,7 @@ define uber::replication (
 #
 # Handles replication stuff for ubersystem
 #
-# 
+#
 
 define uber::allow-replication-from-ip (
   $dbname,
@@ -412,7 +411,7 @@ define uber::dbreplicationmaster (
     subscribe      => Postgresql::Server::Db["${dbname}"]
   }
 
-  postgresql::server::config_entry { 
+  postgresql::server::config_entry {
      # 'listen_address':       value => "*";
      'wal_level':            value => 'hot_standby';
      'max_wal_senders':      value => '3';
@@ -434,7 +433,7 @@ define uber::db-replication-slave (
   $uber_db_util_path = '/usr/local/uberdbutil'
 ) {
 
-  postgresql::server::config_entry { 
+  postgresql::server::config_entry {
     'wal_level':            value => 'hot_standby';
     'max_wal_senders':      value => '3';
     'checkpoint_segments':  value => '8';

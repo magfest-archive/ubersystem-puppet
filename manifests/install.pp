@@ -2,8 +2,8 @@ class uber::install {
 
   # TODO install UTF lcoale stuff from Eli's Vagrant script
   if defined(Package['git']) == false {
-    package { 'git': 
-      ensure => present 
+    package { 'git':
+      ensure => present
     }
   }
 
