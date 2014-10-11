@@ -1,6 +1,6 @@
-class uber {
-  $python_ver = '3'
-
+class uber (
+  $python_ver = '3',
+) {
   $python_cmd = $python_ver ? {
     '2'     => 'python2',
     '3'     => 'python3',
