@@ -91,6 +91,7 @@ define uber::instance
   $socket_host = '0.0.0.0',
   $hostname = '', # defaults to hostname of the box
   $url_prefix = 'magfest',
+  $ssl_port = '443',
 
   $open_firewall_port = false, # if using apache/nginx, you dont want this.
 
@@ -122,9 +123,16 @@ define uber::instance
   $custom_badges_really_ordered = False,
 ) {
 
-  $hostname_to_use = $hostname ? {
-    ''      => $fqdn,
-    default => $hostname,
+  if $hostname == '' {
+    $hostname_to_use = $fqdn
+  } else {
+    $hostname_to_use = $hostname
+  }
+
+  if $ssl_port == 443 {
+    $url_root = "https://${hostname_to_use}"
+  } else {
+    $url_root = "https://${hostname_to_use}:${ssl_port}"
   }
 
   $venv_path = "${uber_path}/env"
@@ -292,6 +300,7 @@ define uber::instance
 
   uber::firewall { "${name}_firewall":
     socket_port        => $socket_port,
+    ssl_port           => $ssl_port,
     open_firewall_port => $open_firewall_port,
     notify             => Uber::Vhost[$name],
   }
@@ -300,11 +309,12 @@ define uber::instance
     hostname       => $hostname_to_use,
     ssl_crt_bundle => $ssl_crt_bundle,
     ssl_crt_key    => $ssl_crt_key,
+    ssl_port       => $ssl_port,
     # notify       => Nginx::Resource::Location["${hostname}-${name}"],
   }
 
+  # from the perspective of nginx, where should it proxy traffic TO.
   $proxy_url = "http://127.0.0.1:${socket_port}/${url_prefix}/"
-  $public_url = "https://${hostname_to_use}/${url_prefix}/"
 
   nginx::resource::location { "${hostname_to_use}-${name}":
     ensure   => present,
@@ -321,6 +331,9 @@ define uber::instance
     ensure => absent,
     # notify => Uber::Create_index_html["${name}"], # TODO, but it doesn't work
   }
+
+  # from the perspective of a web browser, what URL should they use to access uber
+  # $public_url = "https://${url_root}/${url_prefix}/"
 
   #uber::create_index_html { "${name}":
   #  public_url => $public_url,
@@ -432,6 +445,7 @@ define uber::vhost (
   $hostname,
   $ssl_crt_bundle,
   $ssl_crt_key,
+  $ssl_port = '443',
 ) {
   if ! defined(Nginx::Resource::Vhost[$hostname]) {
     nginx::resource::vhost { $hostname:
@@ -440,6 +454,7 @@ define uber::vhost (
       ssl              => true,
       ssl_cert         => $ssl_crt_bundle,
       ssl_key          => $ssl_crt_key,
+      ssl_port         => $ssl_port,
     }
   }
 }
@@ -447,11 +462,23 @@ define uber::vhost (
 define uber::firewall (
   $socket_port,
   $open_firewall_port = false,
+  $ssl_port,
+  $http_port = '80',
 ) {
+  include ufw
+
   if $open_firewall_port {
-    ufw::allow { $title:
+    ufw::allow { "${title}-rawport":
       port => $socket_port,
     }
+  }
+
+  ufw::allow { "${title}-ssl":
+    port => $ssl_port,
+  }
+
+  ufw::allow { "${title}-http":
+    port => $http_port,
   }
 }
 
