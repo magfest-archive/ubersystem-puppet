@@ -7,9 +7,9 @@ hostname = "<%= @hostname_to_use %>"
 dev_box = <%= @dev_box %>
 send_emails = <%= @send_emails %>
 collect_exact_birthdate = <%= @collect_exact_birthdate %>
-
 event_name = "<%= @event_name %>"
 organization_name = "<%= @organization_name %>"
+groups_enabled = <%= @groups_enabled %>
 
 # url_root should be the public-facing root of what you type
 # to get to this uber instance. do not include the url_prefix/path here.
@@ -42,7 +42,33 @@ stripe_public_key = "<%= @stripe_public_key %>"
 # at_the_con = "<%= @at_the_con %>"
 # max_badge_sales = "<%= @max_badge_sales %>"
 #
+event_name = "<%= @event_name %>"
+
+preassigned_badge_types = <%= @preassigned_badge_types %>
+
+collect_interests = <%= @collect_interests %>
 
 [dates]
 prereg_open = "<%= @prereg_open %>"
-dealer_reg_start = "2014-08-07"
+dealer_reg_start = "<%= @dealer_reg_start %>"
+
+[badge_ranges] 
+guest_badge = <%= @guest_range %>
+staff_badge = <%= @staff_range %>
+attendee_badge = <%= @attendee_range %>
+
+[integer_enums]
+shirt_level     = <%= @shirt_level %>
+supporter_level = <%= @supporter_level %>
+season_level    = <%= @season_level %>
+
+[[donation_tier]]
+'No thanks'             = 0
+'Sponsor Package'       = SUPPORTER_LEVEL
+'Super Sponsor Package' = SEASON_LEVEL
+
+[enum]
+[[ribbon]]
+dealer_ribbon = "Dealer"
+dealer_asst_ribbon = "Dealer Assistant"
+bod_ribbon = "Board of Directors"

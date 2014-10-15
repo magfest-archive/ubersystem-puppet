@@ -120,6 +120,17 @@ define uber::instance
   $max_badge_sales = 9999999,
   $hide_schedule = True,
   $custom_badges_really_ordered = False,
+  $hide_schedule = True,
+  $custom_badges_really_ordered = False,
+  $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
+  $dealer_reg_start = '',
+  $guest_range = '2000, 2999',
+  $staff_range = '1, 999',
+  $attendee_range = '3000, 29999',
+  $shirt_level = 20,
+  $supporter_level = 60,
+  $season_level = 160,
+  $collect_interests = False,
 ) {
 
   $hostname_to_use = $hostname ? {
