@@ -116,6 +116,7 @@ define uber::instance
   #$eschaton,
   #$prereg_price = 45,
   #$at_door_price = 60,
+  $groups_enabled = True,
   $at_the_con = False,
   $max_badge_sales = 9999999,
   $hide_schedule = True,
