@@ -323,6 +323,7 @@ define uber::instance
     ssl_crt_key    => $ssl_crt_key,
     ssl_port       => $ssl_port,
     # notify       => Nginx::Resource::Location["${hostname}-${name}"],
+    notify => Service["nginx"],
   }
 
   # from the perspective of nginx, where should it proxy traffic TO.
@@ -334,7 +335,7 @@ define uber::instance
     location => "/${url_prefix}/",
     vhost    => $hostname_to_use,
     ssl      => true,
-    notify   => File["${nginx::params::nx_conf_dir}/conf.d/default.conf"],
+    notify   => [ File["${nginx::params::nx_conf_dir}/conf.d/default.conf"], Service["nginx"] ]
   }
 
   # delete the default.conf to ensure that our virtualhost file gets the requests for localhost.
@@ -342,6 +343,7 @@ define uber::instance
   file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
     ensure => absent,
     # notify => Uber::Create_index_html["${name}"], # TODO, but it doesn't work
+    notify => Service["nginx"],
   }
 
   # from the perspective of a web browser, what URL should they use to access uber
