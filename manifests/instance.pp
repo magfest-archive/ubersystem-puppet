@@ -109,6 +109,7 @@ define uber::instance
   $stripe_public_key = '',
   $dev_box = False,
   $collect_exact_birthdate = False,
+  $collect_full_address = False,
   #$supporter_badge_type_enabled = True,
   $prereg_open,
   #$prereg_takedown,
