@@ -134,6 +134,8 @@ define uber::instance
   $supporter_level = 60,
   $season_level = 160,
   $collect_interests = False,
+  $consent_form_url = "http://magfest.org/minorconsentform",
+  $code_of_conduct = "http://magfest.org/codeofconduct",
 ) {
 
   if $hostname == '' {
