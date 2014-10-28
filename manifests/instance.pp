@@ -60,8 +60,8 @@ define uber::instance
   $uber_user = 'uber',
   $uber_group = 'apps',
 
-  $ssl_crt_bundle = 'puppet:///modules/uber/selfsigned-testonly.crt',
-  $ssl_crt_key = 'puppet:///modules/uber/selfsigned-testonly.key',
+  $ssl_crt_bundle = 'puppet:///modules/uber/selfsigned-host.crt',
+  $ssl_crt_key = 'puppet:///modules/uber/selfsigned-host.key',
 
   $sideboard_debug_enabled = false,
 
