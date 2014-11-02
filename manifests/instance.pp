@@ -136,6 +136,8 @@ define uber::instance
   $collect_interests = False,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
+  $donation_tier = "'\'No thanks\' = 0','\'Ribbon\' = 5','\'Button\' = 10','\'Tshirt\' = SHIRT_LEVEL','\'Supporter Package\' = SUPPORTER_LEVEL','\'MAGFest USB Drive\' = 100','\'Season Supporter Pass for 2015\' = SEASON_LEVEL','\'MPoint Holder\' = 200','\'Lightsuit\' = 500'",
+  $ribbon_types = "'press_ribbon = \"Camera\"','band_ribbon = \"Rock Star\"'",
 ) {
 
   if $hostname == '' {
@@ -221,6 +223,16 @@ define uber::instance
     mode    => 660,
     content => template('uber/uber-development.ini.erb'),
     notify  => Exec["uber_virtualenv_${name}"]
+  }
+
+  # a "sanitized" developer-default.ini file for uber
+  # this one yanks out the defaults used in the ubersystem 
+  # git repo with ALL THE THINGS
+  file { "${uber_path}/plugins/uber/development-defaults.ini":
+    ensure => present,
+    mode   => 660,
+    source => 'puppet:///modules/uber/development-defaults.ini',
+    notify => Exec["uber_virtualenv_${name}"]
   }
 
   # seems puppet's virtualenv support is broken for python3, so roll our own

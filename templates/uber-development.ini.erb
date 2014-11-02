@@ -65,12 +65,14 @@ supporter_level = <%= @supporter_level %>
 season_level    = <%= @season_level %>
 
 [[donation_tier]]
-'No thanks'             = 0
-'Sponsor Package'       = SUPPORTER_LEVEL
-'Super Sponsor Package' = SEASON_LEVEL
+<% @donation_tier.each do |item| -%>
+<%= item %>
+<% end -%>
 
 [enum]
 [[ribbon]]
-dealer_ribbon = "Dealer"
-dealer_asst_ribbon = "Dealer Assistant"
-bod_ribbon = "Board of Directors"
+<% @ribbon_types.each do |item| -%>
+<%= item %>
+<% end -%>
+
+
