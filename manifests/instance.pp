@@ -140,7 +140,7 @@ define uber::instance
   $ribbon_types = "'press_ribbon = \"Camera\"','band_ribbon = \"Rock Star\"'",
   $job_listings = "'charity = \"Charity\",'con_ops = \"Operations\" ','marketplace = \"Marketplace\" ','regdesk = \"Regdesk\" ','security = \"Security\" ','staff_support = \"Staff Support\" ','treasury = \"Treasury\" ','tech_ops = \"Tech Ops\"'",
   $shiftless_depts = 'security',
-  $interest_list = "'console = \"Consoles\"', 'arcade = \"Arcade\"', 'lan = \"LAN\"', 'music = \"Music\"', 'pabels         = \"Guests\/Panels\"', 'tabletop       = \"Tabletop games\"', 'marketplace    = \"Dealers\"', 'tournaments    = \"Tournaments\"', 'film_fest      = \"Film Festival\"', 'indie_showcase = \"Indie Game Showcase\"', 'larp           = \"LARP\"'",
+  $interest_list = "'console = \"Consoles\"', 'arcade = \"Arcade\"', 'lan = \"LAN\"', 'music = \"Music\"', 'pabels         = \"Guests/Panels\"', 'tabletop       = \"Tabletop games\"', 'marketplace    = \"Dealers\"', 'tournaments    = \"Tournaments\"', 'film_fest      = \"Film Festival\"', 'indie_showcase = \"Indie Game Showcase\"', 'larp           = \"LARP\"'",
   $dept_overrides = "'staff_support = \"Jack Boyd\"','security = \"The Dorsai Irregulars\"'",
 ) {
 
