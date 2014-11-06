@@ -50,6 +50,8 @@ preassigned_badge_types = <%= @preassigned_badge_types %>
 collect_full_address = <%= @collect_full_address %>
 collect_interests = <%= @collect_interests %>
 
+shiftless_depts = <%= @shifless_depts %>
+
 [dates]
 prereg_open = "<%= @prereg_open %>"
 dealer_reg_start = "<%= @dealer_reg_start %>"
@@ -82,4 +84,7 @@ season_level    = <%= @season_level %>
 
 #[[event_location]]
 #
-#[[job_interest]]
+[[job_interest]]
+<% @job_listings.each do |item| -%>
+<%= item %>
+<% end -%>

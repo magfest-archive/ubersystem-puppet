@@ -139,6 +139,7 @@ define uber::instance
   $donation_tier = "'\'No thanks\' = 0','\'Ribbon\' = 5','\'Button\' = 10','\'Tshirt\' = SHIRT_LEVEL','\'Supporter Package\' = SUPPORTER_LEVEL','\'MAGFest USB Drive\' = 100','\'Season Supporter Pass for 2015\' = SEASON_LEVEL','\'MPoint Holder\' = 200','\'Lightsuit\' = 500'",
   $ribbon_types = "'press_ribbon = \"Camera\"','band_ribbon = \"Rock Star\"'",
   $job_listings = "'charity = \"Charity\",'con_ops = \"Operations\" ','marketplace = \"Marketplace\" ','regdesk = \"Regdesk\" ','security = \"Security\" ','staff_support = \"Staff Support\" ','treasury = \"Treasury\" ','tech_ops = \"Tech Ops\"'",
+ $shiftless_depts = 'security'.
 ) {
 
   if $hostname == '' {
