@@ -73,6 +73,18 @@ guest_badge = <%= @guest_range %>
 staff_badge = <%= @staff_range %>
 attendee_badge = <%= @attendee_range %>
 
+[badge_prices]
+[[single_day]]
+Friday = <%= @friday_price %>
+Saturday = <%= @saturday_price %>
+Sunday = <%= @sunday_price %>
+
+[[attendee]]
+<%= @prereg_open %> = <%= @launch_price %>
+<%= @prereg_increase %> = <%= @prereg_price_increase %>
+<%= @late_prereg_date %> = <%= @late_prereg %>
+<%= @onsite_date %> = <%= @onsite_price %>
+
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
 supporter_level = <%= @supporter_level %>
@@ -84,6 +96,14 @@ season_level    = <%= @season_level %>
 <% end -%>
 
 [enums]
+
+[[badge_status]]
+new_status        = "New"
+completed_status  = "Completed"
+deferred_status   = "Deferred"
+refunded_status   = "Refunded"
+invalid_status    = "Invalid"
+
 [[ribbon]]
 <% @ribbon_types.each do |item| -%>
 <%= item %>
@@ -110,3 +130,4 @@ season_level    = <%= @season_level %>
 <% @dept_overrides.each do |item| -%>
 <%= item %>
 <% end -%>
+
