@@ -114,11 +114,12 @@ define uber::instance
   $prereg_open,
   #$prereg_takedown,
   #$uber_takedown,
-  #$epoch,
-  #$eschaton,
+  $epoch = "2015-07-09 08",
+  $eschaton = "2015-07-12 18",
   #$prereg_price = 45,
   #$at_door_price = 60,
   $groups_enabled = True,
+  $shift_custom_badges = False,
   $at_the_con = False,
   $max_badge_sales = 9999999,
   $hide_schedule = True,
@@ -130,6 +131,9 @@ define uber::instance
   $dealer_reg_deadline = "2014-08-11",
   $dealer_reg_shutdown = "2014-08-31",
   $dealer_payment_due  = "2014-11-15",
+  $supporter_deadline = "2014-12-26",
+  $printed_badge_deadline = "2015-01-04",
+  $bod_range = '',
   $guest_range = '2000, 2999',
   $staff_range = '1, 999',
   $attendee_range = '3000, 29999',
@@ -141,7 +145,9 @@ define uber::instance
   $collect_interests = False,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
+  $contact_url = "http://www.anthrocon.org/contact",
   $donation_tier = "'\'No thanks\' = 0','\'Ribbon\' = 5','\'Button\' = 10','\'Tshirt\' = SHIRT_LEVEL','\'Supporter Package\' = SUPPORTER_LEVEL','\'MAGFest USB Drive\' = 100','\'Season Supporter Pass for 2015\' = SEASON_LEVEL','\'MPoint Holder\' = 200','\'Lightsuit\' = 500'",
+  $shirt_size = "'\'No shirt\' = 0','\'Small\' = 1'",
   $ribbon_types = "'press_ribbon = \"Camera\"','band_ribbon = \"Rock Star\"'",
   $job_listings = "'charity = \"Charity\",'con_ops = \"Operations\" ','marketplace = \"Marketplace\" ','regdesk = \"Regdesk\" ','security = \"Security\" ','staff_support = \"Staff Support\" ','treasury = \"Treasury\" ','tech_ops = \"Tech Ops\"'",
   $shiftless_depts = 'security',
@@ -157,6 +163,9 @@ define uber::instance
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
   $developer_email = "Eli Courtwright <eli@courtwright.org>",
+  $guest_email = "MAGFest Gusets <guests@magfest.org>",
+  $guest_sig = " - MAGFest Guest Liason",
+  $initial_price = 50,
   $friday_price = 30,
   $saturday_price = 30,
   $sunday_price = 30,
@@ -524,6 +533,8 @@ define uber::firewall (
   $ssl_port,
   $http_port = '80',
 ) {
+
+# this should be in it's own module def
   include ufw
 
   if $open_firewall_port {
@@ -538,6 +549,10 @@ define uber::firewall (
 
   ufw::allow { "${title}-http":
     port => $http_port,
+  }
+
+  ufw::allow {"${title}-ssh":
+     port => 22,
   }
 }
 

@@ -10,9 +10,11 @@ collect_exact_birthdate = <%= @collect_exact_birthdate %>
 event_name = "<%= @event_name %>"
 organization_name = "<%= @organization_name %>"
 groups_enabled = <%= @groups_enabled %>
+shift_custom_badges = <%= @shift_custom_badges %>
 
 consent_form_url = "<%= @consent_form_url %>"
 code_of_conduct_url = "<%= @code_of_conduct %>"
+contact_url = "<%= @contact_url %>"
 
 admin_email = "<%= @admin_email %>"
 regdesk_email = "<%= @regdesk_email %>"
@@ -20,11 +22,13 @@ staff_email = "<%= @staff_email %>"
 marketplace_email = "<%= @marketplace_email %>"
 panels_email = "<%= @panels_email %>"
 developer_email = "<%= @developer_email %>"
+guest_email = "<%= @guest_email %>"
 
 regdesk_email_signature = '''<%= @regdesk_sig %>'''
 stops_email_signature = '''<%= @stops_sig %>'''
 marketplace_email_signature = '''<%= @marketplace_sig %>'''
 peglegs_email_signature = '''<%= @peglegs_sig %>'''
+guest_email_signature = '''<%= @guest_sig %>'''
 
 # url_root should be the public-facing root of what you type
 # to get to this uber instance. do not include the url_prefix/path here.
@@ -70,8 +74,14 @@ dealer_reg_start = "<%= @dealer_reg_start %>"
 dealer_reg_deadline = "<%= @dealer_reg_deadline %>"
 dealer_reg_shutdown = "<%= @dealer_reg_shutdown %>"
 dealer_payment_due  = "<%= @dealer_payment_due %>"
+supporter_deadline = "<%= @supporter_deadline %>"
+printed_badge_dealine = "<%= @printed_badge_deadline %>"
+first_price_bump = "<%= @prereg_increase %>"
+epoch = "<%= @epoch %>"
+eschaton = "<%= @epoch %>"
 
 [badge_ranges] 
+bod_badge	= <%= @bod_range %>
 guest_badge = <%= @guest_range %>
 staff_badge = <%= @staff_range %>
 attendee_badge = <%= @attendee_range %>
@@ -79,6 +89,7 @@ supporter_badge = <%= @supporter_range %>
 one_day_badge   = <%= @oneday_range %>
 
 [badge_prices]
+initial_attendee = <%= @initial_price %>
 [[single_day]]
 Friday = <%= @friday_price %>
 Saturday = <%= @saturday_price %>
@@ -100,7 +111,20 @@ season_level    = <%= @season_level %>
 <%= item %>
 <% end -%>
 
+[[shirt]]
+<% @shirt_size.each do |item| -%>
+<%= item %>
+<% end -%>
+
 [enums]
+
+[[badge]]
+attendee_badge  = "Attendee"
+supporter_badge = "Supporter"
+staff_badge     = "Staff"
+guest_badge     = "Guest"
+one_day_badge   = "One Day"
+bod_badge		= "Board"
 
 [[badge_status]]
 new_status        = "New"
