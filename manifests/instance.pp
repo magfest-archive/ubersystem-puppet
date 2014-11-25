@@ -136,12 +136,12 @@ define uber::instance
   $collect_interests = False,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
-  $donation_tier = "'\'No thanks\' = 0','\'Ribbon\' = 5','\'Button\' = 10','\'Tshirt\' = SHIRT_LEVEL','\'Supporter Package\' = SUPPORTER_LEVEL','\'MAGFest USB Drive\' = 100','\'Season Supporter Pass for 2015\' = SEASON_LEVEL','\'MPoint Holder\' = 200','\'Lightsuit\' = 500'",
-  $ribbon_types = "'press_ribbon = \"Camera\"','band_ribbon = \"Rock Star\"'",
-  $job_listings = "'charity = \"Charity\",'con_ops = \"Operations\" ','marketplace = \"Marketplace\" ','regdesk = \"Regdesk\" ','security = \"Security\" ','staff_support = \"Staff Support\" ','treasury = \"Treasury\" ','tech_ops = \"Tech Ops\"'",
-  $shiftless_depts = 'security',
-  $interest_list = "'console = \"Consoles\"', 'arcade = \"Arcade\"', 'lan = \"LAN\"', 'music = \"Music\"', 'pabels         = \"Guests/Panels\"', 'tabletop       = \"Tabletop games\"', 'marketplace    = \"Dealers\"', 'tournaments    = \"Tournaments\"', 'film_fest      = \"Film Festival\"', 'indie_showcase = \"Indie Game Showcase\"', 'larp           = \"LARP\"'",
-  $dept_overrides = "'staff_support = \"Jack Boyd\"','security = \"The Dorsai Irregulars\"'",
+  $donation_tier = [ "'\'No thanks\' = 0'","'\'Ribbon\' = 5'","'\'Button\' = 10'","'\'Tshirt\' = SHIRT_LEVEL'","'\'Supporter Package\' = SUPPORTER_LEVEL'","'\'MAGFest USB Drive\' = 100'","'\'Season Supporter Pass for 2015\' = SEASON_LEVEL'","'\'MPoint Holder\' = 200'","'\'Lightsuit\' = 500'" ],
+  $ribbon_types = [ "'press_ribbon = \"Camera\"'","'band_ribbon = \"Rock Star\"'" ],
+  $job_listings = [ "'charity = \"Charity\"","'con_ops = \"Operations\" '","'marketplace = \"Marketplace\" '","'regdesk = \"Regdesk\" '","'security = \"Security\" '","'staff_support = \"Staff Support\" '","'treasury = \"Treasury\" '","'tech_ops = \"Tech Ops\"'"] ,
+  $shiftless_depts = [ 'security' ],
+  $interest_list = [ "'console = \"Consoles\"'", "'arcade = \"Arcade\"'", "'lan = \"LAN\"'", "'music = \"Music\"'", "'pabels         = \"Guests/Panels\"'", "'tabletop       = \"Tabletop games\"'", "'marketplace    = \"Dealers\"'", "'tournaments    = \"Tournaments\"'", "'film_fest      = \"Film Festival\"'", "'indie_showcase = \"Indie Game Showcase\"'", "'larp           = \"LARP\"'" ],
+  $dept_overrides = [ "'staff_support = \"Jack Boyd\"'","'security = \"The Dorsai Irregulars\"'"],
   $regdesk_email_signature = " - Victoria Earl, MAGFest Registration Chair",
   $stops_email_signature = " - Jack Boyd, MAGFest Staffing Coordinator",
   $marketplace_email_signature = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
@@ -151,7 +151,7 @@ define uber::instance
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
-  $developer_email = "Eli Courtwright <eli@courtwright.org>",
+  $developer_email = "Eli Courtwright <code@magfest.org>",
 ) {
 
   if $hostname == '' {
