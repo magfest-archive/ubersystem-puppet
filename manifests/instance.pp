@@ -200,6 +200,14 @@ define uber::instance
     "'large (female)'   = 9",
     "'x-large (female)' = 10"
   ],
+  $locations = [
+    'panels_1 = "Panels 1"',
+    'panels_2 = "Panels 2"',
+    'panels_3 = "Panels 3"',
+    'panels_4 = "Panels 4"',
+    'panels_5 = "MAGES 1"',
+    'panels_6 = "MAGES 2"'
+  ],
   $regdesk_sig = " - Victoria Earl, MAGFest Registration Chair",
   $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",
   $marketplace_sig = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
