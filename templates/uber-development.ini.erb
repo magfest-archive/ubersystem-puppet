@@ -76,6 +76,17 @@ dealer_reg_start = "<%= @dealer_reg_start %>"
 <%= badge_type[0] %> = <%= badge_type[1]["range_start"] %>, <%= badge_type[1]["range_end"] %>
 <% end -%>
 
+
+[badge_prices]
+<% @badge_prices.each do |badge_pricing| -%>
+[[<%= badge_pricing[0] %>]]
+<% badge_pricing[1].each do |date| -%>
+<%= date.keys[0] %> = <%= date.values[0] %>
+<% end -%>
+
+<% end -%>
+
+
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
 supporter_level = <%= @supporter_level %>
@@ -87,6 +98,11 @@ season_level    = <%= @season_level %>
 <% end -%>
 
 [enums]
+[[badge]]
+<% @badge_enums.each do |badge_enum| -%>
+<%= badge_enum[0] %> = "<%= badge_enum[1] %>"
+<% end -%>
+
 [[ribbon]]
 <% @ribbon_types.each do |item| -%>
 <%= item %>
