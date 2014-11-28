@@ -85,7 +85,7 @@ define uber::instance
   # DB replication master settings ONLY
   $slave_ips = [],
 
-  $django_debug = False,
+  $django_debug = false,
 
   $socket_port = '4321',
   $socket_host = '0.0.0.0',
@@ -99,17 +99,17 @@ define uber::instance
   $event_name = 'MAGFest',
   $organization_name = 'MAGFest',
   $year = 1,
-  $show_affiliates_and_extras = True,
+  $show_affiliates_and_extras = false,
   #$group_reg_available = True,
   #$group_reg_open = True,
-  $send_emails = False,
+  $send_emails = false,
   $aws_access_key = '',
   $aws_secret_key = '',
   $stripe_secret_key = '',
   $stripe_public_key = '',
-  $dev_box = False,
-  $collect_exact_birthdate = False,
-  $collect_full_address = False,
+  $dev_box = false,
+  $collect_exact_birthdate = false,
+  $collect_full_address = false,
   #$supporter_badge_type_enabled = True,
   $prereg_open,
   #$prereg_takedown,
@@ -118,13 +118,11 @@ define uber::instance
   #$eschaton,
   #$prereg_price = 45,
   #$at_door_price = 60,
-  $groups_enabled = True,
-  $at_the_con = False,
+  $groups_enabled = true,
+  $at_the_con = false,
   $max_badge_sales = 9999999,
-  $hide_schedule = True,
-  $custom_badges_really_ordered = False,
-  $hide_schedule = True,
-  $custom_badges_really_ordered = False,
+  $hide_schedule = true,
+  $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $dealer_reg_start = '',
   $guest_range = '2000, 2999',
@@ -133,25 +131,65 @@ define uber::instance
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
-  $collect_interests = False,
+  $collect_interests = false,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
-  $donation_tier = "'\'No thanks\' = 0','\'Ribbon\' = 5','\'Button\' = 10','\'Tshirt\' = SHIRT_LEVEL','\'Supporter Package\' = SUPPORTER_LEVEL','\'MAGFest USB Drive\' = 100','\'Season Supporter Pass for 2015\' = SEASON_LEVEL','\'MPoint Holder\' = 200','\'Lightsuit\' = 500'",
-  $ribbon_types = "'press_ribbon = \"Camera\"','band_ribbon = \"Rock Star\"'",
-  $job_listings = "'charity = \"Charity\",'con_ops = \"Operations\" ','marketplace = \"Marketplace\" ','regdesk = \"Regdesk\" ','security = \"Security\" ','staff_support = \"Staff Support\" ','treasury = \"Treasury\" ','tech_ops = \"Tech Ops\"'",
-  $shiftless_depts = 'security',
-  $interest_list = "'console = \"Consoles\"', 'arcade = \"Arcade\"', 'lan = \"LAN\"', 'music = \"Music\"', 'pabels         = \"Guests/Panels\"', 'tabletop       = \"Tabletop games\"', 'marketplace    = \"Dealers\"', 'tournaments    = \"Tournaments\"', 'film_fest      = \"Film Festival\"', 'indie_showcase = \"Indie Game Showcase\"', 'larp           = \"LARP\"'",
-  $dept_overrides = "'staff_support = \"Jack Boyd\"','security = \"The Dorsai Irregulars\"'",
-  $regdesk_email_signature = " - Victoria Earl, MAGFest Registration Chair",
-  $stops_email_signature = " - Jack Boyd, MAGFest Staffing Coordinator",
-  $marketplace_email_signature = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
-  $peglegs_email_signature = " - Tim Macneil, MAGFest Panels Department",
+  $donation_tier = [ 
+    "'No thanks' = 0",
+    "'Ribbon' = 5",
+    "'Button' = 10",
+    "'Tshirt' = SHIRT_LEVEL",
+    "'Supporter Package' = SUPPORTER_LEVEL",
+    "'MAGFest USB Drive' = 100",
+    "'Season Supporter Pass for 2015' = SEASON_LEVEL",
+    "'MPoint Holder' = 200",
+    "'Lightsuit' = 500",
+  ],
+  $ribbon_types = [ 
+    "press_ribbon = 'Camera'",
+    "band_ribbon = 'Rock Star'",
+  ],
+  $job_listings = [ 
+    "charity = 'Charity'",
+    "con_ops = 'Operations'",
+    "marketplace = 'Marketplace'",
+    "regdesk = 'Regdesk'",
+    "security = 'Security'",
+    "staff_support = 'Staff Support'",
+    "treasury = 'Treasury'",
+    "tech_ops = 'Tech Ops'",
+  ] ,
+  $shiftless_depts = undef,
+  $interest_list = [ 
+    "console        = 'Consoles'", 
+    "arcade         = 'Arcade'", 
+    "lan            = 'LAN'", 
+    "music          = 'Music'", 
+    "panels         = 'Guests/Panels'", 
+    "tabletop       = 'Tabletop games'", 
+    "marketplace    = 'Dealers'", 
+    "tournaments    = 'Tournaments'", 
+    "film_fest      = 'Film Festival'", 
+    "indie_showcase = 'Indie Game Showcase'", 
+    "larp           = 'LARP'",
+  ],
+  $dept_overrides = [ 
+    "staff_support = 'Jack Boyd'",
+    "security = 'The Dorsai Irregulars'"
+  ],
+  $regdesk_sig = " - Victoria Earl, MAGFest Registration Chair",
+  $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",
+  $marketplace_sig = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
+  $peglegs_sig = " - Tim Macneil, MAGFest Panels Department",
+  $guest_sig = " - Steph Prader, MAGFest Guests Department",
   $admin_email = "Eli Courtwright <eli@courtwright.org>",
   $regdesk_email = "MAGFest Registration <regdesk@magfest.org>",
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
-  $developer_email = "Eli Courtwright <eli@courtwright.org>",
+  $developer_email = "Eli Courtwright <code@magfest.org>",
+  
+  $use_sanitized_development_ini = false,
 ) {
 
   if $hostname == '' {
@@ -242,11 +280,21 @@ define uber::instance
   # a "sanitized" developer-default.ini file for uber
   # this one yanks out the defaults used in the ubersystem 
   # git repo with ALL THE THINGS
-  file { "${uber_path}/plugins/uber/development-defaults.ini":
-    ensure => present,
-    mode   => 660,
-    source => 'puppet:///modules/uber/development-defaults.ini',
-    notify => Exec["uber_virtualenv_${name}"]
+  if $use_sanitized_development_ini == true {
+
+    # TODO from Dom: this section needs to die, I feel strongly that
+    # puppet should never be messing with -defaults.ini, only development.ini.
+    # If things in development-defaults.ini are causing issues, we need to
+    # rework them.  $use_sanitized_development_ini is for backwards 
+    # compatibility only and should be removed when a better solution
+    # is implemented.
+
+    file { "${uber_path}/plugins/uber/development-defaults.ini":
+      ensure => present,
+      mode   => 660,
+      source => 'puppet:///modules/uber/development-defaults.ini',
+      notify => Exec["uber_virtualenv_${name}"]
+    }
   }
 
   # seems puppet's virtualenv support is broken for python3, so roll our own
