@@ -152,6 +152,7 @@ define uber::instance
   $job_listings = "'charity = \"Charity\",'con_ops = \"Operations\" ','marketplace = \"Marketplace\" ','regdesk = \"Regdesk\" ','security = \"Security\" ','staff_support = \"Staff Support\" ','treasury = \"Treasury\" ','tech_ops = \"Tech Ops\"'",
   $shiftless_depts = 'security',
   $interest_list = "'console = \"Consoles\"', 'arcade = \"Arcade\"', 'lan = \"LAN\"', 'music = \"Music\"', 'pabels         = \"Guests/Panels\"', 'tabletop       = \"Tabletop games\"', 'marketplace    = \"Dealers\"', 'tournaments    = \"Tournaments\"', 'film_fest      = \"Film Festival\"', 'indie_showcase = \"Indie Game Showcase\"', 'larp           = \"LARP\"'",
+  $locations = "'ops_room = \"Operations\"','arcade = \"Arcade\"'",
   $dept_overrides = "'staff_support = \"Jack Boyd\"','security = \"The Dorsai Irregulars\"'",
   $regdesk_sig = " - Victoria Earl, MAGFest Registration Chair",
   $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",

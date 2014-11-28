@@ -143,8 +143,11 @@ invalid_status    = "Invalid"
 <%= item %>
 <% end -%>
 
-#[[event_location]]
-#
+[[event_location]]
+<% @locations.each do |item| -%>
+<%= item %>
+<% end -%>
+
 [[job_interest]]
 <% @job_listings.each do |item| -%>
 <%= item %>
