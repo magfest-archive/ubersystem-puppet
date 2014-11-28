@@ -143,6 +143,7 @@ define uber::instance
   $collect_interests = false,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
+  $contact_url = "http://magfest.org/contacts",
   $donation_tier = [ 
     "'No thanks' = 0",
     "'Ribbon' = 5",
