@@ -187,6 +187,19 @@ define uber::instance
     "staff_support = 'Jack Boyd'",
     "security = 'The Dorsai Irregulars'"
   ],
+  $shirt_size = [
+    "'no shirt'         = NO_SHIRT",
+    "'small'            = 1",
+    "'medium'           = 2",
+    "'large'            = 3",
+    "'x-large'          = 4",
+    "'xx-large'         = 5",
+    "'xxx-large'        = 6",
+    "'small (female)'   = 7",
+    "'medium (female)'  = 8",
+    "'large (female)'   = 9",
+    "'x-large (female)' = 10"
+  ],
   $regdesk_sig = " - Victoria Earl, MAGFest Registration Chair",
   $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",
   $marketplace_sig = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
