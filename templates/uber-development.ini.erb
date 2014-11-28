@@ -72,9 +72,9 @@ prereg_open = "<%= @prereg_open %>"
 dealer_reg_start = "<%= @dealer_reg_start %>"
 
 [badge_ranges] 
-guest_badge = <%= @guest_range %>
-staff_badge = <%= @staff_range %>
-attendee_badge = <%= @attendee_range %>
+<% @badge_types.each do |badge_type| -%>
+<%= badge_type[0] %> = <%= badge_type[1]["range_start"] %>, <%= badge_type[1]["range_end"] %>
+<% end -%>
 
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
