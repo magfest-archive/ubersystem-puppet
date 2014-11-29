@@ -372,6 +372,7 @@ define uber::instance
     ensure  => present,
     mode    => 660,
     content => template('uber/uber-development.ini.erb'),
+    notify => Uber::Python_setup["python_setup_${name}"],
   }
 
   # a "sanitized" developer-default.ini file for uber
@@ -390,6 +391,7 @@ define uber::instance
       ensure => present,
       mode   => 660,
       source => 'puppet:///modules/uber/development-defaults.ini',
+      subscribe => File["${uber_path}/plugins/uber/development.ini"],
     }
   }
 
