@@ -215,7 +215,7 @@ define uber::instance
   #$supporter_badge_type_enabled = True,
   $prereg_open,
   #$prereg_takedown,
-  #$uber_takedown,
+  $uber_takedown,
   #$epoch,
   #$eschaton,
   #$prereg_price = 45,
