@@ -430,7 +430,7 @@ define uber::instance
     db_replication_master_ip => $db_replication_master_ip,
     uber_db_util_path        => $uber_db_util_path,
     slave_ips                => $slave_ips,
-    #notify                  => Uber::Daemon["${name}_daemon"],
+    notify                  => Uber::Daemon["${name}_daemon"],
     # subscribe                => Postgresql::Server::Db["${db_name}"]
   }
 
