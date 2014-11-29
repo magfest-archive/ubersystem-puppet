@@ -59,9 +59,15 @@ stripe_public_key = "<%= @stripe_public_key %>"
 # max_badge_sales = "<%= @max_badge_sales %>"
 #
 
+donations_enabled = <%= @donations_enabled %>
+
 preassigned_badge_types = <%= @preassigned_badge_types %>
 collect_full_address = <%= @collect_full_address %>
 collect_interests = <%= @collect_interests %>
+
+show_custom_badge_input = <%= @show_custom_badge_input %>
+shirt_sales_enabled = <%= @shirt_sales_enabled %>
+show_affiliates = <%= @show_affiliates %>
 
 <% if @shiftless_depts -%>
 shiftless_depts = <%= @shiftless_depts %>
@@ -70,6 +76,7 @@ shiftless_depts = <%= @shiftless_depts %>
 [dates]
 prereg_open = "<%= @prereg_open %>"
 dealer_reg_start = "<%= @dealer_reg_start %>"
+supporter_deadline = '<%= @supporter_deadline %>'
 
 [badge_ranges] 
 <% @badge_types.each do |badge_type| -%>
