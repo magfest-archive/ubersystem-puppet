@@ -93,11 +93,11 @@ define uber::install_plugins
 define uber::python_setup
 (
   $venv_path,
+  $venv_bin,
   $uber_path,
   $debug_skip = false,
 ) {
   if $debug_skip == false {
-    $venv_bin = "${venv_path}/bin"
     $venv_paver = "${venv_bin}/paver"
 
     # TODO: don't hardcode 'python 3.4' in here, set it up in ::uber
@@ -322,6 +322,7 @@ define uber::instance
   }
 
   $venv_path = "${uber_path}/env"
+  $venv_bin = "${venv_path}/bin"
   $venv_python = "${venv_bin}/python"
 
   uber::user_group { "users and groups ${name}":
@@ -394,6 +395,7 @@ define uber::instance
 
   uber::python_setup { "python_setup_${name}":
     venv_path => $venv_path,
+    venv_bin =>  $venv_bin,
     uber_path => $uber_path,
     debug_skip => $debugONLY_dont_init_python_or_git_repos_or_plugins,
     notify  => Uber::Init_db["${name}"],
