@@ -324,7 +324,7 @@ define uber::instance
   $venv_path = "${uber_path}/env"
   $venv_python = "${venv_bin}/python"
 
-  /*uber::user_group { "users and groups ${name}":
+  uber::user_group { "users and groups ${name}":
     user   => $uber_user,
     group  => $uber_group,
     notify => Uber::Db["uber_db_${name}"]
@@ -352,7 +352,7 @@ define uber::instance
     sideboard_plugins =>  $sideboard_plugins,
     debug_skip =>         $debugONLY_dont_init_python_or_git_repos_or_plugins,
     notify =>             File["${uber_path}/development.ini"],
-  }*/
+  }
 
   # sideboard's development.ini
   # note: plugins can also have their own development.ini,
@@ -392,7 +392,7 @@ define uber::instance
     }
   }
 
-  /*uber::python_setup { "python_setup_${name}":
+  uber::python_setup { "python_setup_${name}":
     venv_path => $venv_path,
     uber_path => $uber_path,
     debug_skip => $debugONLY_dont_init_python_or_git_repos_or_plugins,
@@ -404,9 +404,8 @@ define uber::instance
     uber_path           => $uber_path,
     db_replication_mode => $db_replication_mode,
     notify  => Exec["setup_owner_$name"],
-  }*/
+  }
 
-  /*
   # setup owner
   exec { "setup_owner_$name":
     command => "/bin/chown -R ${uber_user}:${uber_group} ${uber_path}",
@@ -417,11 +416,10 @@ define uber::instance
   $mode = 'o-rwx,g-w,u+rw'
   exec { "setup_perms_$name":
     command => "/bin/chmod -R $mode ${uber_path}",
-    #notify  => Uber::Replication["${name}_replication"],
+    notify  => Uber::Replication["${name}_replication"],
     #notify  => Uber::Daemon["${name}_daemon"],
-  }*/
+  }
 
-  /*
   uber::replication { "${name}_replication":
     db_name                  => $db_name,
     db_replication_mode      => $db_replication_mode,
@@ -487,7 +485,6 @@ define uber::instance
   #  event_name => $event_name,
   #  year => $year,
   #}
-  */
 }
 
 # doesn't work right now.
