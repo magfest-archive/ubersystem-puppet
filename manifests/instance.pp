@@ -339,8 +339,10 @@ define uber::instance
     notify           => Exec["stop_daemon_${name}"]
   }
 
+  # this is not a great way to do this and is mostly hacking around the fact that I setup
+  # all the dependencies wrong.
   exec { "stop_daemon_${name}" :
-    command     => "/usr/local/bin/supervisorctl stop ${name}",
+    command     => "/usr/local/bin/supervisorctl stop ${name}_daemon",
     notify   => [ Class['uber::install'], Uber::Install_plugins["plugins_${name}"]],
   }
 
