@@ -250,6 +250,7 @@ define uber::instance
   $code_of_conduct = "http://magfest.org/codeofconduct",
   $donations_enabled = true,
   $supporter_deadline = "2014-12-26",
+  $event_timezone = "US/Eastern",
   $donation_tier = [ 
     "'No thanks' = 0",
     "'Ribbon' = 5",
