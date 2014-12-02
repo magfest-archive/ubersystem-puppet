@@ -94,6 +94,7 @@ define uber::python_setup
 (
   $venv_path,
   $venv_bin,
+  $venv_python,
   $uber_path,
   $debug_skip = false,
 ) {
@@ -401,6 +402,7 @@ define uber::instance
   uber::python_setup { "python_setup_${name}":
     venv_path => $venv_path,
     venv_bin =>  $venv_bin,
+    venv_python => $venv_python,
     uber_path => $uber_path,
     debug_skip => $debugONLY_dont_init_python_or_git_repos_or_plugins,
     notify  => Uber::Init_db["${name}"],
