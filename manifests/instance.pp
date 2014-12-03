@@ -306,7 +306,9 @@ define uber::instance
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
   $developer_email = "Eli Courtwright <code@magfest.org>",
-  
+
+  $student_discount = 0,
+
   $use_sanitized_development_ini = false,
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
 ) {
