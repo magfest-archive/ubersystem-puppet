@@ -214,9 +214,9 @@ define uber::instance
   $collect_exact_birthdate = false,
   $collect_full_address = false,
   #$supporter_badge_type_enabled = True,
-  $prereg_open,
+  $prereg_open = "2014-08-08",
   #$prereg_takedown,
-  $uber_takedown,
+  $uber_takedown = "2015-01-21",
   #$epoch,
   #$eschaton,
   #$prereg_price = 45,
@@ -228,7 +228,13 @@ define uber::instance
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $dealer_reg_start = '',
-  $badge_enums = [], # todo: put a sane default here
+  $badge_enums = {
+    "attendee_badge" => "Attendee",
+    "supporter_badge" => "Supporter",
+    "staff_badge" => "Staff",
+    "guest_badge" => "Guest",
+    "one_day_badge" => "One Day",
+  },
   $badge_types = [
     [ "guest_badge",
       {"range_start" => 2000, "range_end" => 2999 }
@@ -242,7 +248,7 @@ define uber::instance
       {"range_start" => 3000, "range_end" => 29999 }
     ],
   ],
-  $badge_prices = [],
+  $badge_prices,
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
@@ -291,7 +297,7 @@ define uber::instance
     "indie_showcase = 'Indie Game Showcase'", 
     "larp           = 'LARP'",
   ],
-  $dept_overrides = [ 
+  $dept_head_overrides = [
     "staff_support = 'Jack Boyd'",
     "security = 'The Dorsai Irregulars'"
   ],
