@@ -333,14 +333,14 @@ define uber::instance
   }
 
   uber::install_plugins { "plugins_${name}":
-    uber_path => $uber_path,
-    uber_user => $uber_user,
-    uber_group => $uber_group,
-    sideboard_repo => $sideboard_repo,
-    sideboard_branch => $sideboard_branch,
-    sideboard_plugins => $sideboard_plugins,
-    debug_skip => $debugONLY_dont_init_python_or_git_repos_or_plugins,
-    notify => File["${uber_path}/development.ini"],
+    uber_path =>          $uber_path,
+    uber_user =>          $uber_user,
+    uber_group =>         $uber_group,
+    sideboard_repo =>     $sideboard_repo,
+    sideboard_branch =>   $sideboard_branch,
+    sideboard_plugins =>  $sideboard_plugins,
+    debug_skip =>         $debugONLY_dont_init_python_or_git_repos_or_plugins,
+    notify =>             File["${uber_path}/development.ini"],
   }
 
   # sideboard's development.ini
@@ -350,7 +350,7 @@ define uber::instance
     ensure  => present,
     mode    => 660,
     content => template('uber/sb-development.ini.erb'),
-    notify => File["${uber_path}/plugins/uber/development.ini"],
+    notify  => File["${uber_path}/plugins/uber/development.ini"],
   }
 
   # uber's development.ini
@@ -360,7 +360,7 @@ define uber::instance
     ensure  => present,
     mode    => 660,
     content => template('uber/uber-development.ini.erb'),
-    notify  => Uber::Python_setup["python_setup_${name}"],
+    notify => Uber::Python_setup["python_setup_${name}"],
   }
 
   # a "sanitized" developer-default.ini file for uber
@@ -385,11 +385,11 @@ define uber::instance
 
   uber::python_setup { "python_setup_${name}":
     venv_path => $venv_path,
-    venv_bin => $venv_bin,
+    venv_bin =>  $venv_bin,
     venv_python => $venv_python,
     uber_path => $uber_path,
     debug_skip => $debugONLY_dont_init_python_or_git_repos_or_plugins,
-    notify => Uber::Init_db["${name}"],
+    notify  => Uber::Init_db["${name}"],
   }
 
   uber::init_db { "${name}":
@@ -420,7 +420,7 @@ define uber::instance
     db_replication_master_ip => $db_replication_master_ip,
     uber_db_util_path        => $uber_db_util_path,
     slave_ips                => $slave_ips,
-    notify                   => Uber::Daemon["${name}_daemon"],
+    notify                  => Uber::Daemon["${name}_daemon"],
     # subscribe                => Postgresql::Server::Db["${db_name}"]
   }
 
