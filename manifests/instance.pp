@@ -273,7 +273,7 @@ define uber::instance
     "press_ribbon = 'Camera'",
     "band_ribbon = 'Rock Star'",
   ],
-  $job_listings = [ 
+  $job_interests = [
     "charity = 'Charity'",
     "con_ops = 'Operations'",
     "marketplace = 'Marketplace'",
@@ -282,7 +282,17 @@ define uber::instance
     "staff_support = 'Staff Support'",
     "treasury = 'Treasury'",
     "tech_ops = 'Tech Ops'",
-  ] ,
+  ],
+  $job_locations = [
+    "charity = 'Charity'",
+    "con_ops = 'Operations'",
+    "marketplace = 'Marketplace'",
+    "regdesk = 'Regdesk'",
+    "security = 'Security'",
+    "staff_support = 'Staff Support'",
+    "treasury = 'Treasury'",
+    "tech_ops = 'Tech Ops'",
+  ],
   $shiftless_depts = undef,
   $interest_list = [ 
     "console        = 'Consoles'", 
