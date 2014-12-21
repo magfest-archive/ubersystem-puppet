@@ -287,9 +287,9 @@ define uber::instance
   $interest_list = [ 
     "console        = 'Consoles'", 
     "arcade         = 'Arcade'", 
-    "lan            = 'LAN'", 
+    "lan            = 'PC Gaming'",
     "music          = 'Music'", 
-    "panels         = 'Guests/Panels'", 
+    "pabels         = 'Guests/Panels'", # TODO: fix the spelling here after m13
     "tabletop       = 'Tabletop games'", 
     "marketplace    = 'Dealers'", 
     "tournaments    = 'Tournaments'", 
@@ -305,7 +305,7 @@ define uber::instance
   $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",
   $marketplace_sig = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
   $peglegs_sig = " - Tim Macneil, MAGFest Panels Department",
-  $guest_sig = " - Steph Prader, MAGFest Guests Department",
+  $guest_sig = " - Steph Prader, MAGFest Guests Coordinator",
   $admin_email = "Eli Courtwright <eli@courtwright.org>",
   $regdesk_email = "MAGFest Registration <regdesk@magfest.org>",
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
