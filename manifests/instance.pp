@@ -200,7 +200,9 @@ define uber::instance
   $event_name = 'MAGFest',
   $organization_name = 'MAGFest',
   $year = 1,
-  $show_affiliates_and_extras = false,
+  $show_custom_badge_input = true,
+  $shirt_sales_enabled = true,
+  $show_affiliates = true,
   #$group_reg_available = True,
   #$group_reg_open = True,
   $send_emails = false,
@@ -214,7 +216,7 @@ define uber::instance
   #$supporter_badge_type_enabled = True,
   $prereg_open,
   #$prereg_takedown,
-  #$uber_takedown,
+  $uber_takedown,
   #$epoch,
   #$eschaton,
   #$prereg_price = 45,
@@ -226,15 +228,30 @@ define uber::instance
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $dealer_reg_start = '',
-  $guest_range = '2000, 2999',
-  $staff_range = '1, 999',
-  $attendee_range = '3000, 29999',
+  $badge_enums = [], # todo: put a sane default here
+  $badge_types = [
+    [ "guest_badge",
+      {"range_start" => 2000, "range_end" => 2999 }
+
+    ],
+    [ "staff_badge",
+      {"range_start" => 1, "range_end" => 999 }
+    ],
+    [
+      "attendee_badge",
+      {"range_start" => 3000, "range_end" => 29999 }
+    ],
+  ],
+  $badge_prices = [],
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
   $collect_interests = false,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
+  $donations_enabled = true,
+  $supporter_deadline = "2014-12-26",
+  $event_timezone = "US/Eastern",
   $donation_tier = [ 
     "'No thanks' = 0",
     "'Ribbon' = 5",
@@ -289,6 +306,8 @@ define uber::instance
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
   $developer_email = "Eli Courtwright <code@magfest.org>",
+
+  $student_discount = 0,
   
   $use_sanitized_development_ini = false,
 
