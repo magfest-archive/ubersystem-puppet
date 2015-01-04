@@ -252,7 +252,7 @@ define uber::instance
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
-  $collect_interests = false,
+  $collect_interests = true,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
   $donations_enabled = true,
