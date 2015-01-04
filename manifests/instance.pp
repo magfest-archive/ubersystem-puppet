@@ -312,10 +312,10 @@ define uber::instance
     "security = 'The Dorsai Irregulars'"
   ],
   $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
-  $stops_sig = " - Jack Boyd,\nStaffing Coordinator\nMagfest\nhttp://magfest.org",
+  $stops_sig = "Jack Boyd,\nStaffing Coordinator\nMAGFest\nhttp://magfest.org",
   $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",
   $peglegs_sig = " - Tim Macneil,\nMAGFest Panels Department",
-  $guest_sig = " - Steph Prader, MAGFest Guests Coordinator",
+  $guest_sig = " - Steph Prader,\nMAGFest Guest Coordinator",
   $admin_email = "Eli Courtwright <eli@courtwright.org>",
   $regdesk_email = "MAGFest Registration <regdesk@magfest.org>",
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
