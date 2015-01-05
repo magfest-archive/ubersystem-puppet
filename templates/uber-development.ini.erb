@@ -11,6 +11,7 @@ event_name = "<%= @event_name %>"
 organization_name = "<%= @organization_name %>"
 groups_enabled = <%= @groups_enabled %>
 shift_custom_badges = <%= @shift_custom_badges %>
+volunteer_form_visible = <%= @volunteer_form_visible %>
 
 consent_form_url = "<%= @consent_form_url %>"
 code_of_conduct_url = "<%= @code_of_conduct %>"
@@ -73,6 +74,7 @@ shiftless_depts = <%= @shiftless_depts %>
 [dates]
 prereg_open = "<%= @prereg_open %>"
 dealer_reg_start = "<%= @dealer_reg_start %>"
+dealer_reg_public = "<%= @dealer_reg_public %>"
 dealer_reg_deadline = "<%= @dealer_reg_deadline %>"
 dealer_reg_shutdown = "<%= @dealer_reg_shutdown %>"
 dealer_payment_due  = "<%= @dealer_payment_due %>"
@@ -92,6 +94,7 @@ one_day_badge   = <%= @oneday_range %>
 
 [badge_prices]
 initial_attendee = <%= @initial_price %>
+group_discount = <%= @group_discount %>
 [[single_day]]
 Friday = <%= @friday_price %>
 Saturday = <%= @saturday_price %>
@@ -121,12 +124,12 @@ season_level    = <%= @season_level %>
 [enums]
 
 [[badge]]
-attendee_badge  = "Attendee"
-supporter_badge = "Supporter"
-staff_badge     = "Staff"
-guest_badge     = "Guest"
-one_day_badge   = "One Day"
-bod_badge		= "Board"
+attendee_badge   = "Attending"
+supporter_badge  = "Supporter"
+staff_badge      = "Staff"
+guest_badge      = "Guest"
+one_day_badge    = "One Day"
+bod_badge        = "Board"
 
 [[badge_status]]
 new_status        = "New"
@@ -137,6 +140,11 @@ invalid_status    = "Invalid"
 
 [[ribbon]]
 <% @ribbon_types.each do |item| -%>
+<%= item %>
+<% end -%>
+
+[[table_extra]]
+<% @table_extras.each do |item| -%>
 <%= item %>
 <% end -%>
 
@@ -165,3 +173,7 @@ invalid_status    = "Invalid"
 <%= item %>
 <% end -%>
 
+[[tracking]]
+<% @tracking.each do |item| -%>
+<%= item %>
+<% end -%>

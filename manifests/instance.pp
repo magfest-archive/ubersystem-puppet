@@ -102,6 +102,7 @@ define uber::instance
   $show_affiliates_and_extras = false,
   #$group_reg_available = True,
   #$group_reg_open = True,
+  $volunteer_form_visible = False,
   $send_emails = false,
   $aws_access_key = '',
   $aws_secret_key = '',
@@ -126,6 +127,7 @@ define uber::instance
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $dealer_reg_start    = "2014-08-08",
+  $dealer_reg_public   = $dealer_reg_start,
   $dealer_reg_deadline = "2014-08-11",
   $dealer_reg_shutdown = "2014-08-31",
   $dealer_payment_due  = "2014-11-15",
@@ -158,6 +160,10 @@ define uber::instance
   $ribbon_types = [ 
     "press_ribbon = 'Camera'",
     "band_ribbon = 'Rock Star'",
+  ],
+  $table_extras = [
+    "power_table = 'Powered Table'",
+    "wall_table = 'Wall/Endcap Table'",
   ],
   $job_listings = [ 
     "charity = 'Charity'",
@@ -221,6 +227,7 @@ define uber::instance
   $developer_email = "Eli Courtwright <eli@courtwright.org>",
   $guest_email = "MAGFest Gusets <guests@magfest.org>",
   $guest_sig = " - MAGFest Guest Liason",
+  $group_discount = 10,
   $initial_price = 50,
   $friday_price = 30,
   $saturday_price = 30,
@@ -233,6 +240,7 @@ define uber::instance
   $late_prereg = 60,
   $onsite_date = "2015-07-14",
   $onsite_price = 30,
+  $tracking = "'created = \"Created\"', 'updated = \"Updated\"', 'deleted = \"Deleted\"', 'unpaid_prereg = \"Unpaid Preregistration\"', 'edited_prereg = \"Edited Unpaid Preregistration\"', 'auto_badge_shift = \"Automatic Badge Number Shift\"'",
   $use_sanitized_development_ini = false,
 ) {
 
