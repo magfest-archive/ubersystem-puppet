@@ -215,7 +215,7 @@ define uber::instance
   $collect_full_address = false,
   #$supporter_badge_type_enabled = True,
   $prereg_open,
-  #$prereg_takedown,
+  $prereg_takedown,
   $uber_takedown,
   $epoch,
   $eschaton,
