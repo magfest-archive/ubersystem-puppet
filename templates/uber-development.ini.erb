@@ -14,6 +14,8 @@ groups_enabled = <%= @groups_enabled %>
 consent_form_url = "<%= @consent_form_url %>"
 code_of_conduct_url = "<%= @code_of_conduct %>"
 
+event_timezone = "<%= @event_timezone %>"
+
 admin_email = "<%= @admin_email %>"
 regdesk_email = "<%= @regdesk_email %>"
 staff_email = "<%= @staff_email %>"
@@ -55,13 +57,20 @@ stripe_public_key = "<%= @stripe_public_key %>"
 #       eventually, remove all the defaults from magfest/ubersystem repo
 #       and explictly code them in here.
 
-# at_the_con = "<%= @at_the_con %>"
+at_the_con = "<%= @at_the_con %>"
 # max_badge_sales = "<%= @max_badge_sales %>"
 #
+
+donations_enabled = <%= @donations_enabled %>
 
 preassigned_badge_types = <%= @preassigned_badge_types %>
 collect_full_address = <%= @collect_full_address %>
 collect_interests = <%= @collect_interests %>
+
+show_custom_badge_input = <%= @show_custom_badge_input %>
+shirt_sales_enabled = <%= @shirt_sales_enabled %>
+show_affiliates = <%= @show_affiliates %>
+student_discount = <%= @student_discount %>
 
 <% if @shiftless_depts -%>
 shiftless_depts = <%= @shiftless_depts %>
@@ -70,11 +79,23 @@ shiftless_depts = <%= @shiftless_depts %>
 [dates]
 prereg_open = "<%= @prereg_open %>"
 dealer_reg_start = "<%= @dealer_reg_start %>"
+supporter_deadline = '<%= @supporter_deadline %>'
+uber_takedown = '<%= @uber_takedown %>'
 
 [badge_ranges] 
-guest_badge = <%= @guest_range %>
-staff_badge = <%= @staff_range %>
-attendee_badge = <%= @attendee_range %>
+<% @badge_types.each do |badge_type| -%>
+<%= badge_type[0] %> = <%= badge_type[1]["range_start"] %>, <%= badge_type[1]["range_end"] %>
+<% end -%>
+
+
+[badge_prices]
+<% @badge_prices.each do |badge_pricing| -%>
+[[<%= badge_pricing[0] %>]]
+<% badge_pricing[1].each do |date| -%>
+<%= date.keys[0] %> = <%= date.values[0] %>
+<% end -%>
+
+<% end -%>
 
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
@@ -87,20 +108,25 @@ season_level    = <%= @season_level %>
 <% end -%>
 
 [enums]
+[[badge]]
+<% @badge_enums.each do |badge_enum| -%>
+<%= badge_enum[0] %> = "<%= badge_enum[1] %>"
+<% end -%>
+
 [[ribbon]]
 <% @ribbon_types.each do |item| -%>
 <%= item %>
 <% end -%>
 
 [[job_location]]
-<% @job_listings.each do |item| -%>
+<% @job_locations.each do |item| -%>
 <%= item %>
 <% end -%>
 
 #[[event_location]]
 #
 [[job_interest]]
-<% @job_listings.each do |item| -%>
+<% @job_interests.each do |item| -%>
 <%= item %>
 <% end -%>
 
@@ -109,7 +135,7 @@ season_level    = <%= @season_level %>
 <%= item %>
 <% end -%>
 
-[[dept_head_override]]
-<% @dept_overrides.each do |item| -%>
+[[dept_head_overrides]]
+<% @dept_head_overrides.each do |item| -%>
 <%= item %>
 <% end -%>
