@@ -328,7 +328,15 @@ define uber::instance
   $panels_email = "MAGFest Panels <panels@magfest.org>",
   $developer_email = "Eli Courtwright <code@magfest.org>",
 
+  # rockage-specific stuff
   $student_discount = 0,
+
+  # magstock-specific stuff
+  $noise_levels = undef,
+  $shirt_colors = undef,
+  $site_types = undef,
+  $camping_types = undef,
+  $coming_as_types = undef,
 
   $use_sanitized_development_ini = false,
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production

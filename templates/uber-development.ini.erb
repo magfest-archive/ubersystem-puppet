@@ -150,3 +150,60 @@ season_level    = <%= @season_level %>
 <% @dept_head_overrides.each do |item| -%>
 <%= item %>
 <% end -%>
+
+
+<% if @noise_levels -%>
+
+# magstock-specific
+[[noise_level]]
+<% @noise_levels.each do |noise_level| -%>
+<%= noise_level[0] %> = "<%= noise_level[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+
+<% if @shirt_colors -%>
+
+# magstock-specific
+[[shirt_color]]
+<% @shirt_colors.each do |shirt_color| -%>
+<%= shirt_color[0] %> = "<%= shirt_color[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+
+<% if @site_types -%>
+
+# magstock-specific
+[[site_type]]
+<% @site_types.each do |site_type| -%>
+<%= site_type[0] %> = "<%= site_type[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+<% if @camping_types -%>
+
+# magstock-specific
+[[camping_type]]
+<% @camping_types.each do |camping_type| -%>
+<%= camping_type[0] %> = "<%= camping_type[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+<% if @coming_as_types -%>
+
+# magstock-specific
+[[coming_as]]
+<% @coming_as_types.each do |coming_as_type| -%>
+<%= coming_as_type[0] %> = "<%= coming_as_type[1] %>"
+<% end -%>
+
+<% end -%>
