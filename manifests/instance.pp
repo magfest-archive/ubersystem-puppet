@@ -52,6 +52,107 @@ define uber::plugin_repo
   }
 }
 
+define uber::install_plugins
+(
+  $uber_path,
+  $uber_user,
+  $uber_group,
+  $sideboard_repo,
+  $sideboard_branch,
+  $sideboard_plugins,
+  $debug_skip = false,
+) {
+  if $debug_skip == false {
+    # sideboard
+    vcsrepo { $uber_path:
+      ensure   => latest,
+      owner    => $uber_user,
+      group    => $uber_group,
+      provider => git,
+      source   => $sideboard_repo,
+      revision => $sideboard_branch,
+      notify   => File["${uber_path}/plugins/"],
+    }
+
+    file { [ "${uber_path}/plugins/" ]:
+      ensure => "directory",
+      notify => Uber::Plugins["${name}_plugins"],
+    }
+
+    # TODO eventually need to add a development.ini for each plugin
+
+    uber::plugins { "${name}_plugins":
+      plugins     => $sideboard_plugins,
+      plugins_dir => "${uber_path}/plugins",
+      user        => $uber_user,
+      group       => $uber_group,
+    }
+  }
+}
+
+define uber::python_setup
+(
+  $venv_path,
+  $venv_bin,
+  $venv_python,
+  $uber_path,
+  $debug_skip = false,
+) {
+  if $debug_skip == false {
+    $venv_paver = "${venv_bin}/paver"
+
+    # TODO: don't hardcode 'python 3.4' in here, set it up in ::uber
+    $venv_site_pkgs_path = "${venv_path}/lib/python3.4/site-packages"
+
+    # seems puppet's virtualenv support is broken for python3, so roll our own
+    exec { "uber_virtualenv_${name}":
+      command => "${uber::python_cmd} -m venv ${venv_path} --without-pip --copies",
+      cwd     => $uber_path,
+      path    => '/usr/bin',
+      creates => "${venv_path}",
+      notify  => Exec[ "setup_perms_venv_$name" ],
+    }
+
+    # setup permissions for the env/bin directory (on vagrant, these are affected by weird folder sharing settings)
+    # this solves the problem of env/bin/python not being set as executable
+    $venv_mode = 'a+x'
+    exec { "setup_perms_venv_$name":
+      command => "/bin/chmod -R ${venv_mode} ${venv_bin}",
+      timeout => 3600, # this can take a while on vagrant, set it high
+      notify  => File["${uber_path}/distribute_setup.py"],
+    }
+
+    file { "${uber_path}/distribute_setup.py":
+      ensure => present,
+      source => "${uber_path}/plugins/uber/distribute_setup.py",
+      notify  => Exec["uber_distribute_setup_${name}"],
+    }
+
+    exec { "uber_distribute_setup_${name}" :
+      command => "${venv_python} distribute_setup.py",
+      cwd     => "${uber_path}",
+      creates => "${venv_site_pkgs_path}/setuptools.pth",
+      notify  => Exec["uber_setup_${name}"],
+      timeout => 3600, # this can take a while on vagrant, set it high
+    }
+
+    exec { "uber_setup_${name}" :
+      command => "${venv_python} setup.py develop",
+      cwd     => "${uber_path}",
+      creates => "${venv_site_pkgs_path}/sideboard.egg-link",
+      notify  => Exec["uber_paver_${name}"],
+      timeout => 3600, # this can take a while on vagrant, set it high
+    }
+
+    exec { "uber_paver_${name}":
+      command => "${venv_paver} install_deps",
+      cwd     => "${uber_path}",
+      # creates => "TODO",
+      timeout => 3600, # this can take a while on vagrant, set it high
+    }
+  }
+}
+
 define uber::instance
 (
   $uber_path = '/usr/local/uber',
@@ -99,7 +200,9 @@ define uber::instance
   $event_name = 'MAGFest',
   $organization_name = 'MAGFest',
   $year = 1,
-  $show_affiliates_and_extras = false,
+  $show_custom_badge_input = true,
+  $shirt_sales_enabled = true,
+  $show_affiliates = true,
   #$group_reg_available = True,
   #$group_reg_open = True,
   $send_emails = false,
@@ -111,9 +214,9 @@ define uber::instance
   $collect_exact_birthdate = false,
   $collect_full_address = false,
   #$supporter_badge_type_enabled = True,
-  $prereg_open,
+  $prereg_open = "2014-08-08",
   #$prereg_takedown,
-  #$uber_takedown,
+  $uber_takedown = "2015-01-21",
   #$epoch,
   #$eschaton,
   #$prereg_price = 45,
@@ -125,16 +228,37 @@ define uber::instance
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $dealer_reg_start = '',
-  $guest_range = '2000, 2999',
-  $staff_range = '1, 999',
-  $attendee_range = '3000, 29999',
+  $badge_enums = {
+    "attendee_badge" => "Attendee",
+    "supporter_badge" => "Supporter",
+    "staff_badge" => "Staff",
+    "guest_badge" => "Guest",
+    "one_day_badge" => "One Day",
+  },
+  $badge_types = [
+    [ "guest_badge",
+      {"range_start" => 2000, "range_end" => 2999 }
+
+    ],
+    [ "staff_badge",
+      {"range_start" => 1, "range_end" => 999 }
+    ],
+    [
+      "attendee_badge",
+      {"range_start" => 3000, "range_end" => 29999 }
+    ],
+  ],
+  $badge_prices,
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
-  $collect_interests = false,
+  $collect_interests = true,
   $volunteer_form_visible = false,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
+  $donations_enabled = true,
+  $supporter_deadline = "2014-12-26",
+  $event_timezone = "US/Eastern",
   $donation_tier = [ 
     "'No thanks' = 0",
     "'Ribbon' = 5",
@@ -150,7 +274,7 @@ define uber::instance
     "press_ribbon = 'Camera'",
     "band_ribbon = 'Rock Star'",
   ],
-  $job_listings = [ 
+  $job_interests = [
     "charity = 'Charity'",
     "con_ops = 'Operations'",
     "marketplace = 'Marketplace'",
@@ -159,14 +283,24 @@ define uber::instance
     "staff_support = 'Staff Support'",
     "treasury = 'Treasury'",
     "tech_ops = 'Tech Ops'",
-  ] ,
+  ],
+  $job_locations = [
+    "charity = 'Charity'",
+    "con_ops = 'Operations'",
+    "marketplace = 'Marketplace'",
+    "regdesk = 'Regdesk'",
+    "security = 'Security'",
+    "staff_support = 'Staff Support'",
+    "treasury = 'Treasury'",
+    "tech_ops = 'Tech Ops'",
+  ],
   $shiftless_depts = undef,
   $interest_list = [ 
     "console        = 'Consoles'", 
     "arcade         = 'Arcade'", 
-    "lan            = 'LAN'", 
+    "lan            = 'PC Gaming'",
     "music          = 'Music'", 
-    "panels         = 'Guests/Panels'", 
+    "pabels         = 'Guests/Panels'", # TODO: fix the spelling here after m13
     "tabletop       = 'Tabletop games'", 
     "marketplace    = 'Dealers'", 
     "tournaments    = 'Tournaments'", 
@@ -174,23 +308,27 @@ define uber::instance
     "indie_showcase = 'Indie Game Showcase'", 
     "larp           = 'LARP'",
   ],
-  $dept_overrides = [ 
+  $dept_head_overrides = [
     "staff_support = 'Jack Boyd'",
     "security = 'The Dorsai Irregulars'"
   ],
-  $regdesk_sig = " - Victoria Earl, MAGFest Registration Chair",
-  $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",
-  $marketplace_sig = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
-  $peglegs_sig = " - Tim Macneil, MAGFest Panels Department",
-  $guest_sig = " - Steph Prader, MAGFest Guests Department",
+  $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
+  $stops_sig = "Jack Boyd\nStaffing Coordinator\nMAGFest\nhttp://magfest.org",
+  $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",
+  $peglegs_sig = " - Tim Macneil,\nMAGFest Panels Department",
+  $guest_sig = " - Steph Prader,\nMAGFest Guest Coordinator",
   $admin_email = "Eli Courtwright <eli@courtwright.org>",
   $regdesk_email = "MAGFest Registration <regdesk@magfest.org>",
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
   $developer_email = "Eli Courtwright <code@magfest.org>",
+
+  $student_discount = 0,
   
   $use_sanitized_development_ini = false,
+
+  $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
 ) {
 
   if $hostname == '' {
@@ -208,10 +346,6 @@ define uber::instance
   $venv_path = "${uber_path}/env"
   $venv_bin = "${venv_path}/bin"
   $venv_python = "${venv_bin}/python"
-  $venv_paver = "${venv_bin}/paver"
-
-  # TODO: don't hardcode 'python 3.4' in here, set it up in ::uber
-  $venv_site_pkgs_path = "${venv_path}/lib/python3.4/site-packages"
 
   uber::user_group { "users and groups ${name}":
     user   => $uber_user,
@@ -227,35 +361,22 @@ define uber::instance
     notify           => Exec["stop_daemon_${name}"]
   }
 
+  # this is not a great way to do this and is mostly hacking around the fact that I setup
+  # all the dependencies wrong.
   exec { "stop_daemon_${name}" :
-    command     => "/usr/local/bin/supervisorctl stop ${name}",
-    notify   => [ Class['uber::install'], Vcsrepo[$uber_path] ]
+    command     => "/usr/local/bin/supervisorctl stop ${name}_daemon",
+    notify   => [ Class['uber::install'], Uber::Install_plugins["plugins_${name}"]],
   }
 
-  # sideboard
-  vcsrepo { $uber_path:
-    ensure   => latest,
-    owner    => $uber_user,
-    group    => $uber_group,
-    provider => git,
-    source   => $sideboard_repo,
-    revision => $sideboard_branch,
-    notify  => File["${uber_path}/plugins/"],
-  }
-
-  file { [ "${uber_path}/plugins/" ]:
-    ensure => "directory",
-    notify => Uber::Plugins["${name}_plugins"],
-  }
-
-  # TODO eventually need to add a development.ini for each plugin
-
-  uber::plugins { "${name}_plugins":
-    plugins     => $sideboard_plugins,
-    plugins_dir => "${uber_path}/plugins",
-    user        => $uber_user,
-    group       => $uber_group,
-    notify      => File["${uber_path}/development.ini"],
+  uber::install_plugins { "plugins_${name}":
+    uber_path =>          $uber_path,
+    uber_user =>          $uber_user,
+    uber_group =>         $uber_group,
+    sideboard_repo =>     $sideboard_repo,
+    sideboard_branch =>   $sideboard_branch,
+    sideboard_plugins =>  $sideboard_plugins,
+    debug_skip =>         $debugONLY_dont_init_python_or_git_repos_or_plugins,
+    notify =>             File["${uber_path}/development.ini"],
   }
 
   # sideboard's development.ini
@@ -275,7 +396,7 @@ define uber::instance
     ensure  => present,
     mode    => 660,
     content => template('uber/uber-development.ini.erb'),
-    notify  => Exec["uber_virtualenv_${name}"]
+    notify => Uber::Python_setup["python_setup_${name}"],
   }
 
   # a "sanitized" developer-default.ini file for uber
@@ -294,56 +415,17 @@ define uber::instance
       ensure => present,
       mode   => 660,
       source => 'puppet:///modules/uber/development-defaults.ini',
-      notify => Exec["uber_virtualenv_${name}"]
+      subscribe => File["${uber_path}/plugins/uber/development.ini"],
     }
   }
 
-  # seems puppet's virtualenv support is broken for python3, so roll our own
-  exec { "uber_virtualenv_${name}":
-    command => "${uber::python_cmd} -m venv ${venv_path} --without-pip --copies",
-    cwd     => $uber_path,
-    path    => '/usr/bin',
-    creates => "${venv_path}",
-    notify  => Exec[ "setup_perms_venv_$name" ],
-  }
-
-  # setup permissions for the env/bin directory (on vagrant, these are affected by weird folder sharing settings)
-  # this solves the problem of env/bin/python not being set as executable
-  $venv_mode = 'a+x'
-  exec { "setup_perms_venv_$name":
-    command => "/bin/chmod -R ${venv_mode} ${venv_bin}",
-    notify  => File["${uber_path}/distribute_setup.py"],
-    timeout => 3600, # this can take a while on vagrant, set it high
-  }
-
-  file { "${uber_path}/distribute_setup.py":
-    ensure => present,
-    source => "${uber_path}/plugins/uber/distribute_setup.py",
-    notify  => Exec["uber_distribute_setup_${name}"],
-  }
-
-  exec { "uber_distribute_setup_${name}" :
-    command => "${venv_python} distribute_setup.py",
-    cwd     => "${uber_path}",
-    creates => "${venv_site_pkgs_path}/setuptools.pth",
-    notify  => Exec["uber_setup_${name}"],
-    timeout => 3600, # this can take a while on vagrant, set it high
-  }
-
-  exec { "uber_setup_${name}" :
-    command => "${venv_python} setup.py develop",
-    cwd     => "${uber_path}",
-    creates => "${venv_site_pkgs_path}/sideboard.egg-link",
-    notify  => Exec["uber_paver_${name}"],
-    timeout => 3600, # this can take a while on vagrant, set it high
-  }
-
-  exec { "uber_paver_${name}":
-    command => "${venv_paver} install_deps",
-    cwd     => "${uber_path}",
-    # creates => "TODO",
+  uber::python_setup { "python_setup_${name}":
+    venv_path => $venv_path,
+    venv_bin =>  $venv_bin,
+    venv_python => $venv_python,
+    uber_path => $uber_path,
+    debug_skip => $debugONLY_dont_init_python_or_git_repos_or_plugins,
     notify  => Uber::Init_db["${name}"],
-    timeout => 3600, # this can take a while on vagrant, set it high
   }
 
   uber::init_db { "${name}":
@@ -363,8 +445,7 @@ define uber::instance
   $mode = 'o-rwx,g-w,u+rw'
   exec { "setup_perms_$name":
     command => "/bin/chmod -R $mode ${uber_path}",
-    #notify  => Uber::Replication["${name}_replication"],
-    notify  => Uber::Daemon["${name}_daemon"],
+    notify  => Uber::Replication["${name}_replication"],
   }
 
   uber::replication { "${name}_replication":
@@ -375,7 +456,7 @@ define uber::instance
     db_replication_master_ip => $db_replication_master_ip,
     uber_db_util_path        => $uber_db_util_path,
     slave_ips                => $slave_ips,
-    #notify                  => Uber::Daemon["${name}_daemon"],
+    notify                  => Uber::Daemon["${name}_daemon"],
     # subscribe                => Postgresql::Server::Db["${db_name}"]
   }
 
