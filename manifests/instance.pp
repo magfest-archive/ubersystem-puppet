@@ -228,7 +228,13 @@ define uber::instance
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $dealer_reg_start = '',
-  $badge_enums = [], # todo: put a sane default here
+  $badge_enums = {
+    "attendee_badge" => "Attendee",
+    "supporter_badge" => "Supporter",
+    "staff_badge" => "Staff",
+    "guest_badge" => "Guest",
+    "one_day_badge" => "One Day",
+  },
   $badge_types = [
     [ "guest_badge",
       {"range_start" => 2000, "range_end" => 2999 }
@@ -242,11 +248,12 @@ define uber::instance
       {"range_start" => 3000, "range_end" => 29999 }
     ],
   ],
-  $badge_prices = [],
+  $badge_prices,
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
-  $collect_interests = false,
+  $collect_interests = true,
+  $volunteer_form_visible = false,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
   $donations_enabled = true,
@@ -267,7 +274,7 @@ define uber::instance
     "press_ribbon = 'Camera'",
     "band_ribbon = 'Rock Star'",
   ],
-  $job_listings = [ 
+  $job_interests = [
     "charity = 'Charity'",
     "con_ops = 'Operations'",
     "marketplace = 'Marketplace'",
@@ -276,14 +283,24 @@ define uber::instance
     "staff_support = 'Staff Support'",
     "treasury = 'Treasury'",
     "tech_ops = 'Tech Ops'",
-  ] ,
+  ],
+  $job_locations = [
+    "charity = 'Charity'",
+    "con_ops = 'Operations'",
+    "marketplace = 'Marketplace'",
+    "regdesk = 'Regdesk'",
+    "security = 'Security'",
+    "staff_support = 'Staff Support'",
+    "treasury = 'Treasury'",
+    "tech_ops = 'Tech Ops'",
+  ],
   $shiftless_depts = undef,
   $interest_list = [ 
     "console        = 'Consoles'", 
     "arcade         = 'Arcade'", 
-    "lan            = 'LAN'", 
+    "lan            = 'PC Gaming'",
     "music          = 'Music'", 
-    "panels         = 'Guests/Panels'", 
+    "pabels         = 'Guests/Panels'", # TODO: fix the spelling here after m13
     "tabletop       = 'Tabletop games'", 
     "marketplace    = 'Dealers'", 
     "tournaments    = 'Tournaments'", 
@@ -291,15 +308,15 @@ define uber::instance
     "indie_showcase = 'Indie Game Showcase'", 
     "larp           = 'LARP'",
   ],
-  $dept_overrides = [ 
+  $dept_head_overrides = [
     "staff_support = 'Jack Boyd'",
     "security = 'The Dorsai Irregulars'"
   ],
-  $regdesk_sig = " - Victoria Earl, MAGFest Registration Chair",
-  $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",
-  $marketplace_sig = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
-  $peglegs_sig = " - Tim Macneil, MAGFest Panels Department",
-  $guest_sig = " - Steph Prader, MAGFest Guests Department",
+  $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
+  $stops_sig = "Jack Boyd\nStaffing Coordinator\nMAGFest\nhttp://magfest.org",
+  $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",
+  $peglegs_sig = " - Tim Macneil,\nMAGFest Panels Department",
+  $guest_sig = " - Steph Prader,\nMAGFest Guest Coordinator",
   $admin_email = "Eli Courtwright <eli@courtwright.org>",
   $regdesk_email = "MAGFest Registration <regdesk@magfest.org>",
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
@@ -428,7 +445,6 @@ define uber::instance
   exec { "setup_perms_$name":
     command => "/bin/chmod -R $mode ${uber_path}",
     notify  => Uber::Replication["${name}_replication"],
-    #notify  => Uber::Daemon["${name}_daemon"],
   }
 
   uber::replication { "${name}_replication":

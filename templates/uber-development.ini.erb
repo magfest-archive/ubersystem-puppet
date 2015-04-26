@@ -66,6 +66,7 @@ donations_enabled = <%= @donations_enabled %>
 preassigned_badge_types = <%= @preassigned_badge_types %>
 collect_full_address = <%= @collect_full_address %>
 collect_interests = <%= @collect_interests %>
+volunteer_form_visible = <%= @volunteer_form_visible %>
 
 show_custom_badge_input = <%= @show_custom_badge_input %>
 shirt_sales_enabled = <%= @shirt_sales_enabled %>
@@ -123,14 +124,14 @@ season_level    = <%= @season_level %>
 <% end -%>
 
 [[job_location]]
-<% @job_listings.each do |item| -%>
+<% @job_locations.each do |item| -%>
 <%= item %>
 <% end -%>
 
 #[[event_location]]
 #
 [[job_interest]]
-<% @job_listings.each do |item| -%>
+<% @job_interests.each do |item| -%>
 <%= item %>
 <% end -%>
 
@@ -139,7 +140,7 @@ season_level    = <%= @season_level %>
 <%= item %>
 <% end -%>
 
-[[dept_head_override]]
-<% @dept_overrides.each do |item| -%>
+[[dept_head_overrides]]
+<% @dept_head_overrides.each do |item| -%>
 <%= item %>
 <% end -%>
