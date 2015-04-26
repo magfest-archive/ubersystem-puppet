@@ -258,6 +258,9 @@ define uber::instance
   $code_of_conduct = "http://magfest.org/codeofconduct",
   $donations_enabled = true,
   $supporter_deadline = "2014-12-26",
+  $placeholder_deadline = '2015-06-16',
+  $shirt_deadline = '',
+  $initial_attendee = 50,
   $event_timezone = "US/Eastern",
   $donation_tier = [ 
     "'No thanks' = 0",
