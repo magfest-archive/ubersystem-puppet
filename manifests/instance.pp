@@ -102,6 +102,7 @@ define uber::instance
   $show_affiliates_and_extras = false,
   #$group_reg_available = True,
   #$group_reg_open = True,
+  $volunteer_form_visible = False,
   $send_emails = false,
   $aws_access_key = '',
   $aws_secret_key = '',
@@ -114,20 +115,30 @@ define uber::instance
   $prereg_open,
   #$prereg_takedown,
   #$uber_takedown,
-  #$epoch,
-  #$eschaton,
+  $epoch = "2015-07-09 08",
+  $eschaton = "2015-07-12 18",
   #$prereg_price = 45,
   #$at_door_price = 60,
-  $groups_enabled = true,
-  $at_the_con = false,
+  $groups_enabled = True,
+  $shift_custom_badges = False,
+  $at_the_con = False,
   $max_badge_sales = 9999999,
   $hide_schedule = true,
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
-  $dealer_reg_start = '',
+  $dealer_reg_start    = "2014-08-08",
+  $dealer_reg_public   = $dealer_reg_start,
+  $dealer_reg_deadline = "2014-08-11",
+  $dealer_reg_shutdown = "2014-08-31",
+  $dealer_payment_due  = "2014-11-15",
+  $supporter_deadline = "2014-12-26",
+  $printed_badge_deadline = "2015-01-04",
+  $bod_range = '',
   $guest_range = '2000, 2999',
   $staff_range = '1, 999',
   $attendee_range = '3000, 29999',
+  $supporter_range = '30000, 30999',
+  $oneday_range = '31000, 40000',
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
@@ -135,6 +146,7 @@ define uber::instance
   $volunteer_form_visible = false,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
+  $contact_url = "http://magfest.org/contacts",
   $donation_tier = [ 
     "'No thanks' = 0",
     "'Ribbon' = 5",
@@ -149,6 +161,10 @@ define uber::instance
   $ribbon_types = [ 
     "press_ribbon = 'Camera'",
     "band_ribbon = 'Rock Star'",
+  ],
+  $table_extras = [
+    "power_table = 'Powered Table'",
+    "wall_table = 'Wall/Endcap Table'",
   ],
   $job_listings = [ 
     "charity = 'Charity'",
@@ -178,6 +194,27 @@ define uber::instance
     "staff_support = 'Jack Boyd'",
     "security = 'The Dorsai Irregulars'"
   ],
+  $shirt_size = [
+    "'no shirt'         = NO_SHIRT",
+    "'small'            = 1",
+    "'medium'           = 2",
+    "'large'            = 3",
+    "'x-large'          = 4",
+    "'xx-large'         = 5",
+    "'xxx-large'        = 6",
+    "'small (female)'   = 7",
+    "'medium (female)'  = 8",
+    "'large (female)'   = 9",
+    "'x-large (female)' = 10"
+  ],
+  $locations = [
+    'panels_1 = "Panels 1"',
+    'panels_2 = "Panels 2"',
+    'panels_3 = "Panels 3"',
+    'panels_4 = "Panels 4"',
+    'panels_5 = "MAGES 1"',
+    'panels_6 = "MAGES 2"'
+  ],
   $regdesk_sig = " - Victoria Earl, MAGFest Registration Chair",
   $stops_sig = " - Jack Boyd, MAGFest Staffing Coordinator",
   $marketplace_sig = " - Danielle Pomfrey, MAGFest Marketplace Coordinator",
@@ -188,8 +225,23 @@ define uber::instance
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
-  $developer_email = "Eli Courtwright <code@magfest.org>",
-  
+  $developer_email = "Eli Courtwright <eli@courtwright.org>",
+  $guest_email = "MAGFest Gusets <guests@magfest.org>",
+  $guest_sig = " - MAGFest Guest Liason",
+  $group_discount = 10,
+  $initial_price = 50,
+  $friday_price = 30,
+  $saturday_price = 30,
+  $sunday_price = 30,
+  $prereg_open = "2014-01-01",
+  $launch_price = 50,
+  $prereg_increase = "2015-01-02",
+  $prereg_price_increase = 55,
+  $late_prereg_date = "2015-07-08",
+  $late_prereg = 60,
+  $onsite_date = "2015-07-14",
+  $onsite_price = 30,
+  $tracking = "'created = \"Created\"', 'updated = \"Updated\"', 'deleted = \"Deleted\"', 'unpaid_prereg = \"Unpaid Preregistration\"', 'edited_prereg = \"Edited Unpaid Preregistration\"', 'auto_badge_shift = \"Automatic Badge Number Shift\"'",
   $use_sanitized_development_ini = false,
 ) {
 
@@ -557,6 +609,8 @@ define uber::firewall (
   $ssl_port,
   $http_port = '80',
 ) {
+
+# this should be in it's own module def
   include ufw
 
   if $open_firewall_port {
@@ -571,6 +625,10 @@ define uber::firewall (
 
   ufw::allow { "${title}-http":
     port => $http_port,
+  }
+
+  ufw::allow {"${title}-ssh":
+     port => 22,
   }
 }
 

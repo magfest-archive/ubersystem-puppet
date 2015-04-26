@@ -10,9 +10,12 @@ collect_exact_birthdate = <%= @collect_exact_birthdate %>
 event_name = "<%= @event_name %>"
 organization_name = "<%= @organization_name %>"
 groups_enabled = <%= @groups_enabled %>
+shift_custom_badges = <%= @shift_custom_badges %>
+volunteer_form_visible = <%= @volunteer_form_visible %>
 
 consent_form_url = "<%= @consent_form_url %>"
 code_of_conduct_url = "<%= @code_of_conduct %>"
+contact_url = "<%= @contact_url %>"
 
 admin_email = "<%= @admin_email %>"
 regdesk_email = "<%= @regdesk_email %>"
@@ -20,6 +23,7 @@ staff_email = "<%= @staff_email %>"
 marketplace_email = "<%= @marketplace_email %>"
 panels_email = "<%= @panels_email %>"
 developer_email = "<%= @developer_email %>"
+guest_email = "<%= @guest_email %>"
 
 regdesk_email_signature = '''<%= @regdesk_sig %>'''
 stops_email_signature = '''<%= @stops_sig %>'''
@@ -71,11 +75,37 @@ shiftless_depts = <%= @shiftless_depts %>
 [dates]
 prereg_open = "<%= @prereg_open %>"
 dealer_reg_start = "<%= @dealer_reg_start %>"
+dealer_reg_public = "<%= @dealer_reg_public %>"
+dealer_reg_deadline = "<%= @dealer_reg_deadline %>"
+dealer_reg_shutdown = "<%= @dealer_reg_shutdown %>"
+dealer_payment_due  = "<%= @dealer_payment_due %>"
+supporter_deadline = "<%= @supporter_deadline %>"
+printed_badge_dealine = "<%= @printed_badge_deadline %>"
+first_price_bump = "<%= @prereg_increase %>"
+epoch = "<%= @epoch %>"
+eschaton = "<%= @epoch %>"
 
 [badge_ranges] 
+bod_badge	= <%= @bod_range %>
 guest_badge = <%= @guest_range %>
 staff_badge = <%= @staff_range %>
 attendee_badge = <%= @attendee_range %>
+supporter_badge = <%= @supporter_range %>
+one_day_badge   = <%= @oneday_range %>
+
+[badge_prices]
+initial_attendee = <%= @initial_price %>
+group_discount = <%= @group_discount %>
+[[single_day]]
+Friday = <%= @friday_price %>
+Saturday = <%= @saturday_price %>
+Sunday = <%= @sunday_price %>
+
+[[attendee]]
+<%= @prereg_open %> = <%= @launch_price %>
+<%= @prereg_increase %> = <%= @prereg_price_increase %>
+<%= @late_prereg_date %> = <%= @late_prereg %>
+<%= @onsite_date %> = <%= @onsite_price %>
 
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
@@ -87,9 +117,35 @@ season_level    = <%= @season_level %>
 <%= item %>
 <% end -%>
 
+[[shirt]]
+<% @shirt_size.each do |item| -%>
+<%= item %>
+<% end -%>
+
 [enums]
+
+[[badge]]
+attendee_badge   = "Attending"
+supporter_badge  = "Supporter"
+staff_badge      = "Staff"
+guest_badge      = "Guest"
+one_day_badge    = "One Day"
+bod_badge        = "Board"
+
+[[badge_status]]
+new_status        = "New"
+completed_status  = "Completed"
+deferred_status   = "Deferred"
+refunded_status   = "Refunded"
+invalid_status    = "Invalid"
+
 [[ribbon]]
 <% @ribbon_types.each do |item| -%>
+<%= item %>
+<% end -%>
+
+[[table_extra]]
+<% @table_extras.each do |item| -%>
 <%= item %>
 <% end -%>
 
@@ -98,8 +154,11 @@ season_level    = <%= @season_level %>
 <%= item %>
 <% end -%>
 
-#[[event_location]]
-#
+[[event_location]]
+<% @locations.each do |item| -%>
+<%= item %>
+<% end -%>
+
 [[job_interest]]
 <% @job_listings.each do |item| -%>
 <%= item %>
@@ -112,5 +171,10 @@ season_level    = <%= @season_level %>
 
 [[dept_head_override]]
 <% @dept_overrides.each do |item| -%>
+<%= item %>
+<% end -%>
+
+[[tracking]]
+<% @tracking.each do |item| -%>
 <%= item %>
 <% end -%>
