@@ -78,9 +78,11 @@ shiftless_depts = <%= @shiftless_depts %>
 <% end -%>
 
 [dates]
-prereg_open = "<%= @prereg_open %>"
-dealer_reg_start = "<%= @dealer_reg_start %>"
+prereg_open = '<%= @prereg_open %>'
+shirt_deadline = '<%= @shirt_deadline %>'
+dealer_reg_start = '<%= @dealer_reg_start %>'
 supporter_deadline = '<%= @supporter_deadline %>'
+placeholder_deadline = '<%= @placeholder_deadline %>'
 uber_takedown = '<%= @uber_takedown %>'
 epoch = '<%= @epoch %>'
 eschaton  = '<%= @eschaton %>'
@@ -93,6 +95,8 @@ prereg_takedown  = '<%= @prereg_takedown %>'
 
 
 [badge_prices]
+initial_attendee = '<%= @initial_attendee %>'
+
 <% @badge_prices.each do |badge_pricing| -%>
 [[<%= badge_pricing[0] %>]]
 <% badge_pricing[1].each do |date| -%>
