@@ -214,11 +214,11 @@ define uber::instance
   $collect_exact_birthdate = false,
   $collect_full_address = false,
   #$supporter_badge_type_enabled = True,
-  $prereg_open = "2014-08-08",
-  #$prereg_takedown,
-  $uber_takedown = "2015-01-21",
-  #$epoch,
-  #$eschaton,
+  $prereg_open,
+  $prereg_takedown,
+  $uber_takedown,
+  $epoch,
+  $eschaton,
   #$prereg_price = 45,
   #$at_door_price = 60,
   $groups_enabled = true,
@@ -325,9 +325,8 @@ define uber::instance
   $developer_email = "Eli Courtwright <code@magfest.org>",
 
   $student_discount = 0,
-  
-  $use_sanitized_development_ini = false,
 
+  $use_sanitized_development_ini = false,
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
 ) {
 
