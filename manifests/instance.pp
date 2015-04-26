@@ -227,6 +227,7 @@ define uber::instance
   $hide_schedule = true,
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
+  $printed_badge_deadline = '',
   $dealer_reg_start = '',
   $badge_enums = {
     "attendee_badge" => "Attendee",
