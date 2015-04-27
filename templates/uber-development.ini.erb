@@ -157,8 +157,8 @@ food_price      = <%= @food_price %>
 <% end -%>
 
 [[interest]]
-<% @interest_list.each do |item| -%>
-<%= item %>
+<% @interest_list.each do |interest_item| -%>
+<%= interest_item[0] %> = "<%= interest_item[1] %>"
 <% end -%>
 
 [[dept_head_overrides]]
