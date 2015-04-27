@@ -228,7 +228,12 @@ define uber::instance
   $custom_badges_really_ordered = false,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $printed_badge_deadline = '',
+
   $dealer_reg_start = '',
+  $dealer_reg_deadline = '',
+  $dealer_reg_shutdown = '',
+  $dealer_payment_due = '',
+
   $badge_enums = {
     "attendee_badge" => "Attendee",
     "supporter_badge" => "Supporter",
@@ -253,7 +258,6 @@ define uber::instance
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
-  $collect_interests = true,
   $volunteer_form_visible = false,
   $consent_form_url = "http://magfest.org/minorconsentform",
   $code_of_conduct = "http://magfest.org/codeofconduct",
@@ -330,6 +334,7 @@ define uber::instance
 
   # rockage-specific stuff
   $student_discount = 0,
+  $collect_interests = true,
 
   # magstock-specific stuff
   $noise_levels = undef,
@@ -337,6 +342,9 @@ define uber::instance
   $site_types = undef,
   $camping_types = undef,
   $coming_as_types = undef,
+  $supporter_stock = 10,
+  $food_stock      = 10,
+  $food_price      = 50,
 
   $use_sanitized_development_ini = false,
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production

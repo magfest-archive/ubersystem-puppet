@@ -63,7 +63,14 @@ at_the_con = "<%= @at_the_con %>"
 
 donations_enabled = <%= @donations_enabled %>
 
+
+<% if @preassigned_badge_types -%>
 preassigned_badge_types = <%= @preassigned_badge_types %>
+<% else %>
+preassigned_badge_types = ,     # empty list
+<% end -%>
+
+
 collect_full_address = <%= @collect_full_address %>
 collect_interests = <%= @collect_interests %>
 volunteer_form_visible = <%= @volunteer_form_visible %>
@@ -75,12 +82,13 @@ student_discount = <%= @student_discount %>
 
 <% if @shiftless_depts -%>
 shiftless_depts = <%= @shiftless_depts %>
+<% else %>
+shiftless_depts = ,    # empty list
 <% end -%>
 
 [dates]
 prereg_open = '<%= @prereg_open %>'
 shirt_deadline = '<%= @shirt_deadline %>'
-dealer_reg_start = '<%= @dealer_reg_start %>'
 supporter_deadline = '<%= @supporter_deadline %>'
 placeholder_deadline = '<%= @placeholder_deadline %>'
 uber_takedown = '<%= @uber_takedown %>'
@@ -89,6 +97,11 @@ eschaton  = '<%= @eschaton %>'
 prereg_takedown  = '<%= @prereg_takedown %>'
 
 printed_badge_deadline = '<%= @printed_badge_deadline %>'
+
+dealer_reg_start = '<%= @dealer_reg_start %>'
+dealer_reg_deadline = '<%= @dealer_reg_deadline %>'
+dealer_reg_shutdown = '<%= @dealer_reg_shutdown %>'
+dealer_payment_due  = '<%= @dealer_payment_due %>'
 
 [badge_ranges] 
 <% @badge_types.each do |badge_type| -%>
@@ -112,6 +125,9 @@ initial_attendee = '<%= @initial_attendee %>'
 shirt_level     = <%= @shirt_level %>
 supporter_level = <%= @supporter_level %>
 season_level    = <%= @season_level %>
+supporter_stock = <%= @supporter_stock %>
+food_stock      = <%= @food_stock %>
+food_price      = <%= @food_price %>
 
 [[donation_tier]]
 <% @donation_tier.each do |item| -%>
@@ -125,20 +141,19 @@ season_level    = <%= @season_level %>
 <% end -%>
 
 [[ribbon]]
-<% @ribbon_types.each do |item| -%>
-<%= item %>
+<% @ribbon_types.each do |ribbon_type| -%>
+<%= ribbon_type[0] %> = "<%= ribbon_type[1] %>"
 <% end -%>
 
 [[job_location]]
-<% @job_locations.each do |item| -%>
-<%= item %>
+<% @job_locations.each do |job_location| -%>
+<%= job_location[0] %> = "<%= job_location[1] %>"
 <% end -%>
 
-#[[event_location]]
-#
+
 [[job_interest]]
-<% @job_interests.each do |item| -%>
-<%= item %>
+<% @job_interests.each do |job_interest| -%>
+<%= job_interest[0] %> = "<%= job_interest[1] %>"
 <% end -%>
 
 [[interest]]
