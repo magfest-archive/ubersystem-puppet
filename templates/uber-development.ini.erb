@@ -11,6 +11,8 @@ event_name = "<%= @event_name %>"
 organization_name = "<%= @organization_name %>"
 groups_enabled = <%= @groups_enabled %>
 
+numbered_badges = <%= @groups_enabled %>
+
 consent_form_url = "<%= @consent_form_url %>"
 code_of_conduct_url = "<%= @code_of_conduct %>"
 
@@ -110,6 +112,7 @@ dealer_payment_due  = '<%= @dealer_payment_due %>'
 
 
 [badge_prices]
+one_days_enabled = false
 initial_attendee = '<%= @initial_attendee %>'
 
 <% @badge_prices.each do |badge_pricing| -%>
