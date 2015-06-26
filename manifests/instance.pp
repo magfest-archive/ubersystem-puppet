@@ -104,9 +104,17 @@ define uber::python_setup
     # TODO: don't hardcode 'python 3.4' in here, set it up in ::uber
     $venv_site_pkgs_path = "${venv_path}/lib/python3.4/site-packages"
 
+    exec { "uber_install_virtualenv_${name}":
+      command => "pip3 install virtualenv",
+      cwd     => $uber_path,
+      path    => '/usr/bin',
+      creates => "${venv_path}",
+      notify  => Exec[ "uber_virtualenv_${name}" ],
+    }
+
     # seems puppet's virtualenv support is broken for python3, so roll our own
     exec { "uber_virtualenv_${name}":
-      command => "${uber::python_cmd} -m venv ${venv_path} --without-pip --copies",
+      command => "virtualenv --always-copy ${venv_path}",
       cwd     => $uber_path,
       path    => '/usr/bin',
       creates => "${venv_path}",
