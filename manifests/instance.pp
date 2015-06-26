@@ -6,7 +6,7 @@ define uber::plugins
   $group,
 )
 {
-  $plugin_defaults = {v
+  $plugin_defaults = {
     'user'        => $user,
     'group'       => $group,
     'plugins_dir' => $plugins_dir,
