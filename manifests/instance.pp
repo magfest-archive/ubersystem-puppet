@@ -223,6 +223,7 @@ define uber::instance
   #$at_door_price = 60,
   $groups_enabled = true,
   $numbered_badges = true,
+  $one_days_enabled = true,
   $at_the_con = false,
   $max_badge_sales = 9999999,
   $hide_schedule = true,
