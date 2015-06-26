@@ -6,7 +6,7 @@ define uber::plugins
   $group,
 )
 {
-  $plugin_defaults = {
+  $plugin_defaults = {v
     'user'        => $user,
     'group'       => $group,
     'plugins_dir' => $plugins_dir,
@@ -114,7 +114,7 @@ define uber::python_setup
 
     # seems puppet's virtualenv support is broken for python3, so roll our own
     exec { "uber_virtualenv_${name}":
-      command => "virtualenv --always-copy ${venv_path}",
+      command => "virtualenv-3.4 --always-copy ${venv_path}",
       cwd     => $uber_path,
       path    => '/usr/bin',
       creates => "${venv_path}",
