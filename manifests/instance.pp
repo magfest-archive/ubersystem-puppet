@@ -100,6 +100,7 @@ define uber::python_setup
 ) {
   if $debug_skip == false {
     $venv_paver = "${venv_bin}/paver"
+    $venv_pip3 = "${venv_bin}/pip3"
 
     # TODO: don't hardcode 'python 3.4' in here, set it up in ::uber
     $venv_site_pkgs_path = "${venv_path}/lib/python3.4/site-packages"
@@ -116,8 +117,14 @@ define uber::python_setup
     exec { "uber_virtualenv_${name}":
       command => "virtualenv-3.4 --always-copy ${venv_path}",
       cwd     => $uber_path,
-      path    => '/usr/bin',
+      path    => '/usr/local/bin',
       creates => "${venv_path}",
+      notify  => Exec[ "uber_install_paver_${name}" ],
+    }
+
+    exec { "uber_install_paver_${name}":
+      command => "${venv_pip3} install paver",
+      cwd     => "${uber_path}",
       notify  => Exec[ "setup_perms_venv_$name" ],
     }
 
@@ -127,33 +134,11 @@ define uber::python_setup
     exec { "setup_perms_venv_$name":
       command => "/bin/chmod -R ${venv_mode} ${venv_bin}",
       timeout => 3600, # this can take a while on vagrant, set it high
-      notify  => File["${uber_path}/distribute_setup.py"],
-    }
-
-    file { "${uber_path}/distribute_setup.py":
-      ensure => present,
-      source => "${uber_path}/plugins/uber/distribute_setup.py",
-      notify  => Exec["uber_distribute_setup_${name}"],
-    }
-
-    exec { "uber_distribute_setup_${name}" :
-      command => "${venv_python} distribute_setup.py",
-      cwd     => "${uber_path}",
-      creates => "${venv_site_pkgs_path}/setuptools.pth",
-      notify  => Exec["uber_setup_${name}"],
-      timeout => 3600, # this can take a while on vagrant, set it high
-    }
-
-    exec { "uber_setup_${name}" :
-      command => "${venv_python} setup.py develop",
-      cwd     => "${uber_path}",
-      creates => "${venv_site_pkgs_path}/sideboard.egg-link",
       notify  => Exec["uber_paver_${name}"],
-      timeout => 3600, # this can take a while on vagrant, set it high
     }
 
     exec { "uber_paver_${name}":
-      command => "${venv_paver} install_deps",
+      command => "${venv_paver} install_pip_requirements",
       cwd     => "${uber_path}",
       # creates => "TODO",
       timeout => 3600, # this can take a while on vagrant, set it high
