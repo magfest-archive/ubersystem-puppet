@@ -500,7 +500,7 @@ define uber::instance
   }
 
   # from the perspective of nginx, where should it proxy traffic TO.
-  $proxy_url = "http://127.0.0.1:${socket_port}/${url_prefix}/"
+  $proxy_url = "http://localhost:${socket_port}/${url_prefix}/"
 
   nginx::resource::location { "${hostname_to_use}-${name}":
     ensure   => present,
@@ -508,6 +508,9 @@ define uber::instance
     location => "/${url_prefix}/",
     vhost    => $hostname_to_use,
     ssl      => true,
+    location_cfg_append => {
+        'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/'
+    },
     notify   => [ File["${nginx::params::nx_conf_dir}/conf.d/default.conf"], Service["nginx"] ]
   }
 
