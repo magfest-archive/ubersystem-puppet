@@ -11,6 +11,6 @@ server.socket_port = <%= @socket_port %>
 tools.sessions.timeout = 4320  # 30 days (in minutes)
 
 [handlers]
-[[syslog]]
-class = "logging.handlers.SysLogHandler"
-address = "/dev/log"
+[[stdout]]
+class = "logging.StreamHandler"
+stream = "ext://sys.stdout"
