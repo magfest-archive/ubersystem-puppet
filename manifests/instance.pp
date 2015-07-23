@@ -138,7 +138,7 @@ define uber::python_setup
     }
 
     exec { "uber_paver_${name}":
-      command => "${venv_paver} install_pip_requirements",
+      command => "${venv_paver} install_deps",
       cwd     => "${uber_path}",
       # creates => "TODO",
       timeout => 3600, # this can take a while on vagrant, set it high
