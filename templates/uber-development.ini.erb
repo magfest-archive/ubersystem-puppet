@@ -128,9 +128,18 @@ initial_attendee = '<%= @initial_attendee %>'
 shirt_level     = <%= @shirt_level %>
 supporter_level = <%= @supporter_level %>
 season_level    = <%= @season_level %>
+
+<% if @supporter_stock -%>
 supporter_stock = <%= @supporter_stock %>
+<% end -%>
+
+<% if @food_stock -%>
 food_stock      = <%= @food_stock %>
+<% end -%>
+
+<% if @food_price -%>
 food_price      = <%= @food_price %>
+<% end -%>
 
 [[donation_tier]]
 <% @donation_tier.each do |item| -%>

@@ -327,6 +327,8 @@ define uber::instance
   $panels_email = "MAGFest Panels <panels@magfest.org>",
   $developer_email = "Eli Courtwright <code@magfest.org>",
 
+  $supporter_stock = undef,
+
   # rockage-specific stuff
   $student_discount = 0,
   $collect_interests = true,
@@ -337,9 +339,8 @@ define uber::instance
   $site_types = undef,
   $camping_types = undef,
   $coming_as_types = undef,
-  $supporter_stock = 10,
-  $food_stock      = 10,
-  $food_price      = 50,
+  $food_stock      = undef,
+  $food_price      = undef,
 
   $use_sanitized_development_ini = false,
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
