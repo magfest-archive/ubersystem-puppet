@@ -249,7 +249,7 @@ define uber::instance
       {"range_start" => 3000, "range_end" => 29999 }
     ],
   ],
-  $badge_prices,
+  $badge_prices = [],
   $shirt_level = 20,
   $supporter_level = 60,
   $season_level = 160,
