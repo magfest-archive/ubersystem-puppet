@@ -12,6 +12,26 @@ year = "<%= @year %>"
 organization_name = "<%= @organization_name %>"
 groups_enabled = <%= @groups_enabled %>
 
+numbered_badges = <%= @numbered_badges %>
+
+consent_form_url = "<%= @consent_form_url %>"
+code_of_conduct_url = "<%= @code_of_conduct %>"
+
+event_timezone = "<%= @event_timezone %>"
+
+admin_email = "<%= @admin_email %>"
+regdesk_email = "<%= @regdesk_email %>"
+staff_email = "<%= @staff_email %>"
+marketplace_email = "<%= @marketplace_email %>"
+panels_email = "<%= @panels_email %>"
+developer_email = "<%= @developer_email %>"
+
+regdesk_email_signature = '''<%= @regdesk_sig %>'''
+stops_email_signature = '''<%= @stops_sig %>'''
+marketplace_email_signature = '''<%= @marketplace_sig %>'''
+peglegs_email_signature = '''<%= @peglegs_sig %>'''
+guest_email_signature = '''<%= @guest_sig %>'''
+
 # url_root should be the public-facing root of what you type
 # to get to this uber instance. do not include the url_prefix/path here.
 # 
@@ -40,35 +60,176 @@ stripe_public_key = "<%= @stripe_public_key %>"
 #       eventually, remove all the defaults from magfest/ubersystem repo
 #       and explictly code them in here.
 
-# at_the_con = "<%= @at_the_con %>"
-# max_badge_sales = "<%= @max_badge_sales %>"
-#
+at_the_con = "<%= @at_the_con %>"
+max_badge_sales = "<%= @max_badge_sales %>"
+donations_enabled = <%= @donations_enabled %>
 
+
+<% if @preassigned_badge_types -%>
 preassigned_badge_types = <%= @preassigned_badge_types %>
+<% else %>
+preassigned_badge_types = ,     # empty list
+<% end -%>
 
+
+collect_full_address = <%= @collect_full_address %>
 collect_interests = <%= @collect_interests %>
+volunteer_form_visible = <%= @volunteer_form_visible %>
+
+show_custom_badge_input = <%= @show_custom_badge_input %>
+shirt_sales_enabled = <%= @shirt_sales_enabled %>
+show_affiliates = <%= @show_affiliates %>
+student_discount = <%= @student_discount %>
+
+<% if @shiftless_depts -%>
+shiftless_depts = <%= @shiftless_depts %>
+<% else %>
+shiftless_depts = ,    # empty list
+<% end -%>
 
 [dates]
-prereg_open = "<%= @prereg_open %>"
-dealer_reg_start = "<%= @dealer_reg_start %>"
+prereg_open = '<%= @prereg_open %>'
+shirt_deadline = '<%= @shirt_deadline %>'
+supporter_deadline = '<%= @supporter_deadline %>'
+placeholder_deadline = '<%= @placeholder_deadline %>'
+uber_takedown = '<%= @uber_takedown %>'
+epoch = '<%= @epoch %>'
+eschaton  = '<%= @eschaton %>'
+prereg_takedown  = '<%= @prereg_takedown %>'
+
+printed_badge_deadline = '<%= @printed_badge_deadline %>'
+
+dealer_reg_start = '<%= @dealer_reg_start %>'
+dealer_reg_deadline = '<%= @dealer_reg_deadline %>'
+dealer_reg_shutdown = '<%= @dealer_reg_shutdown %>'
+dealer_payment_due  = '<%= @dealer_payment_due %>'
 
 [badge_ranges] 
-guest_badge = <%= @guest_range %>
-staff_badge = <%= @staff_range %>
-attendee_badge = <%= @attendee_range %>
+<% @badge_types.each do |badge_type| -%>
+<%= badge_type[0] %> = <%= badge_type[1]["range_start"] %>, <%= badge_type[1]["range_end"] %>
+<% end -%>
+
+
+[badge_prices]
+one_days_enabled = <%= @one_days_enabled %>
+initial_attendee = '<%= @initial_attendee %>'
+
+<% @badge_prices.each do |badge_pricing| -%>
+[[<%= badge_pricing[0] %>]]
+<% badge_pricing[1].each do |date| -%>
+<%= date.keys[0] %> = <%= date.values[0] %>
+<% end -%>
+
+<% end -%>
+
 
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
 supporter_level = <%= @supporter_level %>
 season_level    = <%= @season_level %>
 
-[[donation_tier]]
-'No thanks'             = 0
-'Sponsor Package'       = SUPPORTER_LEVEL
-'Super Sponsor Package' = SEASON_LEVEL
+<% if @supporter_stock -%>
+supporter_stock = <%= @supporter_stock %>
+<% end -%>
 
-[enum]
+<% if @food_stock -%>
+food_stock      = <%= @food_stock %>
+<% end -%>
+
+<% if @food_price -%>
+food_price      = <%= @food_price %>
+<% end -%>
+
+[[donation_tier]]
+<% @donation_tier.each do |item| -%>
+<%= item %>
+<% end -%>
+
+[enums]
+[[badge]]
+<% @badge_enums.each do |badge_enum| -%>
+<%= badge_enum[0] %> = "<%= badge_enum[1] %>"
+<% end -%>
+
 [[ribbon]]
-dealer_ribbon = "Dealer"
-dealer_asst_ribbon = "Dealer Assistant"
-bod_ribbon = "Board of Directors"
+<% @ribbon_types.each do |ribbon_type| -%>
+<%= ribbon_type[0] %> = "<%= ribbon_type[1] %>"
+<% end -%>
+
+[[job_location]]
+<% @job_locations.each do |job_location| -%>
+<%= job_location[0] %> = "<%= job_location[1] %>"
+<% end -%>
+
+
+[[job_interest]]
+<% @job_interests.each do |job_interest| -%>
+<%= job_interest[0] %> = "<%= job_interest[1] %>"
+<% end -%>
+
+[[interest]]
+<% @interest_list.each do |interest_item| -%>
+<%= interest_item[0] %> = "<%= interest_item[1] %>"
+<% end -%>
+
+[[dept_head_overrides]]
+<% @dept_head_overrides.each do |item| -%>
+<%= item %>
+<% end -%>
+
+
+<% if @noise_levels -%>
+
+# magstock-specific
+[[noise_level]]
+<% @noise_levels.each do |noise_level| -%>
+<%= noise_level[0] %> = "<%= noise_level[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+
+<% if @shirt_colors -%>
+
+# magstock-specific
+[[shirt_color]]
+<% @shirt_colors.each do |shirt_color| -%>
+<%= shirt_color[0] %> = "<%= shirt_color[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+
+<% if @site_types -%>
+
+# magstock-specific
+[[site_type]]
+<% @site_types.each do |site_type| -%>
+<%= site_type[0] %> = "<%= site_type[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+<% if @camping_types -%>
+
+# magstock-specific
+[[camping_type]]
+<% @camping_types.each do |camping_type| -%>
+<%= camping_type[0] %> = "<%= camping_type[1] %>"
+<% end -%>
+
+<% end -%>
+
+
+<% if @coming_as_types -%>
+
+# magstock-specific
+[[coming_as]]
+<% @coming_as_types.each do |coming_as_type| -%>
+<%= coming_as_type[0] %> = "<%= coming_as_type[1] %>"
+<% end -%>
+
+<% end -%>

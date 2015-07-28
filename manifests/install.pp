@@ -20,5 +20,16 @@ class uber::install {
     }
   }
 
+  if defined(Package['python3-pip']) == false {
+    package { 'python3-pip':
+      ensure => present,
+    }
+  }
+  
+  if defined(Package['python3-tk']) == false {
+    package { 'python3-tk':
+      ensure => present,
+    }
+  }
   class {'uber::python': }
 }
