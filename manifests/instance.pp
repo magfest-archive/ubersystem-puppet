@@ -345,7 +345,6 @@ define uber::instance
   $food_stock      = undef,
   $food_price      = undef,
 
-  $use_sanitized_development_ini = false,
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
 ) {
 
@@ -415,26 +414,6 @@ define uber::instance
     mode    => 660,
     content => template('uber/uber-development.ini.erb'),
     notify => Uber::Python_setup["python_setup_${name}"],
-  }
-
-  # a "sanitized" developer-default.ini file for uber
-  # this one yanks out the defaults used in the ubersystem 
-  # git repo with ALL THE THINGS
-  if $use_sanitized_development_ini == true {
-
-    # TODO from Dom: this section needs to die, I feel strongly that
-    # puppet should never be messing with -defaults.ini, only development.ini.
-    # If things in development-defaults.ini are causing issues, we need to
-    # rework them.  $use_sanitized_development_ini is for backwards 
-    # compatibility only and should be removed when a better solution
-    # is implemented.
-
-    file { "${uber_path}/plugins/uber/development-defaults.ini":
-      ensure => present,
-      mode   => 660,
-      source => 'puppet:///modules/uber/development-defaults.ini',
-      subscribe => File["${uber_path}/plugins/uber/development.ini"],
-    }
   }
 
   uber::python_setup { "python_setup_${name}":
