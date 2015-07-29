@@ -345,7 +345,6 @@ define uber::instance
   $food_stock      = undef,
   $food_price      = undef,
 
-  $use_sanitized_development_ini = false,
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
 ) {
 
