@@ -15,6 +15,7 @@ numbered_badges = <%= @numbered_badges %>
 
 consent_form_url = "<%= @consent_form_url %>"
 code_of_conduct_url = "<%= @code_of_conduct %>"
+contact_url = "<%= @contact_url %>"
 
 event_timezone = "<%= @event_timezone %>"
 
@@ -111,7 +112,8 @@ dealer_payment_due  = '<%= @dealer_payment_due %>'
 
 [badge_prices]
 one_days_enabled = <%= @one_days_enabled %>
-initial_attendee = '<%= @initial_attendee %>'
+initial_attendee = <%= @initial_attendee %>
+dealer_badge_price = <%= @dealer_badge_price %>
 
 <% @badge_prices.each do |badge_pricing| -%>
 [[<%= badge_pricing[0] %>]]
@@ -121,6 +123,8 @@ initial_attendee = '<%= @initial_attendee %>'
 
 <% end -%>
 
+[table_prices]
+default_price = <%= @default_table_price %>
 
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
