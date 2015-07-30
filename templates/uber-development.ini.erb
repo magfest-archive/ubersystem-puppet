@@ -63,6 +63,7 @@ stripe_public_key = "<%= @stripe_public_key %>"
 at_the_con = "<%= @at_the_con %>"
 max_badge_sales = "<%= @max_badge_sales %>"
 donations_enabled = <%= @donations_enabled %>
+max_dealers = <%= @max_dealers %>
 
 
 <% if @preassigned_badge_types -%>
@@ -175,10 +176,37 @@ food_price      = <%= @food_price %>
 <%= interest_item[0] %> = "<%= interest_item[1] %>"
 <% end -%>
 
+[[event_location]]
+<% @event_locations.each do |event_location| -%>
+<%= event_location[0] %> = "<%= event_location[1] %>"
+<% end -%>
+
 [[dept_head_overrides]]
 <% @dept_head_overrides.each do |item| -%>
 <%= item %>
 <% end -%>
+
+[dept_head_checklist]
+<% if @dept_head_checklist %>
+<% Array(@dept_head_checklist).each do |checklist_section| -%>
+
+[[<%= checklist_section[0] %>]]
+<% if checklist_section[1]["name"] -%>
+name = "<%= checklist_section[1]["name"] %>"
+<% end -%>
+<% if checklist_section[1]["deadline"] -%>
+deadline = "<%= checklist_section[1]["deadline"] %>"
+<% end -%>
+<% if checklist_section[1]["description"] -%>
+description = "<%= checklist_section[1]["description"] %>"
+<% end -%>
+<% if checklist_section[1]["path"] -%>
+path = "<%= checklist_section[1]["path"] %>"
+<% end -%>
+
+<% end -%>
+<% end -%>
+
 
 
 <% if @noise_levels -%>
