@@ -265,6 +265,7 @@ define uber::instance
   $max_dealers = 20,
   $dealer_badge_price = 40,
   $default_table_price = 100,
+  $table_prices = [],
   $event_timezone = "US/Eastern",
   $donation_tier = [ 
     "'No thanks' = 0",

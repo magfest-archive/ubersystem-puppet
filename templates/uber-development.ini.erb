@@ -126,6 +126,9 @@ dealer_badge_price = <%= @dealer_badge_price %>
 
 [table_prices]
 default_price = <%= @default_table_price %>
+<% @table_prices.each do |table_price| -%>
+<%= table_price[0] %> = <%= table_price[1] %>
+<% end -%>
 
 [integer_enums]
 shirt_level     = <%= @shirt_level %>
