@@ -261,9 +261,14 @@ define uber::instance
   $supporter_deadline = "2014-12-26",
   $placeholder_deadline = '2015-06-16',
   $shirt_deadline = '',
+  $shirt_sizes = [
+    "'no shirt' = 0",
+  ],
   $initial_attendee = 50,
+  $max_dealers = 20,
   $dealer_badge_price = 40,
   $default_table_price = 100,
+  $table_prices = [],
   $event_timezone = "US/Eastern",
   $donation_tier = [ 
     "'No thanks' = 0",
@@ -314,10 +319,14 @@ define uber::instance
     "indie_showcase = 'Indie Game Showcase'", 
     "larp           = 'LARP'",
   ],
+  $event_locations = [
+    "panels_1 = 'Panels 1'",
+  ],
   $dept_head_overrides = [
     "staff_support = 'Jack Boyd'",
     "security = 'The Dorsai Irregulars'"
   ],
+  $dept_head_checklist = [],
   $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
   $stops_sig = "Jack Boyd\nStaffing Coordinator\nMAGFest\nhttp://magfest.org",
   $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",
