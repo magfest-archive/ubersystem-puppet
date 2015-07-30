@@ -261,6 +261,9 @@ define uber::instance
   $supporter_deadline = "2014-12-26",
   $placeholder_deadline = '2015-06-16',
   $shirt_deadline = '',
+  $shirt_sizes = [
+    "'no shirt' = 0",
+  ],
   $initial_attendee = 50,
   $max_dealers = 20,
   $dealer_badge_price = 40,
