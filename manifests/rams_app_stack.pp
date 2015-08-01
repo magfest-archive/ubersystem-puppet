@@ -1,10 +1,10 @@
 
-class uber::rams_app_stack {
+class uber::rams_app_stack (
+
+) {
   #include ::uber::app
   #include ::uber::db
   #include ::uber::nginx
 
-  file { "/tmp/q":
-    ensure  => present,
-  }
+  include ::uber::test
 }
