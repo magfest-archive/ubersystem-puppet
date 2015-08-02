@@ -1,8 +1,7 @@
-define uber::user_group(
-  $user,
-  $group, 
+class uber::user_group (
+  $user = hiera('uber::user'),
+  $group = hiera('uber::group'),
 ){
-
   if ! defined(Group[$group]) {
     group { $group:
      ensure => present,

@@ -1,6 +1,5 @@
 class uber::app
 (
-  $uber_path = '/usr/local/uber',
   $sideboard_repo = 'https://github.com/magfest/sideboard',
   $sideboard_branch = 'master',
   $uber_user = 'uber',
@@ -208,38 +207,8 @@ class uber::app
 
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
 ) {
-
-  if $hostname == '' {
-    $hostname_to_use = $fqdn
-  } else {
-    $hostname_to_use = $hostname
-  }
-
-  if $ssl_port == 443 {
-    $url_root = "https://${hostname_to_use}"
-  } else {
-    $url_root = "https://${hostname_to_use}:${ssl_port}"
-  }
-
-  $venv_path = "${uber_path}/env"
-  $venv_bin = "${venv_path}/bin"
-  $venv_python = "${venv_bin}/python"
-
-  uber::user_group { "users and groups ${name}":
-    user   => $uber_user,
-    group  => $uber_group,
-    notify => Uber::Db["uber_db_${name}"]
-  }
-
-  uber::db { "uber_db_${name}":
-    user             => $db_user,
-    pass             => $db_pass,
-    dbname           => $db_name,
-    db_replication_mode => $db_replication_mode,
-    notify           => Exec["stop_daemon_${name}"]
-  }
-
-  # this is not a great way to do this and is mostly hacking around the fact that I setup
+  # ACTION: stop the ubersystem service when we are working on it
+  # TODO: this is not a great way to do this and is mostly hacking around the fact that I setup
   # all the dependencies wrong.
   exec { "stop_daemon_${name}" :
     command     => "/usr/local/bin/supervisorctl stop ${name}_daemon",
@@ -247,30 +216,29 @@ class uber::app
   }
 
   uber::install_plugins { "plugins_${name}":
-    uber_path =>          $uber_path,
     uber_user =>          $uber_user,
     uber_group =>         $uber_group,
     sideboard_repo =>     $sideboard_repo,
     sideboard_branch =>   $sideboard_branch,
     sideboard_plugins =>  $sideboard_plugins,
     debug_skip =>         $debugONLY_dont_init_python_or_git_repos_or_plugins,
-    notify =>             File["${uber_path}/development.ini"],
+    notify =>             File["${uber::uber_path}/development.ini"],
   }
 
   # sideboard's development.ini
   # note: plugins can also have their own development.ini,
   # we need to take that into account.
-  file { "${uber_path}/development.ini":
+  file { "${uber::uber_path}/development.ini":
     ensure  => present,
     mode    => 660,
     content => template('uber/sb-development.ini.erb'),
-    notify  => File["${uber_path}/plugins/uber/development.ini"],
+    notify  => File["${uber::uber_path}/plugins/uber/development.ini"],
   }
 
   # uber's development.ini
   # TODO: this is being hardcoded here.  it should instead install
   # with the plugins stuff.  each plugin might have an INI
-  file { "${uber_path}/plugins/uber/development.ini":
+  file { "${uber::uber_path}/plugins/uber/development.ini":
     ensure  => present,
     mode    => 660,
     content => template('uber/uber-development.ini.erb'),
@@ -278,24 +246,20 @@ class uber::app
   }
 
   uber::python_setup { "python_setup_${name}":
-    venv_path => $venv_path,
-    venv_bin =>  $venv_bin,
-    venv_python => $venv_python,
-    uber_path => $uber_path,
     debug_skip => $debugONLY_dont_init_python_or_git_repos_or_plugins,
     notify  => Exec["setup_owner_$name"],
   }
 
   # setup owner
   exec { "setup_owner_$name":
-    command => "/bin/chown -R ${uber_user}:${uber_group} ${uber_path}",
+    command => "/bin/chown -R ${uber_user}:${uber_group} ${uber::uber_path}",
     notify  => Exec[ "setup_perms_$name" ],
   }
 
   # setup permissions
   $mode = 'o-rwx,g-w,u+rw'
   exec { "setup_perms_$name":
-    command => "/bin/chmod -R $mode ${uber_path}",
+    command => "/bin/chmod -R $mode ${uber::uber_path}",
     notify  => Uber::Replication["${name}_replication"],
   }
 
@@ -311,61 +275,11 @@ class uber::app
     # subscribe                => Postgresql::Server::Db["${db_name}"]
   }
 
-  # run as a daemon with supervisor
-  uber::daemon { "${name}_daemon": 
-    user       => $uber_user,
-    group      => $uber_group,
-    python_cmd => $venv_python,
-    uber_path  => $uber_path,
-    notify     => Uber::Firewall["${name}_firewall"],
-  }
-
   uber::firewall { "${name}_firewall":
     socket_port        => $socket_port,
     ssl_port           => $ssl_port,
     open_firewall_port => $open_firewall_port,
     notify             => Uber::Vhost[$name],
   }
-
-  uber::vhost { $name:
-    hostname       => $hostname_to_use,
-    ssl_crt_bundle => $ssl_crt_bundle,
-    ssl_crt_key    => $ssl_crt_key,
-    ssl_port       => $ssl_port,
-    # notify       => Nginx::Resource::Location["${hostname}-${name}"],
-    notify => Service["nginx"],
-  }
-
-  # from the perspective of nginx, where should it proxy traffic TO.
-  $proxy_url = "http://localhost:${socket_port}/${url_prefix}/"
-
-  nginx::resource::location { "${hostname_to_use}-${name}":
-    ensure   => present,
-    proxy    => $proxy_url,
-    location => "/${url_prefix}/",
-    vhost    => $hostname_to_use,
-    ssl      => true,
-    location_cfg_append => {
-        'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/'
-    },
-    notify   => [ File["${nginx::params::nx_conf_dir}/conf.d/default.conf"], Service["nginx"] ]
-  }
-
-  # delete the default.conf to ensure that our virtualhost file gets the requests for localhost.
-  # this is needed if you try and access the server in a browser but not by $hostname_to_use
-  file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
-    ensure => absent,
-    # notify => Uber::Create_index_html["${name}"], # TODO, but it doesn't work
-    notify => Service["nginx"],
-  }
-
-  # from the perspective of a web browser, what URL should they use to access uber
-  # $public_url = "https://${url_root}/${url_prefix}/"
-
-  #uber::create_index_html { "${name}":
-  #  public_url => $public_url,
-  #  event_name => $event_name,
-  #  year => $year,
-  #}
 }
 

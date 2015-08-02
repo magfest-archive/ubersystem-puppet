@@ -1,18 +1,9 @@
 class uber::db (
-  $user,
-  $pass,
-  $dbname,
+  $user = hiera('uber::db_user'),
+  $pass = hiera('uber::db_pass'),
+  $dbname = hiera('uber::db_name'),
   $db_replication_mode = 'none',
 ) {
-
-  # enforce that each uber database must be unique.
-  # re-work if we ever want to support multiple ubers using the same DB
-  # TODO this is now obsolete?
-  #if defined(Postgresql::Server::Db[$dbname])
-  #{
-  #  fail("ERROR: multiple uber installations are trying to use the same database. this is not supported, each uber install needs to use it's own database.")
-  #}
-
   if $db_replication_mode != 'slave'
   {
     postgresql::server::db { $dbname:

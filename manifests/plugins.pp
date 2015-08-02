@@ -1,4 +1,4 @@
-define uber::plugins
+class uber::plugins
 (
   $plugins,
   $plugins_dir,
@@ -14,8 +14,7 @@ define uber::plugins
   create_resources(uber::plugin, $plugins, $plugin_defaults)
 }
 
-# sideboard can install a bunch of plugins which each pull their own
-# git repos
+# sideboard can install a bunch of plugins which each pull their own git repos
 define uber::plugin
 (
   $plugins_dir,
@@ -54,7 +53,6 @@ define uber::plugin_repo
 
 define uber::install_plugins
 (
-  $uber_path,
   $uber_user,
   $uber_group,
   $sideboard_repo,
@@ -64,17 +62,17 @@ define uber::install_plugins
 ) {
   if $debug_skip == false {
     # sideboard
-    vcsrepo { $uber_path:
+    vcsrepo { $uber::uber_path:
       ensure   => latest,
       owner    => $uber_user,
       group    => $uber_group,
       provider => git,
       source   => $sideboard_repo,
       revision => $sideboard_branch,
-      notify   => File["${uber_path}/plugins/"],
+      notify   => File["${uber::uber_path}/plugins/"],
     }
 
-    file { [ "${uber_path}/plugins/" ]:
+    file { [ "${uber::uber_path}/plugins/" ]:
       ensure => "directory",
       notify => Uber::Plugins["${name}_plugins"],
     }
@@ -83,7 +81,7 @@ define uber::install_plugins
 
     uber::plugins { "${name}_plugins":
       plugins     => $sideboard_plugins,
-      plugins_dir => "${uber_path}/plugins",
+      plugins_dir => "${uber::uber_path}/plugins",
       user        => $uber_user,
       group       => $uber_group,
     }
