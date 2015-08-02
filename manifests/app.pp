@@ -5,32 +5,14 @@ class uber::app
   $uber_user = 'uber',
   $uber_group = 'apps',
 
-  $ssl_crt_bundle = 'puppet:///modules/uber/selfsigned-testonly.crt',
-  $ssl_crt_key = 'puppet:///modules/uber/selfsigned-testonly.key',
-
   $sideboard_debug_enabled = false,
+  $django_debug = false,
 
-  $db_host = 'localhost',
   $db_port = '5432',
-  $db_user = 'rams',
-  $db_pass = 'rams',
-  $db_name = 'rams',
+
+  $sqlalchemy_url = "postgresql://${db_user}:${db_pass}@localhost:{$db_port}/${db_name}",
   
   $sideboard_plugins = {},
-
-  # DB replication common mode settings
-  $db_replication_mode = 'none', # none, master, or slave
-  $db_replication_user = 'replicator',
-  $db_replication_password = '',
-
-  # DB replication slave settings ONLY
-  $db_replication_master_ip = '', # IP of the master server
-  $uber_db_util_path = '/usr/local/uberdbutil',
-
-  # DB replication master settings ONLY
-  $slave_ips = [],
-
-  $django_debug = false,
 
   $socket_port = '4321',
   $socket_host = '0.0.0.0',
@@ -260,19 +242,6 @@ class uber::app
   $mode = 'o-rwx,g-w,u+rw'
   exec { "setup_perms_$name":
     command => "/bin/chmod -R $mode ${uber::uber_path}",
-    notify  => Uber::Replication["${name}_replication"],
-  }
-
-  uber::replication { "${name}_replication":
-    db_name                  => $db_name,
-    db_replication_mode      => $db_replication_mode,
-    db_replication_user      => $db_replication_user,
-    db_replication_password  => $db_replication_password,
-    db_replication_master_ip => $db_replication_master_ip,
-    uber_db_util_path        => $uber_db_util_path,
-    slave_ips                => $slave_ips,
-    notify                  => Uber::Daemon["${name}_daemon"],
-    # subscribe                => Postgresql::Server::Db["${db_name}"]
   }
 
   uber::firewall { "${name}_firewall":

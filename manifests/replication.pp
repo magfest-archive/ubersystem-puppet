@@ -1,4 +1,3 @@
-
 class uber::replication (
   # DB replication common settings
   $db_name,
@@ -117,7 +116,6 @@ class uber::db-replication-slave (
     'hot_standby':          value => 'on';
   }
 
-  # a fuller example, including permissions and ownership
   file { "${uber_db_util_path}":
     ensure => "directory",
     owner  => "postgres",
