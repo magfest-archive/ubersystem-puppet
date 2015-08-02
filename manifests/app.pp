@@ -2,19 +2,19 @@ class uber::app
 (
   $sideboard_repo = 'https://github.com/magfest/sideboard',
   $sideboard_branch = 'master',
-  $uber_user = 'uber',
-  $uber_group = 'apps',
 
   $sideboard_debug_enabled = false,
   $django_debug = false,
 
-  $db_port = '5432',
-
-  $sqlalchemy_url = "postgresql://${db_user}:${db_pass}@localhost:{$db_port}/${db_name}",
+  $db_user = hiera_lookup("uber::db_user"),
+  $db_pass = hiera_lookup("uber::db_pass"),
+  $db_name = hiera_lookup("uber::db_name"),
+  $db_host = hiera_lookup("uber::db_host", 'localhost'),
+  $db_port = hiera_lookup("uber::db_port", '5432'),
   
   $sideboard_plugins = {},
 
-  $socket_port = '4321',
+  $socket_port = hiera('uber::socket_port', '4321'),
   $socket_host = '0.0.0.0',
   $hostname = '', # defaults to hostname of the box
   $url_prefix = 'magfest',
@@ -198,8 +198,6 @@ class uber::app
   }
 
   uber::install_plugins { "plugins_${name}":
-    uber_user =>          $uber_user,
-    uber_group =>         $uber_group,
     sideboard_repo =>     $sideboard_repo,
     sideboard_branch =>   $sideboard_branch,
     sideboard_plugins =>  $sideboard_plugins,

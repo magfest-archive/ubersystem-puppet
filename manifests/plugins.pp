@@ -53,8 +53,6 @@ define uber::plugin_repo
 
 define uber::install_plugins
 (
-  $uber_user,
-  $uber_group,
   $sideboard_repo,
   $sideboard_branch,
   $sideboard_plugins,
@@ -64,8 +62,8 @@ define uber::install_plugins
     # sideboard
     vcsrepo { $uber::uber_path:
       ensure   => latest,
-      owner    => $uber_user,
-      group    => $uber_group,
+      owner    => $uber::user,
+      group    => $uber::group,
       provider => git,
       source   => $sideboard_repo,
       revision => $sideboard_branch,
@@ -77,13 +75,13 @@ define uber::install_plugins
       notify => Uber::Plugins["${name}_plugins"],
     }
 
-    # TODO eventually need to add a development.ini for each plugin
+    # TODO add a development.ini for each plugin
 
     uber::plugins { "${name}_plugins":
       plugins     => $sideboard_plugins,
       plugins_dir => "${uber::uber_path}/plugins",
-      user        => $uber_user,
-      group       => $uber_group,
+      user        => $uber::user,
+      group       => $uber::group,
     }
   }
 }
