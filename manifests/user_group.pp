@@ -18,4 +18,6 @@ class uber::user_group (
      require    => Group[$group],
    }
   }
+
+  Class["uber::app"] ~> Class["uber::user_group"]
 }

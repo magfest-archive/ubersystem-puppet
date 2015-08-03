@@ -1,58 +1,5 @@
 class uber::plugins
 (
-  $plugins,
-  $plugins_dir,
-  $user,
-  $group,
-)
-{
-  $plugin_defaults = {
-    'user'        => $user,
-    'group'       => $group,
-    'plugins_dir' => $plugins_dir,
-  }
-  create_resources(uber::plugin, $plugins, $plugin_defaults)
-}
-
-# sideboard can install a bunch of plugins which each pull their own git repos
-define uber::plugin
-(
-  $plugins_dir,
-  $user,
-  $group,
-  $git_repo,
-  $git_branch,
-)
-{
-  uber::plugin_repo { "${plugins_dir}/${name}":
-    user       => $user,
-    group      => $group,
-    git_repo   => $git_repo,
-    git_branch => $git_branch,
-  }
-}
-
-define uber::plugin_repo
-(
-  $user,
-  $group,
-  $git_repo,
-  $git_branch,
-)
-# $name is the path to install the plugin to
-{
-  vcsrepo { $name:
-    ensure   => latest,
-    owner    => $user,
-    group    => $group,
-    provider => git,
-    source   => $git_repo,
-    revision => $git_branch
-  }
-}
-
-define uber::install_plugins
-(
   $sideboard_repo,
   $sideboard_branch,
   $sideboard_plugins,
@@ -75,13 +22,11 @@ define uber::install_plugins
       notify => Uber::Plugins["${name}_plugins"],
     }
 
-    # TODO add a development.ini for each plugin
-
-    uber::plugins { "${name}_plugins":
-      plugins     => $sideboard_plugins,
-      plugins_dir => "${uber::uber_path}/plugins",
-      user        => $uber::user,
-      group       => $uber::group,
+    $plugin_defaults = {
+      'user'        => $uber::user,
+      'group'       => $uber::group,
+      'plugins_dir' => "${uber::uber_path}/plugins",
     }
+    create_resources(uber::plugin, $sideboard_plugins, $plugin_defaults)
   }
 }

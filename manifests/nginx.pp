@@ -8,9 +8,6 @@ class uber::nginx (
   $year = hiera("uber::year"),
   $url_prefix = hiera("uber::url_prefix"),
 ) {
-
-  # TODO notify => Service["nginx"],
-
   nginx::resource::vhost { $hostname:
     www_root    => '/var/www/',
     rewrite_to_https => true,

@@ -1,13 +1,12 @@
-
 define uber::firewall (
   $socket_port,
-  $open_firewall_port = false,
+  $open_backend_port = false,
   $ssl_port,
   $http_port = '80',
 ) {
   include ufw
 
-  if $open_firewall_port {
+  if $open_backend_port {
     ufw::allow { "${title}-rawport":
       port => $socket_port,
     }
