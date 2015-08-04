@@ -2,9 +2,9 @@ class uber::config (
   # sideboard config file settings only below
   $sideboard_debug_enabled = false,
   $hostname = 'CHANGETHIS', # defaults to hostname of the box # TODO
-  $socket_port = hiera('uber::socket_port', '4321'),
+  $socket_port = hiera('uber::socket_port'),
   $socket_host = '0.0.0.0',
-  $ssl_port = hiera_lookup("uber::ssl_port", '443'),
+  $ssl_port = hiera('uber::ssl_port'),
 
   # ubersystem config file settings only below
   $url_prefix = 'uber',
@@ -35,11 +35,11 @@ class uber::config (
   $collect_exact_birthdate = false,
   $collect_full_address = false,
   #$supporter_badge_type_enabled = True,
-  $prereg_open,
-  $prereg_takedown,
-  $uber_takedown,
-  $epoch,
-  $eschaton,
+  $prereg_open = '',
+  $prereg_takedown = '',
+  $uber_takedown = '',
+  $epoch = '',
+  $eschaton = '',
   #$prereg_price = 45,
   #$at_door_price = 60,
   $groups_enabled = true,
@@ -150,6 +150,8 @@ class uber::config (
   $food_stock      = undef,
   $food_price      = undef,
 ) {
+
+  require uber::plugins
 
   # TODO: so, really, these should be eventually split out into separate classes
   # TODO: development.ini should be refactored to somehow be treated like any other plugin, instead of us

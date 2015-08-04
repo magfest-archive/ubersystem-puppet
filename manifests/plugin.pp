@@ -17,6 +17,7 @@ define uber::plugin
     group    => $group,
     provider => git,
     source   => $git_repo,
-    revision => $git_branch
+    revision => $git_branch,
+    require  => File["${uber::uber_path}/plugins/"],
   }
 }

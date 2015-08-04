@@ -2,11 +2,11 @@ class uber::nginx (
   $hostname = hiera("uber::hostname"),
   $ssl_crt_bundle = 'puppet:///modules/uber/selfsigned-testonly.crt',
   $ssl_crt_key = 'puppet:///modules/uber/selfsigned-testonly.key',
-  $ssl_port = '443',
+  $ssl_port = hiera('uber::ssl_port'),
   $socket_port = hiera('uber::socket_port'),
-  $event_name = hiera("uber::event_name"),
-  $year = hiera("uber::year"),
-  $url_prefix = hiera("uber::url_prefix"),
+  $event_name = hiera("uber::config::event_name"),
+  $year = hiera("uber::config::year"),
+  $url_prefix = hiera("uber::config::url_prefix"),
 ) {
   nginx::resource::vhost { $hostname:
     www_root    => '/var/www/',

@@ -1,8 +1,8 @@
-define uber::firewall (
-  $socket_port,
-  $open_backend_port = false,
-  $ssl_port,
+class uber::firewall (
+  $ssl_port = hiera('uber::ssl_port'),
+  $socket_port = hiera('uber::socket_port'),
   $http_port = '80',
+  $open_backend_port = false,
 ) {
   include ufw
 

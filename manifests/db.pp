@@ -1,7 +1,7 @@
 class uber::db (
-  $user = hiera('uber::db_user'),
-  $pass = hiera('uber::db_pass'),
-  $dbname = hiera('uber::db_name'),
+  $user = 'rams',
+  $pass = 'rams',
+  $dbname = 'rams',
   $db_replication_mode = 'none',
 ) {
   if $db_replication_mode != 'slave'

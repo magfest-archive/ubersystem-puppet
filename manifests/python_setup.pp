@@ -2,6 +2,8 @@ class uber::python_setup
 (
   $debug_skip = false,
 ) {
+  require uber::plugins
+
   if $debug_skip == false {
 
     exec { "uber_install_virtualenv_${name}":
