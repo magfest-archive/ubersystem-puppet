@@ -15,6 +15,4 @@ class uber {
 
   # TODO: don't hardcode 'python 3.4' in here, figure out how to get at that data
   $venv_site_pkgs_path = "${venv_path}/lib/python3.4/site-packages"
-
-  class {'uber::install': } -> Class['uber']
 }

@@ -16,11 +16,7 @@ class uber::plugins
     }
 
     # sideboard
-    vcsrepo { $uber::uber_path:
-      ensure   => latest,
-      owner    => $uber::user,
-      group    => $uber::group,
-      provider => git,
+    uber::repo { $uber::uber_path:
       source   => $sideboard_repo,
       revision => $sideboard_branch,
       notify   => File["${uber::uber_path}/plugins/"],

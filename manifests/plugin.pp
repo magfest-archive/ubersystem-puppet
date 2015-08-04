@@ -11,11 +11,7 @@ define uber::plugin
 {
   # TODO: add config files in here
 
-  vcsrepo { "${plugins_dir}/${name}":
-    ensure   => latest,
-    owner    => $user,
-    group    => $group,
-    provider => git,
+  uber::repo { "${plugins_dir}/${name}":
     source   => $git_repo,
     revision => $git_branch,
     require  => File["${uber::uber_path}/plugins/"],
