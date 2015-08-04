@@ -8,6 +8,7 @@ define uber::repo
 )
 {
   include uber::install_dependencies
+  include uber::python_setup
 
   vcsrepo { $name:
     ensure   => latest,
@@ -16,6 +17,6 @@ define uber::repo
     provider => git,
     source   => $source,
     revision => $revision,
-    notify   => Class["uber::install_dependencies"],
+    notify   => [ Class["uber::python_setup"], Class["uber::install_dependencies"] ]
   }
 }
