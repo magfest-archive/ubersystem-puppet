@@ -3,11 +3,10 @@
 class uber::profile_rams_full_stack (
 
 ) {
-  include ::uber::user_group
-  include ::uber::app
-  include ::uber::db
-  include ::uber::nginx
-  include ::uber::daemon
-  include ::uber::firewall
-  include ::uber::permissions
+  require ::uber::permissions
+  require ::uber::app
+  require ::uber::db
+  require ::uber::nginx
+  require ::uber::daemon
+  require ::uber::firewall
 }
