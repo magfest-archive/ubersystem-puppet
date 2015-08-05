@@ -30,7 +30,7 @@ class uber::nginx (
     location_cfg_append => {
         'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/'
     },
-    notify   => [ File["${nginx::params::nx_conf_dir}/conf.d/default.conf"], Service["nginx"] ]
+    notify   => Service["nginx"],
   }
 
   # delete the default.conf to ensure that our virtualhost file gets the requests for localhost.
@@ -41,7 +41,7 @@ class uber::nginx (
   }
 
   file { "/var/www/":
-    ensure => "directory",
+    ensure => directory,
   }
 
   file { '/var/www/index.html':
@@ -50,5 +50,6 @@ class uber::nginx (
     group   => 'root',
     mode    => 644,
     content => template('uber/root-index.html.erb'),
+    require => File["/var/www/"],
   }
 }
