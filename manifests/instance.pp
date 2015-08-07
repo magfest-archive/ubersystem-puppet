@@ -270,7 +270,7 @@ define uber::instance
   $default_table_price = 100,
   $table_prices = [],
   $event_timezone = "US/Eastern",
-  $donation_tier = [ 
+  $donation_tier = [
     "'No thanks' = 0",
     "'Ribbon' = 5",
     "'Button' = 10",
@@ -281,10 +281,7 @@ define uber::instance
     "'MPoint Holder' = 200",
     "'Lightsuit' = 500",
   ],
-  $ribbon_types = [ 
-    "press_ribbon = 'Camera'",
-    "band_ribbon = 'Rock Star'",
-  ],
+  $extra_ribbon_types = [],
   $job_interests = [
     "charity = 'Charity'",
     "con_ops = 'Operations'",
@@ -306,17 +303,17 @@ define uber::instance
     "tech_ops = 'Tech Ops'",
   ],
   $shiftless_depts = undef,
-  $interest_list = [ 
-    "console        = 'Consoles'", 
-    "arcade         = 'Arcade'", 
+  $interest_list = [
+    "console        = 'Consoles'",
+    "arcade         = 'Arcade'",
     "lan            = 'PC Gaming'",
-    "music          = 'Music'", 
+    "music          = 'Music'",
     "pabels         = 'Guests/Panels'", # TODO: fix the spelling here after m13
-    "tabletop       = 'Tabletop games'", 
-    "marketplace    = 'Dealers'", 
-    "tournaments    = 'Tournaments'", 
-    "film_fest      = 'Film Festival'", 
-    "indie_showcase = 'Indie Game Showcase'", 
+    "tabletop       = 'Tabletop games'",
+    "marketplace    = 'Dealers'",
+    "tournaments    = 'Tournaments'",
+    "film_fest      = 'Film Festival'",
+    "indie_showcase = 'Indie Game Showcase'",
     "larp           = 'LARP'",
   ],
   $event_locations = [
