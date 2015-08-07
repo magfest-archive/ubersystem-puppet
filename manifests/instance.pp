@@ -281,10 +281,7 @@ define uber::instance
     "'MPoint Holder' = 200",
     "'Lightsuit' = 500",
   ],
-  $ribbon_types = [ 
-    "press_ribbon = 'Camera'",
-    "band_ribbon = 'Rock Star'",
-  ],
+  $extra_ribbon_types = [],
   $job_interests = [
     "charity = 'Charity'",
     "con_ops = 'Operations'",
