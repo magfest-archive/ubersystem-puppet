@@ -109,10 +109,7 @@ class uber::config (
     "'MPoint Holder' = 200",
     "'SpaceSuit' = 500",
   ],
-  $ribbon_types = [
-    "press_ribbon = 'Camera'",
-    "band_ribbon = 'Rock Star'",
-  ],
+  $extra_ribbon_types = [],
   $job_interests = [],
   $job_locations = [],
   $shiftless_depts = undef,
@@ -149,6 +146,8 @@ class uber::config (
   $coming_as_types = undef,
   $food_stock      = undef,
   $food_price      = undef,
+
+  $log_to_stderr = false,
 ) {
 
   require uber::plugins

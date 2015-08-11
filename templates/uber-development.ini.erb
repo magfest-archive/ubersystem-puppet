@@ -165,8 +165,10 @@ food_price      = <%= @food_price %>
 
 [[ribbon]]
 no_ribbon = "no ribbon"
+<% if @extra_ribbon_types %>
 <% @extra_ribbon_types.each do |ribbon_type| -%>
 <%= ribbon_type[0] %> = "<%= ribbon_type[1] %>"
+<% end -%>
 <% end -%>
 
 [[job_location]]
