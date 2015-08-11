@@ -164,7 +164,8 @@ food_price      = <%= @food_price %>
 <% end -%>
 
 [[ribbon]]
-<% @ribbon_types.each do |ribbon_type| -%>
+no_ribbon = "no ribbon"
+<% @extra_ribbon_types.each do |ribbon_type| -%>
 <%= ribbon_type[0] %> = "<%= ribbon_type[1] %>"
 <% end -%>
 
