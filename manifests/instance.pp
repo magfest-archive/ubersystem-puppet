@@ -352,6 +352,8 @@ define uber::instance
   $food_price      = undef,
 
   $debugONLY_dont_init_python_or_git_repos_or_plugins = false, # NEVER set in production
+
+  $log_to_stderr = false,
 ) {
 
   if $hostname == '' {
