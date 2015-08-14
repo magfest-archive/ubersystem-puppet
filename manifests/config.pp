@@ -1,7 +1,7 @@
 class uber::config (
   # sideboard config file settings only below
   $sideboard_debug_enabled = false,
-  $hostname = $fqdn,
+  $hostname = hiera("uber::hostname"),
   $socket_port = hiera('uber::socket_port'),
   $socket_host = '0.0.0.0',
   $ssl_port = hiera('uber::ssl_port'),
@@ -151,6 +151,12 @@ class uber::config (
 ) {
 
   require uber::plugins
+
+  if $ssl_port == 443 {
+    $url_root = "https://${hostname}"
+  } else {
+    $url_root = "https://${hostname}:${ssl_port}"
+  }
 
   # TODO: so, really, these should be eventually split out into separate classes
   # TODO: development.ini should be refactored to somehow be treated like any other plugin, instead of us
