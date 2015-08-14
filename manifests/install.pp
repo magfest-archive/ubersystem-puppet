@@ -1,6 +1,9 @@
 class uber::install {
 
+  require uber
+
   # TODO install UTF lcoale stuff from Eli's Vagrant script
+
   if defined(Package['git']) == false {
     package { 'git': 
       ensure => present 
@@ -36,5 +39,13 @@ class uber::install {
       ensure => present,
     }
   }
-  class {'uber::python': }
+
+  class { '::python':
+    # ensure   => present,
+    version    => $uber::python_ver,
+    dev        => true,
+    pip        => true,
+    virtualenv => true,
+    gunicorn   => false,
+  }
 }

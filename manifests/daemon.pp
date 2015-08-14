@@ -1,18 +1,18 @@
-define uber::daemon (
-  $user = 'uber',
-  $group = 'uber',
-  $ensure = present,
-  $python_cmd = undef,
-  $uber_path = undef,
+class uber::daemon (
+  $user = hiera("uber::user"),
+  $group = hiera("uber::group")
 ) {
-  supervisor::program { $name :
-    ensure        => $ensure,
+  require uber::app
+
+  supervisor::program { 'uber_daemon' :
+    ensure        => present,
     enable        => true,
-    command       => "${python_cmd} sideboard/run_server.py",
-    directory     => $uber_path,
-    # environment => 'NODE_ENV=testing',
+    command       => "${uber::venv_python} sideboard/run_server.py",
+    directory     => $uber::uber_path,
     user          => $user,
     group         => $group,
     logdir_mode   => '0770',
   }
+
+  Class["uber::app"] ~> Service["supervisor::uber_daemon"]
 }
