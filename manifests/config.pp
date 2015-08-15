@@ -36,6 +36,7 @@ class uber::config (
   $collect_full_address = false,
   #$supporter_badge_type_enabled = True,
   $prereg_open = '',
+  $shifts_created = '',
   $prereg_takedown = '',
   $uber_takedown = '',
   $epoch = '',
