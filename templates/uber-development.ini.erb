@@ -46,14 +46,6 @@ guest_email_signature = '''<%= @guest_sig %>'''
 #
 url_root = "<%= @url_root %>"
 
-sqlalchemy_url = "postgresql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>:<%= @db_port %>/<%= @db_name %>"
-
-aws_access_key = "<%= @aws_access_key %>"
-aws_secret_key = "<%= @aws_secret_key %>"
-
-stripe_secret_key = "<%= @stripe_secret_key %>"
-stripe_public_key = "<%= @stripe_public_key %>"
-
 # TODO: eventually move stuff below into an event.conf file
 # TODO: currently most of the event-specific stuff is in the git
 #       repo at magfest/ubersystem and is setup for m13.
@@ -87,6 +79,15 @@ shiftless_depts = <%= @shiftless_depts %>
 <% else %>
 shiftless_depts = ,    # empty list
 <% end -%>
+
+[secret]
+sqlalchemy_url = "postgresql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>:<%= @db_port %>/<%= @db_name %>"
+
+aws_access_key = "<%= @aws_access_key %>"
+aws_secret_key = "<%= @aws_secret_key %>"
+
+stripe_secret_key = "<%= @stripe_secret_key %>"
+stripe_public_key = "<%= @stripe_public_key %>"
 
 [dates]
 prereg_open = '<%= @prereg_open %>'
