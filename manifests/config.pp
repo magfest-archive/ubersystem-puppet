@@ -114,6 +114,8 @@ class uber::config (
   $extra_ribbon_types = [],
   $job_interests = [],
   $job_locations = [],
+  $sandwich = [],
+  $food_restriction = [],
   $shiftless_depts = undef,
   $interest_list = [],
   $event_locations = [],
