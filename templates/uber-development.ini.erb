@@ -200,6 +200,17 @@ no_ribbon = "no ribbon"
 <%= item %>
 <% end -%>
 
+[[sandwich]]
+<% @sandwich.each do |sw| -%>
+<%= sw[0] %> = "<%= sw[1] %>"
+<% end -%>
+
+[[food_restriction]]
+<% @food_restriction.each do |fr| -%>
+<%= fr[0] %> = "<%= fr[1] %>"
+<% end -%>
+
+
 [dept_head_checklist]
 <% if @dept_head_checklist %>
 <% Array(@dept_head_checklist).each do |checklist_section| -%>
