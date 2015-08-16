@@ -89,6 +89,7 @@ class uber::config (
   $donations_enabled = true,
   $supporter_deadline = "2014-12-26",
   $placeholder_deadline = '2015-06-16',
+  $room_deadline = '',
   $shirt_deadline = '',
   $shirt_sizes = [
     "'no shirt' = 0",
