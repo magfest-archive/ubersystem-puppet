@@ -1,5 +1,5 @@
 class uber::nginx (
-  $hostname = hiera("uber::hostname"),
+  $hostname = $uber::hostname,
   $ssl_crt_bundle = 'puppet:///modules/uber/selfsigned-testonly.crt',
   $ssl_crt_key = 'puppet:///modules/uber/selfsigned-testonly.key',
   $ssl_port = hiera('uber::ssl_port'),

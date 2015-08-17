@@ -1,7 +1,7 @@
 class uber::config (
   # sideboard config file settings only below
   $sideboard_debug_enabled = false,
-  $hostname = hiera("uber::hostname"),
+  $hostname = $uber::hostname,
   $socket_port = hiera('uber::socket_port'),
   $socket_host = '0.0.0.0',
   $ssl_port = hiera('uber::ssl_port'),
