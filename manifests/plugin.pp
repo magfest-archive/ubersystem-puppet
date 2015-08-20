@@ -2,7 +2,6 @@
 
 define uber::plugin
 (
-  $plugins_dir,
   $user,
   $group,
   $git_repo,
@@ -11,9 +10,9 @@ define uber::plugin
 {
   # TODO: add config files in here
 
-  uber::repo { "${plugins_dir}/${name}":
+  uber::repo { "${uber::plugins_dir}/${name}":
     source   => $git_repo,
     revision => $git_branch,
-    require  => File["${uber::uber_path}/plugins/"],
+    require  => File["${uber::plugins_dir}"],
   }
 }
