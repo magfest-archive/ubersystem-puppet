@@ -27,4 +27,11 @@ class uber {
   } else {
     $hostname = $::hostname
   }
+
+  $plugins_dir = "${uber_path}/plugins"
+
+  $plugin_defaults = {
+    'user'        => $user,
+    'group'       => $group,
+  }
 }
