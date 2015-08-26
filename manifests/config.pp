@@ -124,6 +124,7 @@ class uber::config (
     "security = 'The Dorsai Irregulars'"
   ],
   $dept_head_checklist = [],
+  $volunteer_checklist = [],
   $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
   $stops_sig = "Jack Boyd\nStaffing Coordinator\nMAGFest\nhttp://magfest.org",
   $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",

@@ -233,6 +233,12 @@ path = "<%= checklist_section[1]["path"] %>"
 <% end -%>
 
 
+[volunteer_checklist]
+<% @volunteer_checklist.each do |vc| %>
+<%= vc[0] %> = "<%= vc[1] %>"
+<% end %>
+
+
 
 <% if @noise_levels -%>
 
