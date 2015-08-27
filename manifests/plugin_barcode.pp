@@ -5,9 +5,9 @@
 class uber::plugin_barcode (
   $git_repo = "https://github.com/rams/barcode",
   $git_branch = "master",
-  $barcode_key,
-  $barcode_salt,
-  $barcode_event_id,
+  $barcode_key = "",
+  $barcode_salt = 0,
+  $barcode_event_id = 0,
 ) {
   uber::repo { "${uber::plugins_dir}/barcode":
     source   => $git_repo,
