@@ -138,10 +138,14 @@ shirt_level     = <%= @shirt_level %>
 supporter_level = <%= @supporter_level %>
 season_level    = <%= @season_level %>
 
+
+<% if @shirt_sizes -%>
 [[shirt]]
 <% @shirt_sizes.each do |shirt_size| -%>
-<%= shirt_size %>
+<%= shirt_size[0] %> = "<%= shirt_size[1] %>"
 <% end -%>
+<% end -%>
+
 
 <% if @supporter_stock -%>
 supporter_stock = <%= @supporter_stock %>
