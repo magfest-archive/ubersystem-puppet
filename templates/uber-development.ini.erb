@@ -80,6 +80,8 @@ shiftless_depts = <%= @shiftless_depts %>
 shiftless_depts = ,    # empty list
 <% end -%>
 
+shift_custom_badges = <%= @shift_custom_badges %>
+
 [secret]
 sqlalchemy_url = "postgresql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>:<%= @db_port %>/<%= @db_name %>"
 
@@ -102,7 +104,6 @@ eschaton  = '<%= @eschaton %>'
 prereg_takedown  = '<%= @prereg_takedown %>'
 
 printed_badge_deadline = '<%= @printed_badge_deadline %>'
-shift_custom_badges = <%= @shift_custom_badges %>
 
 dealer_reg_start = '<%= @dealer_reg_start %>'
 dealer_reg_deadline = '<%= @dealer_reg_deadline %>'
