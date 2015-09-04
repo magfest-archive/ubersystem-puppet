@@ -49,6 +49,7 @@ class uber::config (
   $at_the_con = false,
   $max_badge_sales = 9999999,
   $hide_schedule = true,
+  $hotel_req_hours = 24,
   $shift_custom_badges = true,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $printed_badge_deadline = '',
