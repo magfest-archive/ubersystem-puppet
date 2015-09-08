@@ -59,11 +59,9 @@ class uber::nginx (
       proxy    => "http://localhost:${socket_port}/jsonrpc/",
       vhost    => $hostname,
       ssl      => true,
-      location_custom_cfg_prepend => [
-        '    if ($ssl_client_verify != "SUCCESS") {',
-        '      return 403;',
-        '    }'
-      ],
+      location_custom_cfg_prepend => {
+        '    if ($ssl_client_verify != "SUCCESS")' => '{ return 403; } # only allow client-cert authenticated requests',
+      },
       location_cfg_append => {
         'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/',
       },
