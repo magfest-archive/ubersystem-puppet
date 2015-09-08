@@ -12,12 +12,6 @@ class uber::firewall (
     }
   }
 
-  if defined("uber::json_rpc") {
-    ufw::allow { "${title}-jsonrpc":
-      port => $uber::json_rpc::api_ssl_port,
-    }
-  }
-
   ufw::allow { "${title}-ssl":
     port => $ssl_port,
   }

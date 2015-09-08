@@ -46,4 +46,11 @@ class uber::json_rpc (
     },
     notify   => Service["nginx"],
   }
+
+  if defined("uber::firewall") {
+    ufw::allow { "${title}-jsonrpc":
+      port => $api_ssl_port,
+    }
+  }
+
 }
