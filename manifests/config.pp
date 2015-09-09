@@ -38,6 +38,7 @@ class uber::config (
   $prereg_open = '',
   $shifts_created = '',
   $prereg_takedown = '',
+  $group_prereg_takedown = '',
   $uber_takedown = '',
   $epoch = '',
   $eschaton = '',
