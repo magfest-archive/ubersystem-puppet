@@ -96,6 +96,7 @@ class uber::config (
   $shirt_sizes = [
     "'no shirt' = 0",
   ],
+  $out_of_shirts = false,
   $initial_attendee = 50,
   $max_dealers = 20,
   $dealer_badge_price = 40,
