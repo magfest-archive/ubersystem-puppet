@@ -55,6 +55,8 @@ class uber::config (
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
   $printed_badge_deadline = '',
 
+  $uber_shut_down = false,
+
   $dealer_reg_start = '',
   $dealer_reg_deadline = '',
   $dealer_reg_shutdown = '',
