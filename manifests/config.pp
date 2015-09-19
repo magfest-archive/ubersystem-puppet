@@ -48,6 +48,7 @@ class uber::config (
   $numbered_badges = true,
   $one_days_enabled = true,
   $at_the_con = false,
+  $post_con = false,
   $max_badge_sales = 9999999,
   $hide_schedule = true,
   $hotel_req_hours = 24,
