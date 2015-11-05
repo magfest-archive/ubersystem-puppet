@@ -29,7 +29,6 @@ class uber {
   }
 
   $plugins_dir = "${uber_path}/plugins"
-  $priority_plugins = hiera('uber::priority_plugins', 'uber,')
   $plugin_defaults = {
     'user'        => $user,
     'group'       => $group,

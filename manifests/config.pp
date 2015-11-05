@@ -5,6 +5,7 @@ class uber::config (
   $socket_port = hiera('uber::socket_port'),
   $socket_host = '0.0.0.0',
   $ssl_port = hiera('uber::ssl_port'),
+  $priority_plugins = 'uber,',
 
   # ubersystem config file settings only below
   $url_prefix = 'uber',
