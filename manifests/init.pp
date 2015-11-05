@@ -29,6 +29,7 @@ class uber {
   }
 
   $plugins_dir = "${uber_path}/plugins"
+
   $plugin_defaults = {
     'user'        => $user,
     'group'       => $group,
