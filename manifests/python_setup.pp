@@ -8,12 +8,12 @@ class uber::python_setup
       command => "pip3 install -I virtualenv",
       cwd     => $uber::uber_path,
       path    => '/usr/bin',
-      creates => "/usr/local/bin/virtualenv-3.4",
+      creates => "/usr/local/bin/virtualenv",
     }
 
     # seems puppet's virtualenv support is broken for python3, so roll our own
     exec { "uber_create_virtualenv_${name}":
-      command => "virtualenv-3.4 --always-copy ${uber::venv_path}",
+      command => "virtualenv --always-copy ${uber::venv_path}",
       cwd     => $uber::uber_path,
       path    => '/usr/local/bin',
       # test -e = file exist, test -d = dir exists
