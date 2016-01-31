@@ -1,5 +1,6 @@
 class uber::firewall (
   $ssl_port = hiera('uber::ssl_port'),
+  $ssl_api_port = hiera('uber::ssl_api_port'),
   $socket_port = hiera('uber::socket_port'),
   $http_port = '80',
   $open_backend_port = false,
@@ -14,6 +15,10 @@ class uber::firewall (
 
   ufw::allow { "${title}-ssl":
     port => $ssl_port,
+  }
+
+  ufw::allow { "${title}-ssl-api":
+    port => $ssl_api_port,
   }
 
   ufw::allow { "${title}-http":
