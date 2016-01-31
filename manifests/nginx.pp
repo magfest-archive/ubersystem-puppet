@@ -4,13 +4,45 @@ class uber::nginx (
   $ssl_crt_key = 'puppet:///modules/uber/selfsigned-testonly.key',
   $ssl_ca_crt = undef, # if set, we enable API access through /jsonrpc
   $ssl_port = hiera('uber::ssl_port'),
+  $ssl_api_port = hiera('uber::ssl_api_port'),
   $socket_port = hiera('uber::socket_port'),
   $event_name = hiera("uber::config::event_name"),
   $year = hiera("uber::config::year"),
   $url_prefix = hiera("uber::config::url_prefix"),
 ) {
 
-  $client_cert_vhost_cfg = undef
+  # setup 2 virtual hosts:
+  # 1) for normal HTTP and HTTPS traffic
+  # 2) (only if enabled) for API HTTPS traffic that requires a client cert
+
+  # port 80 and $ssl_port(usually 443) vhosts
+  nginx::resource::vhost { "rams-normal":
+    server_name       => [$hostname],
+    www_root          => '/var/www/',
+    rewrite_to_https  => true,
+    ssl               => true,
+    ssl_cert          => $ssl_crt_bundle,
+    ssl_key           => $ssl_crt_key,
+    ssl_port          => $ssl_port,
+    notify            => Service["nginx"],
+  }
+
+  # where our backend (rams) listens on it's internal port
+  $backend_base_url = "http://localhost:${socket_port}"
+
+  $location_cfg_append = {
+    'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/'
+  }
+
+  nginx::resource::location { "rams_backend":
+    location => "/${url_prefix}/",
+    ensure   => present,
+    proxy    => "${backend_base_url}/${url_prefix}/",
+    vhost    => "rams-normal",
+    ssl      => true,
+    location_cfg_append => $location_cfg_append,
+    notify   => Service["nginx"],
+  }
 
   if ($ssl_ca_crt != undef) {
     ensure_resource('file', "${nginx::params::nx_conf_dir}/jsonrpc-client.crt", {
@@ -22,49 +54,33 @@ class uber::nginx (
 
     $client_cert_location_cfg = {
       'ssl_client_certificate' => "${nginx::params::nx_conf_dir}/jsonrpc-client.crt",
-      'ssl_verify_client'      => 'optional',
+      'ssl_verify_client'      => 'on',
     }
-  }
 
-  nginx::resource::vhost { $hostname:
-    www_root          => '/var/www/',
-    rewrite_to_https  => true,
-    ssl               => true,
-    ssl_cert          => $ssl_crt_bundle,
-    ssl_key           => $ssl_crt_key,
-    ssl_port          => $ssl_port,
-    vhost_cfg_prepend => $client_cert_location_cfg,
-    notify            => Service["nginx"],
-  }
+    # API virtualhost only for automated HTTPS client-cert-verified connections
+    nginx::resource::vhost { "rams-api":
+      use_default_location  => false,
+      server_name           => [$hostname],
+      ssl                   => true,
+      ssl_cert              => $ssl_crt_bundle,
+      ssl_key               => $ssl_crt_key,
+      ssl_port              => $ssl_api_port,
+      listen_port           => $ssl_api_port,
+      vhost_cfg_prepend     => $client_cert_location_cfg,
+      notify                => Service["nginx"],
+    }
 
-  # where our backend (rams) listens internally
-  $proxy_url = "http://localhost:${socket_port}/${url_prefix}/"
-
-  nginx::resource::location { "${hostname}":
-    ensure   => present,
-    proxy    => $proxy_url,
-    location => "/${url_prefix}/",
-    vhost    => $hostname,
-    ssl      => true,
-    location_cfg_append => {
-        'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/'
-    },
-    notify   => Service["nginx"],
-  }
-
-  if ($ssl_ca_crt != undef) {
-    nginx::resource::location { "/jsonrpc/":
+    nginx::resource::location { "rams-api":
+      location => "/jsonrpc/",
       ensure   => present,
       ssl_only => true,
-      proxy    => "http://localhost:${socket_port}/jsonrpc/",
-      vhost    => $hostname,
+      proxy    => "${backend_base_url}/jsonrpc/",
+      vhost    => "rams-api",
       ssl      => true,
       location_custom_cfg_prepend => {
         '    if ($ssl_client_verify != "SUCCESS")' => '{ return 403; } # only allow client-cert authenticated requests',
       },
-      location_cfg_append => {
-        'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/',
-      },
+      location_cfg_append => $location_cfg_append,
       notify => Service["nginx"],
     }
   }
