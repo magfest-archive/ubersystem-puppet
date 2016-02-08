@@ -34,6 +34,7 @@ class uber::config (
   $dev_box = false,
   $collect_exact_birthdate = false,
   $collect_full_address = false,
+  $kiosk_cc_enabled = false,
   #$supporter_badge_type_enabled = True,
   $prereg_open = '',
   $shifts_created = '',
