@@ -126,10 +126,7 @@ class uber::config (
   $shiftless_depts = undef,
   $interest_list = [],
   $event_locations = [],
-  $dept_head_overrides = [
-    "staff_support = 'Jack Boyd'",
-    "security = 'The Dorsai Irregulars'"
-  ],
+  $dept_head_overrides = [],
   $dept_head_checklist = [],
   $volunteer_checklist = [],
   $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
