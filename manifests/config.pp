@@ -84,6 +84,7 @@ class uber::config (
       {"range_start" => 3000, "range_end" => 29999 }
     ],
   ],
+  $badge_stocks = {},
   $badge_prices = [],
   $shirt_level = 20,
   $supporter_level = 60,
