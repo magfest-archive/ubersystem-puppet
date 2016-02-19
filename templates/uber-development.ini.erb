@@ -142,6 +142,12 @@ dealer_badge_price = <%= @dealer_badge_price %>
 
 <% end -%>
 
+[[stocks]]
+<% @badge_stocks.each do |stock| %>
+<%= stock[0] %> = <%= stock[1] %>
+<% end %>
+
+
 [table_prices]
 default_price = <%= @default_table_price %>
 <% @table_prices.each do |table_price| -%>
