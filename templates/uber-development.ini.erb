@@ -233,35 +233,6 @@ no_ribbon = "no ribbon"
 <% end -%>
 
 
-[dept_head_checklist]
-<% if @dept_head_checklist %>
-<% Array(@dept_head_checklist).each do |checklist_section| -%>
-
-[[<%= checklist_section[0] %>]]
-<% if checklist_section[1]["name"] -%>
-name = "<%= checklist_section[1]["name"] %>"
-<% end -%>
-<% if checklist_section[1]["deadline"] -%>
-deadline = "<%= checklist_section[1]["deadline"] %>"
-<% end -%>
-<% if checklist_section[1]["description"] -%>
-description = "<%= checklist_section[1]["description"] %>"
-<% end -%>
-<% if checklist_section[1]["path"] -%>
-path = "<%= checklist_section[1]["path"] %>"
-<% end -%>
-
-<% end -%>
-<% end -%>
-
-
-[volunteer_checklist]
-<% @volunteer_checklist.each do |vc| %>
-<%= vc[0] %> = "<%= vc[1] %>"
-<% end %>
-
-
-
 <% if @noise_levels -%>
 
 # magstock-specific
@@ -317,3 +288,30 @@ path = "<%= checklist_section[1]["path"] %>"
 <% end -%>
 
 <% end -%>
+
+[dept_head_checklist]
+<% if @dept_head_checklist %>
+<% Array(@dept_head_checklist).each do |checklist_section| -%>
+
+[[<%= checklist_section[0] %>]]
+<% if checklist_section[1]["name"] -%>
+name = "<%= checklist_section[1]["name"] %>"
+<% end -%>
+<% if checklist_section[1]["deadline"] -%>
+deadline = "<%= checklist_section[1]["deadline"] %>"
+<% end -%>
+<% if checklist_section[1]["description"] -%>
+description = "<%= checklist_section[1]["description"] %>"
+<% end -%>
+<% if checklist_section[1]["path"] -%>
+path = "<%= checklist_section[1]["path"] %>"
+<% end -%>
+
+<% end -%>
+<% end -%>
+
+
+[volunteer_checklist]
+<% @volunteer_checklist.each do |vc| %>
+<%= vc[0] %> = "<%= vc[1] %>"
+<% end %>
