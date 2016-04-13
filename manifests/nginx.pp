@@ -111,6 +111,7 @@ class uber::nginx (
 
   file { "/var/www/":
     ensure => directory,
+    notify => Service["nginx"],
   }
 
   file { '/var/www/index.html':
@@ -120,5 +121,6 @@ class uber::nginx (
     mode    => 644,
     content => template('uber/root-index.html.erb'),
     require => File["/var/www/"],
+    notify => Service["nginx"],
   }
 }
