@@ -160,11 +160,6 @@ shirt_level     = <%= @shirt_level %>
 supporter_level = <%= @supporter_level %>
 season_level    = <%= @season_level %>
 
-[[shirt]]
-<% @shirt_sizes.each do |shirt_size| -%>
-<%= shirt_size %>
-<% end -%>
-
 <% if @supporter_stock -%>
 supporter_stock = <%= @supporter_stock %>
 <% end -%>
@@ -175,6 +170,11 @@ food_stock      = <%= @food_stock %>
 
 <% if @food_price -%>
 food_price      = <%= @food_price %>
+<% end -%>
+
+[[shirt]]
+<% @shirt_sizes.each do |shirt_size| -%>
+<%= shirt_size %>
 <% end -%>
 
 [[donation_tier]]
