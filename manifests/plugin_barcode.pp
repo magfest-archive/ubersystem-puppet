@@ -1,4 +1,3 @@
-# barcode-specific functionality.
 # TODO: probably should move this file into its own puppet module
 # TODO: need to make config handling more generic, this should work with ANY plugin, and not be barcode-specific
 
