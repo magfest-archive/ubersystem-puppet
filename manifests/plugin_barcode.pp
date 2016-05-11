@@ -5,6 +5,8 @@
 class uber::plugin_barcode (
   $git_repo = "https://github.com/rams/barcode",
   $git_branch = "master",
+
+  # INI settings below
   $barcode_key = "",
   $barcode_salt = 0,
   $barcode_event_id = 0,

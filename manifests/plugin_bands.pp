@@ -4,6 +4,8 @@
 class uber::plugin_bands (
   $git_repo = "https://github.com/magfest/bands",
   $git_branch = "master",
+
+  # INI settings below
   $stage_agreement_deadline = undef,
 ) {
   uber::repo { "${uber::plugins_dir}/bands":
