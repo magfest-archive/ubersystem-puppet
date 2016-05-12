@@ -1,10 +1,11 @@
-# barcode-specific functionality.
 # TODO: probably should move this file into its own puppet module
 # TODO: need to make config handling more generic, this should work with ANY plugin, and not be barcode-specific
 
 class uber::plugin_barcode (
   $git_repo = "https://github.com/rams/barcode",
   $git_branch = "master",
+
+  # INI settings below
   $barcode_key = "",
   $barcode_salt = 0,
   $barcode_event_id = 0,

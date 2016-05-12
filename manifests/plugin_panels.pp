@@ -4,6 +4,8 @@
 class uber::plugin_panels (
   $git_repo = "https://github.com/magfest/panels",
   $git_branch = "master",
+
+  # INI settings below
   $hide_schedule = true,
   $expected_response = undef,
   $event_location = undef,
