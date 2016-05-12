@@ -6,7 +6,15 @@ class uber::plugin_bands (
   $git_branch = "master",
 
   # INI settings below
-  $stage_agreement_deadline = undef,
+  $auction_start = "2016-02-21 11",
+  $band_panel_deadline = "2015-12-20",
+  $band_bio_deadline = "2016-01-03",
+  $band_agreement_deadline = "2016-01-17",
+  $band_w9_deadline = "2016-01-17",
+  $band_merch_deadline = "2016-01-31",
+  $band_charity_deadline = "2016-01-31",
+  $band_badge_deadline = "2016-02-07",
+  $stage_agreement_deadline = "2016-02-07",
 ) {
   uber::repo { "${uber::plugins_dir}/bands":
     source   => $git_repo,
