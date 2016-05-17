@@ -22,6 +22,9 @@ class uber::config (
   $organization_name,
   $year,
 
+  $event_venue = '',
+  $event_venue_address = '',
+
   $show_custom_badge_input = true,
   $shirt_sales_enabled = true,
   $show_affiliates = true,
