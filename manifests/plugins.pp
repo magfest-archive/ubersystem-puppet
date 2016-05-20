@@ -6,10 +6,7 @@ class uber::plugins
   $sideboard_branch,
   $sideboard_plugins,
   $extra_plugins = undef,
-  $debug_skip = false,
 ) {
-  if $debug_skip == false {
-    
     # sideboard
     uber::repo { $uber::uber_path:
       source   => $sideboard_repo,
@@ -25,5 +22,4 @@ class uber::plugins
     if $extra_plugins {
       create_resources(uber::plugin, $extra_plugins, $uber::plugin_defaults)
     }
-  }
 }
