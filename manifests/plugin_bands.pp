@@ -8,6 +8,9 @@ class uber::plugin_bands (
   # INI settings below
   $band_email = undef,
   $band_email_signature = undef,
+  $require_dedicated_band_table_presence = true,
+
+  $band_merch_enums = undef,
 
   $auction_start = '',
   $band_panel_deadline = '',
