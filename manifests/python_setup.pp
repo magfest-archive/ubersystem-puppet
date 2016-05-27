@@ -1,8 +1,7 @@
 class uber::python_setup
-(
-  $debug_skip = false,
-) {
-  if $debug_skip == false {
+()
+{
+  if !hiera('debugONLY_dont_init_python_or_git_repos_or_plugins') {
 
     exec { "uber_install_virtualenv_${name}":
       command => "pip3 install -I virtualenv",
