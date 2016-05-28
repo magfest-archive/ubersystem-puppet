@@ -3,7 +3,7 @@
 
 # defaults to 'False'
 debug = <%= @sideboard_debug_enabled %>
-priority_plugins = uber, panels
+priority_plugins = <%= @priority_plugins %>
 
 [cherrypy]
 server.socket_host = <%= @socket_host %>

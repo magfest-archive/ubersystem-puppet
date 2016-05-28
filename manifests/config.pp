@@ -1,6 +1,7 @@
 class uber::config (
   # sideboard config file settings only below
   $sideboard_debug_enabled = false,
+  $priority_plugins = "uber",
   $hostname = $uber::hostname,
   $url_base = '%(url_root)s%(path)s',
   $socket_port = hiera('uber::socket_port'),
