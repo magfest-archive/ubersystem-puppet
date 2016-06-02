@@ -51,7 +51,7 @@ class uber::config (
   #$prereg_price = 45,
   #$at_door_price = 60,
   $groups_enabled = true,
-  $group_discount - 10,
+  $group_discount = 10,
   $numbered_badges = true,
   $one_days_enabled = true,
   $at_the_con = false,
