@@ -120,6 +120,8 @@ dealer_reg_deadline = '<%= @dealer_reg_deadline %>'
 dealer_reg_shutdown = '<%= @dealer_reg_shutdown %>'
 dealer_payment_due  = '<%= @dealer_payment_due %>'
 
+badge_price_waived = '<%= @badge_price_waived %>'
+
 [badge_ranges] 
 <% @badge_types.each do |badge_type| -%>
 <%= badge_type[0] %> = <%= badge_type[1]["range_start"] %>, <%= badge_type[1]["range_end"] %>

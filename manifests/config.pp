@@ -70,6 +70,8 @@ class uber::config (
   $dealer_reg_shutdown = '',
   $dealer_payment_due = '',
 
+  $badge_price_waived = '',
+
   $badge_enums = {
     "attendee_badge" => "Attendee",
     "supporter_badge" => "Supporter",
