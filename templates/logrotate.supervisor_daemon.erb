@@ -1,0 +1,11 @@
+<%= @app_logfile_name -%> {
+    daily
+    su root syslog
+    missingok
+    rotate 52
+    compress
+    delaycompress
+    copytruncate
+    notifempty
+    create 644 root root
+}
