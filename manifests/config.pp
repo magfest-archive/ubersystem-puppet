@@ -165,7 +165,8 @@ class uber::config (
   $food_stock      = undef,
   $food_price      = undef,
 
-  $log_to_stderr = false,
+  $log_to_stdout = true,
+  $log_to_syslog = false,
 ) {
 
   require uber::plugins
