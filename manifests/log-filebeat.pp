@@ -14,11 +14,17 @@ class uber::log-filebeat (
           ],
           'index'       => 'filebeat'
         },
-      logging => {
-        'to_syslog' => false,
-        'to_files' => true,
+        logging         => {
+          'to_syslog' => false,
+          'to_files'  => true,
         },
       },
+    }
+
+    $multiline = {
+      pattern => '^[[:space:]]',
+      negate => false,
+      match => 'after',
     }
 
     $exclude_files = ['.gz$']
@@ -28,16 +34,22 @@ class uber::log-filebeat (
         '/var/log/syslog',
         '/var/log/auth.log',
       ],
-      doc_type      => 'syslog-beat',
+      doc_type      => 'log',
       exclude_files => $exclude_files,
+      fields        => {
+        'log_source' => 'system',
+      },
     }
 
     filebeat::prospector { 'nginxlogs':
       paths         => [
         '/var/log/nginx/*.log',
       ],
-      doc_type      => 'nginx-beat',
+      doc_type      => 'log',
       exclude_files => $exclude_files,
+      fields        => {
+        'log_source' => 'nginx',
+      },
     }
 
     filebeat::prospector { 'applogs':
@@ -45,8 +57,12 @@ class uber::log-filebeat (
         '/var/log/supervisor/*',
         "${app_logfile_name}"
       ],
-      doc_type      => 'app-beat',
+      doc_type      => 'log',
       exclude_files => $exclude_files,
+      fields        => {
+        'log_source' => 'app',
+      },
+      multiline => $multiline,
     }
   }
 }
