@@ -2,7 +2,7 @@ class uber::daemon (
   $user = hiera("uber::user"),
   $group = hiera("uber::group"),
   $daemon_name = hiera("uber::daemon_name"),
-  $app_logfile_name = hiera("uber::app_logifle_name")
+  $app_logfile_name = hiera("uber::app_logfile_name")
 ) {
   require uber::app
 
