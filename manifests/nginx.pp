@@ -1,7 +1,7 @@
 class uber::nginx (
   $hostname = $uber::hostname,
-  $ssl_crt_bundle = 'puppet:///modules/uber/selfsigned-testonly.crt',
-  $ssl_crt_key = 'puppet:///modules/uber/selfsigned-testonly.key',
+  $ssl_crt = 'puppet:///modules/uber/selfsigned-testonly.crt',
+  $ssl_key = 'puppet:///modules/uber/selfsigned-testonly.key',
   $ssl_ca_crt = undef, # if set, we enable API access through /jsonrpc
   $ssl_port = hiera('uber::ssl_port'),
   $ssl_api_port = hiera('uber::ssl_api_port'),
@@ -10,6 +10,23 @@ class uber::nginx (
   $year = hiera("uber::config::year"),
   $url_prefix = hiera("uber::config::url_prefix"),
 ) {
+
+  $ssl_crt_filename = "${nginx::params::conf_dir}/ssl-certificate.crt"
+  $ssl_key_filename = "${nginx::params::conf_dir}/ssl-certificate.key"
+
+  ensure_resource('file', $ssl_crt_filename, {
+    owner  => $nginx::params::daemon_user,
+    mode   => '0444',
+    source => $ssl_crt,
+    notify => Service["nginx"],
+  })
+
+  ensure_resource('file', $ssl_key_filename, {
+    owner  => $nginx::params::daemon_user,
+    mode   => '0440',
+    source => $ssl_key,
+    notify => Service["nginx"],
+  })
 
   # setup 2 virtual hosts:
   # 1) for normal HTTP and HTTPS traffic
@@ -21,8 +38,8 @@ class uber::nginx (
     www_root          => '/var/www/',
     rewrite_to_https  => true,
     ssl               => true,
-    ssl_cert          => $ssl_crt_bundle,
-    ssl_key           => $ssl_crt_key,
+    ssl_cert          => $ssl_crt_filename,
+    ssl_key           => $ssl_key_filename,
     ssl_port          => $ssl_port,
     notify            => Service["nginx"],
   }
@@ -30,30 +47,26 @@ class uber::nginx (
   # where our backend (rams) listens on it's internal port
   $backend_base_url = "http://localhost:${socket_port}"
 
-  $location_cfg_append = {
-    'proxy_redirect' => 'http://localhost/ $scheme://$host:$server_port/'
-  }
-
   nginx::resource::location { "rams_backend":
     location => "/${url_prefix}/",
     ensure   => present,
     proxy    => "${backend_base_url}/${url_prefix}/",
     vhost    => "rams-normal",
     ssl      => true,
-    location_cfg_append => $location_cfg_append,
+    proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
     notify   => Service["nginx"],
   }
 
   if ($ssl_ca_crt != undef) {
-    ensure_resource('file', "${nginx::params::nx_conf_dir}/jsonrpc-client.crt", {
-      owner  => $nginx::params::nx_daemon_user,
-      mode   => '0444',
+    ensure_resource('file', "${nginx::params::conf_dir}/jsonrpc-client.crt", {
+      owner  => $nginx::params::daemon_user,
+      mode   => '0440',
       source => $ssl_ca_crt,
       notify => Service["nginx"],
     })
 
     $client_cert_location_cfg = {
-      'ssl_client_certificate' => "${nginx::params::nx_conf_dir}/jsonrpc-client.crt",
+      'ssl_client_certificate' => "${nginx::params::conf_dir}/jsonrpc-client.crt",
       'ssl_verify_client'      => 'on',
     }
 
@@ -62,8 +75,8 @@ class uber::nginx (
       use_default_location  => false,
       server_name           => [$hostname],
       ssl                   => true,
-      ssl_cert              => $ssl_crt_bundle,
-      ssl_key               => $ssl_crt_key,
+      ssl_cert              => $ssl_crt_filename,
+      ssl_key               => $ssl_key_filename,
       ssl_port              => $ssl_api_port,
       listen_port           => $ssl_api_port,
       vhost_cfg_prepend     => $client_cert_location_cfg,
@@ -80,16 +93,9 @@ class uber::nginx (
       location_custom_cfg_prepend => {
         '    if ($ssl_client_verify != "SUCCESS")' => '{ return 403; } # only allow client-cert authenticated requests',
       },
-      location_cfg_append => $location_cfg_append,
+      proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
       notify => Service["nginx"],
     }
-  }
-
-  # delete the default.conf to ensure that our virtualhost file gets the requests for localhost.
-  # this is needed if you try and access the server in a browser but not by $hostname_to_use
-  file { "${nginx::params::nx_conf_dir}/conf.d/default.conf":
-    ensure => absent,
-    notify => Service["nginx"],
   }
 
   file { "/var/www/":
