@@ -3,7 +3,7 @@
 class uber::log-filebeat (
   $server_name_and_port = '',
   $daemon_name = hiera("uber::daemon_name"),
-  $app_logfile_name = hiera("uber::app_logifle_name")
+  $app_logfile_name = hiera("uber::app_logfile_name")
 ) {
   if ($server_name_and_port) {
     class { 'filebeat':
