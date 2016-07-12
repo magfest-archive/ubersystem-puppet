@@ -14,12 +14,21 @@ server.thread_pool = 100
 server.socket_timeout = 1
 
 [handlers]
+
+<% if @log_to_syslog %>
 [[syslog]]
 class = "logging.handlers.SysLogHandler"
 address = "/dev/log"
+<% if @log_force_multiline_indent %>
+formatter = "indent_multiline"
+<% end -%>
+<% end -%>
 
-<% if @log_to_stderr %>
+<% if @log_to_stdout %>
 [[stdout]]
 class = "logging.StreamHandler"
-stream = "ext://sys.stderr"
+stream = "ext://sys.stdout"
+<% if @log_force_multiline_indent %>
+formatter = "indent_multiline"
+<% end -%>
 <% end -%>

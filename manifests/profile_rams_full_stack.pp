@@ -10,4 +10,5 @@ class uber::profile_rams_full_stack (
   require ::uber::nginx
   require ::uber::daemon
   require ::uber::firewall
+  require ::uber::log-filebeat
 }
