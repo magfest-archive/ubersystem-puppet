@@ -42,6 +42,7 @@ class uber::config (
   $kiosk_cc_enabled = false,
   #$supporter_badge_type_enabled = True,
   $prereg_open = '',
+  $hide_prereg_open_date = false,
   $shifts_created = '',
   $prereg_takedown = '',
   $group_prereg_takedown = '',
