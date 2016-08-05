@@ -8,7 +8,6 @@ class uber::plugin_panels (
   # INI settings below
   $hide_schedule = true,
   $expected_response = undef,
-  $event_location = undef,
   $panel_rooms = undef,
   $panel_app_deadline = undef,
   $alt_schedule_url = undef,
