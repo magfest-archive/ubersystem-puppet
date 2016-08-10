@@ -290,6 +290,17 @@ no_ribbon = "no ribbon"
 
 <% end -%>
 
+<% if @donation_tier_descriptions %>
+[donation_tier_descriptions]
+<% @donation_tier_descriptions.each do |donation_tier_description| -%>
+[[<%= donation_tier_description[0] %>]]
+<% donation_tier_description[1].each do |entry| -%>
+<%= entry[0] %> = '<%= entry[1] %>'
+<% end -%>
+
+<% end -%>
+<% end -%>
+
 [dept_head_checklist]
 <% if @dept_head_checklist %>
 <% Array(@dept_head_checklist).each do |checklist_section| -%>
