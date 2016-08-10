@@ -139,7 +139,7 @@ group_discount = <%= @group_discount %>
 <% @badge_prices.each do |badge_pricing| -%>
 [[<%= badge_pricing[0] %>]]
 <% badge_pricing[1].each do |date| -%>
-<%= date.keys[0] %> = <%= date.values[0] %>
+<%= date[0] %> = <%= date[1] %>
 <% end -%>
 
 <% end -%>
@@ -175,12 +175,12 @@ food_price      = <%= @food_price %>
 
 [[shirt]]
 <% @shirt_sizes.each do |shirt_size| -%>
-<%= shirt_size %>
+'<%= shirt_size[0] %>' = <%= shirt_size[1] %>
 <% end -%>
 
 [[donation_tier]]
 <% @donation_tier.each do |item| -%>
-<%= item %>
+'<%= item[0] %>' = <%= item[1] %>
 <% end -%>
 
 [enums]
