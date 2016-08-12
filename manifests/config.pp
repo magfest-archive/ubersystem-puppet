@@ -8,6 +8,8 @@ class uber::config (
   $socket_host = '0.0.0.0',
   $ssl_port = hiera('uber::ssl_port'),
 
+  $hardcore_optimizations_enabled = false,
+
   # ubersystem config file settings only below
   $url_prefix = 'uber',
 
