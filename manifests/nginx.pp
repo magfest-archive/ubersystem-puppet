@@ -160,6 +160,7 @@ define uber::nginx_custom_location(
       "uber-nginx-location-$name" => {
         location_custom_cfg_prepend => {
           '    proxy_ignore_headers' => 'Cache-Control Set-Cookie;',
+          '    proxy_hide_headers' => 'Set-Cookie;', # important: static requests should NOT return Set-Cookie to client
         },
       }
     }
