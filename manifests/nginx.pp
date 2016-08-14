@@ -44,6 +44,7 @@ class uber::nginx (
     notify            => Service["nginx"],
     vhost_cfg_prepend => {
       'error_page' => '503 @maintenance',
+      'root' => '/var/www',  # slightly hacky. need this for maintenance page.
     },
   }
 
@@ -53,7 +54,8 @@ class uber::nginx (
     notify           => Service["nginx"],
     rewrite_rules    => ['^(.*)$ /maintenance.html break'],
     vhost            => "rams-normal",
-    www_root         => "/var/www/"
+    www_root         => "/var/www/",
+    ssl      => true,
   }
 
   # where our backend (rams) listens on it's internal port
@@ -124,7 +126,7 @@ class uber::nginx (
       vhost    => "rams-api",
       ssl      => true,
       location_custom_cfg_prepend => {
-        '    if ($ssl_client_verify != "SUCCESS")' => '{ return 403; } # only allow client-cert authenticated requests',
+        'if ($ssl_client_verify != "SUCCESS")' => '{ return 403; } # only allow client-cert authenticated requests',
       },
       proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
       notify => Service["nginx"],
@@ -159,8 +161,8 @@ define uber::nginx_custom_location(
     $params = {
       "uber-nginx-location-$name" => {
         location_custom_cfg_prepend => {
-          '    proxy_ignore_headers' => 'Cache-Control Set-Cookie;',
-          '    proxy_hide_header' => 'Set-Cookie;', # important: static requests should NOT return Set-Cookie to client
+          'proxy_ignore_headers' => 'Cache-Control Set-Cookie;',
+          'proxy_hide_header' => 'Set-Cookie;', # important: static requests should NOT return Set-Cookie to client
         },
       }
     }
@@ -168,7 +170,7 @@ define uber::nginx_custom_location(
     $params = {
       "uber-nginx-location-$name" => {
         location_custom_cfg_prepend => {
-          '    proxy_no_cache' => '"1";',
+          'proxy_no_cache' => '"1";',
         },
       }
     }
@@ -183,7 +185,7 @@ define uber::nginx_custom_location(
     include  => ["/etc/nginx/rams.conf"],
     notify   => Service["nginx"],
     location_custom_cfg_append => {
-      '    if (-f $document_root/maintenance.html)' => '{ return 503; }',
+      'if (-f $document_root/maintenance.html)' => '{ return 503; }',
     },
     proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
   }
