@@ -42,19 +42,52 @@ class uber::nginx (
     ssl_key           => $ssl_key_filename,
     ssl_port          => $ssl_port,
     notify            => Service["nginx"],
+    vhost_cfg_prepend => {
+      'error_page' => '503 @maintenance',
+    },
+  }
+
+  # if maintenance.html exists, it will cause everything to redirect there
+  nginx::resource::location { "@maintenance":
+    ensure           => present,
+    notify           => Service["nginx"],
+    rewrite_rules    => ['^(.*)$ /maintenance.html break'],
+    vhost            => "rams-normal",
+    www_root         => "/var/www/"
   }
 
   # where our backend (rams) listens on it's internal port
   $backend_base_url = "http://localhost:${socket_port}"
 
-  nginx::resource::location { "rams_backend":
-    location => "/${url_prefix}/",
-    ensure   => present,
-    proxy    => "${backend_base_url}/${url_prefix}/",
-    vhost    => "rams-normal",
-    ssl      => true,
-    proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
-    notify   => Service["nginx"],
+  ensure_resource('file', "/etc/nginx/rams.conf", {
+    owner  => $nginx::params::daemon_user,
+    mode   => '0444',
+    source => 'puppet:///modules/uber/rams.conf',
+    notify => Service["nginx"],
+  })
+
+  uber::nginx_custom_location { "rams_backend-dontcache":
+    url_prefix       => $url_prefix,
+    backend_base_url => $backend_base_url,
+    vhost            => "rams-normal",
+    subdir           => "",
+    cached           => false,
+  }
+
+  uber::nginx_custom_location { "rams_backend-static-cached":
+    url_prefix       => $url_prefix,
+    backend_base_url => $backend_base_url,
+    vhost            => "rams-normal",
+    subdir           => "static/",
+    cached           => true,
+  }
+
+  uber::nginx_custom_location { "rams_backend-staticviews-cached":
+    url_prefix       => $url_prefix,
+    backend_base_url => $backend_base_url,
+    vhost            => "rams-normal",
+    subdir           => "static_views/",
+    cached           => true,
   }
 
   if ($ssl_ca_crt != undef) {
@@ -112,4 +145,47 @@ class uber::nginx (
     require => File["/var/www/"],
     notify => Service["nginx"],
   }
+}
+
+define uber::nginx_custom_location(
+  $url_prefix,
+  $backend_base_url,
+  $subdir,
+  $vhost,
+  $cached = false,
+) {
+
+  if ($cached) {
+    $params = {
+      "uber-nginx-location-$name" => {
+        location_custom_cfg_prepend => {
+          '    proxy_ignore_headers' => 'Cache-Control Set-Cookie;',
+        },
+      }
+    }
+  } else {
+    $params = {
+      "uber-nginx-location-$name" => {
+        location_custom_cfg_prepend => {
+          '    proxy_no_cache' => '"1";',
+        },
+      }
+    }
+  }
+
+  $defaults = {
+    location => "/${url_prefix}/$subdir",
+    ensure   => present,
+    proxy    => "${backend_base_url}/${url_prefix}/$subdir",
+    vhost    => $vhost,
+    ssl      => true,
+    include  => ["/etc/nginx/rams.conf"],
+    notify   => Service["nginx"],
+    location_custom_cfg_append => {
+      '    if (-f $document_root/maintenance.html)' => '{ return 503; }',
+    },
+    proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
+  }
+
+  create_resources(nginx::resource::location, $params, $defaults)
 }
