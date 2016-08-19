@@ -4,6 +4,13 @@ class uber::firewall (
   if !hiera('debugONLY_dont_init_python_or_git_repos_or_plugins') {
     include ufw
 
+    # workaround ufw puppet module inability to order rules correctly. we have to re-create the entire
+    # list every time for it to respect our ordering.
+    exec { 'ufw-reset':
+      command => 'ufw --force reset',
+      before  => [Class['uber::firewall_deny_rules'], Exec['ufw-enable'], Exec['ufw-default-deny']]
+    }
+
     # MUST come first or else rules won't actually be applied
     class { 'uber::firewall_deny_rules':
       deny_ips_list => $blacklisted_ips,
@@ -18,10 +25,15 @@ class uber::firewall (
 
 class uber::firewall_deny_rules($deny_ips_list)
 {
-  $rule_hash = generate_resource_hash($deny_ips_list, 'ip', 'blacklist deny from IP ')
+  $rule_hash = generate_resource_hash($deny_ips_list, 'from', 'blacklist deny from IP ')
 
-  $rule_defaults = {}
+  $rule_defaults = {
+    'ip' => 'any'
+  }
   create_resources(ufw::deny, $rule_hash, $rule_defaults)
+
+  # (the IP is blocked if it initiates 6 or more connections within 30 seconds):
+  ufw::limit { 22: }
 }
 
 class uber::firewall_allow_rules(
@@ -53,7 +65,4 @@ class uber::firewall_allow_rules(
   ufw::allow { 'allow-ssh-from-all':
     port => 22,
   }
-
-  # (the IP is blocked if it initiates 6 or more connections within 30 seconds):
-  ufw::limit { 22: }
 }
