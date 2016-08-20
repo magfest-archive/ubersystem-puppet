@@ -40,6 +40,20 @@ class uber::install {
     }
   }
 
+  # for python-prctl
+  if defined(Package['build-essential']) == false {
+    package { 'build-essential':
+      ensure => present,
+    }
+  }
+
+  # for python-prctl
+  if defined(Package['libcap-dev']) == false {
+    package { 'libcap-dev':
+      ensure => present,
+    }
+  }
+
   class { '::python':
     # ensure   => present,
     version    => $uber::python_ver,
