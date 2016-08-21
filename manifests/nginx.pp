@@ -42,6 +42,7 @@ class uber::nginx (
     ssl_key           => $ssl_key_filename,
     ssl_port          => $ssl_port,
     notify            => Service["nginx"],
+    rewrite_rules    => ['^/robots.txt$ /uber/static/robots.txt last'],
     vhost_cfg_prepend => {
       'error_page' => '503 @maintenance',
       'root' => '/var/www',  # slightly hacky. need this for maintenance page.
