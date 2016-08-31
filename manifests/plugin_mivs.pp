@@ -11,6 +11,7 @@ class uber::plugin_mivs (
   $judging_deadline = undef,
   $round_two_complete = undef,
   $mivs_confirm_deadline = undef,
+  $allow_game_submission = false,
 ) {
   uber::repo { "${uber::plugins_dir}/mivs":
     source   => $git_repo,
