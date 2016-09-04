@@ -10,6 +10,9 @@ server.socket_host = <%= @socket_host %>
 server.socket_port = <%= @socket_port %>
 tools.sessions.timeout = 4320  # 30 days (in minutes)
 
+tools.proxy.on = True
+tools.proxy.debug = False
+
 server.thread_pool = 100
 server.socket_timeout = 1
 
