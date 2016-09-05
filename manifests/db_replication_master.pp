@@ -13,7 +13,6 @@ class uber::db_replication_master (
   postgresql::server::role { $replication_user:
     password_hash => postgresql_password($replication_user, $replication_password),
     replication   => true,
-    subscribe      => Postgresql::Server::Db["${dbname}"]
   }
 
   postgresql::server::config_entry {
