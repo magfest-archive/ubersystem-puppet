@@ -1,8 +1,8 @@
-class uber::replication::master (
-  $dbname,
+class uber::db_replication_master (
+  $dbname = hiera("uber::config::db_name"),
   $replication_user = 'replicator',
   $replication_password,
-  $slave_ips,
+  $allow_to_hosts,
 ) {
   require uber::db
 
@@ -24,28 +24,29 @@ class uber::replication::master (
      'wal_keep_segments':    value => '8';
   }
 
-  uber::replication::allow-from-ip { $slave_ips:
-    dbname   => $dbname,
+  $allow_to_hosts_hash = generate_resource_hash($allow_to_hosts, 'name', 'allow replication from host ')
+  $allow_to_hosts_defaults = {
     username => $replication_user,
   }
+
+  create_resources(uber::allow_replication_from, $allow_to_hosts_hash, $allow_to_hosts_defaults)
 }
 
-class uber::replication::allow-from-ip (
-  $dbname,
+define uber::allow_replication_from (
   $username,
 ) {
   postgresql::server::pg_hba_rule { "rep access for ${name}":
     description => "Open up postgresql for access from ${name}",
     type        => 'hostssl',
-    database    => 'replication', #$dbname,
+    database    => 'replication',   # replication connections do not specify any particular database
     user        => $username,
-    address     => "${name}/32",
+    address     => "${name}",
     auth_method => 'md5',
   }
 
   # open this port on the firewall for this IP
-  ufw::allow { "allow postgres from $name":
-    from  => "$name",
+  ufw::allow { "allow postgres replication from $name":
+    from  => get_ip_addr($name),
     proto => 'tcp',
     port  => 5432,
   }

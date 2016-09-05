@@ -1,19 +1,18 @@
 
-class uber::db-replication-slave (
-  $dbname,
+class uber::db_replication_slave (
   $replication_user = 'replicator',
   $replication_password,
-  $master_ip,
+  $replicate_from,
   $uber_db_util_path = '/usr/local/uberdbutil'
 ) {
   require uber::db
 
-  if $db_replication_password == '' {
+  if $replication_password == '' {
     fail("can't do database replication without setting a replication passwd")
   }
 
-  if $db_replication_master_ip == '' {
-    fail("can't do DB slave replication without a master IP address")
+  if $replicate_from == '' {
+    fail("can't do DB slave replication without a hostname")
   }
 
   postgresql::server::config_entry {
@@ -55,7 +54,7 @@ class uber::db-replication-slave (
     owner    => "postgres",
     group    => "postgres",
     mode     => 700,
-    content  => template('uber/pg-sync.sh.erb'),
+    content  => template('uber/pg-sync-to-master.sh.erb'),
   }
 }
 
