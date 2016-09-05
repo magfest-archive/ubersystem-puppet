@@ -14,12 +14,4 @@ class uber::db (
       require  => Service['postgresql'],
     }
   }
-
-  if $db_replication_mode == 'slave' {
-    include uber::db_replication_slave
-  }
-
-  if $db_replication_mode == 'master' {
-    include uber::db_replication_master
-  }
 }

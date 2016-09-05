@@ -1,4 +1,3 @@
-
 class uber::db_replication_slave (
   $replication_user = 'replicator',
   $replication_password,
