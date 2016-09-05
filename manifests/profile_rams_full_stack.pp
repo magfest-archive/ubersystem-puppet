@@ -5,8 +5,8 @@ class uber::profile_rams_full_stack (
 ) {
   require ::uber::firewall
   require ::uber::permissions
-  require ::uber::app
   require ::uber::db
+  require ::uber::app
   require ::uber::nginx
   require ::uber::daemon
   require ::uber::log-filebeat
