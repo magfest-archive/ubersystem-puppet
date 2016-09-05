@@ -4,8 +4,6 @@ class uber::db_replication_master (
   $replication_password,
   $allow_to_hosts,
 ) {
-  require uber::db
-
   if $replication_password == '' {
     fail("can't do database replication without setting a replication passwd")
   }
@@ -15,6 +13,19 @@ class uber::db_replication_master (
     replication   => true,
   }
 
+  $allow_to_hosts_hash = generate_resource_hash($allow_to_hosts, 'name', 'allow replication from host ')
+  $allow_to_hosts_defaults = {
+    username => $replication_user,
+  }
+
+  create_resources(uber::allow_replication_from, $allow_to_hosts_hash, $allow_to_hosts_defaults)
+
+  class { 'uber::db_replication_master_config' {
+    notify  => Service['postgresql'],
+  }
+}
+
+class uber::db_replication_master_config {
   postgresql::server::config_entry {
      # 'listen_address':       value => "*";
      'wal_level':            value => 'hot_standby';
@@ -22,13 +33,6 @@ class uber::db_replication_master (
      'checkpoint_segments':  value => '8';
      'wal_keep_segments':    value => '8';
   }
-
-  $allow_to_hosts_hash = generate_resource_hash($allow_to_hosts, 'name', 'allow replication from host ')
-  $allow_to_hosts_defaults = {
-    username => $replication_user,
-  }
-
-  create_resources(uber::allow_replication_from, $allow_to_hosts_hash, $allow_to_hosts_defaults)
 }
 
 define uber::allow_replication_from (
