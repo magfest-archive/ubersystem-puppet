@@ -20,7 +20,7 @@ class uber::db_replication_master (
 
   create_resources(uber::allow_replication_from, $allow_to_hosts_hash, $allow_to_hosts_defaults)
 
-  class { 'uber::db_replication_master_config' {
+  class { 'uber::db_replication_master_config':
     notify  => Service['postgresql'],
   }
 }
