@@ -32,6 +32,17 @@ class uber::nginx (
   # 1) for normal HTTP and HTTPS traffic
   # 2) (only if enabled) for API HTTPS traffic that requires a client cert
 
+  $proxy_set_header = [
+    # original values
+    'Host $host',
+    'X-Real-IP $remote_addr',
+    'X-Forwarded-For $proxy_add_x_forwarded_for',
+
+    # custom values
+    'X-Forwarded-Host  $http_host',
+    'X-Forwarded-Proto $scheme',
+  ]
+
   # port 80 and $ssl_port(usually 443) vhosts
   nginx::resource::vhost { "rams-normal":
     server_name       => [$hostname],
@@ -75,6 +86,7 @@ class uber::nginx (
     vhost            => "rams-normal",
     subdir           => "",
     cached           => false,
+    proxy_set_header => $proxy_set_header,
   }
 
   uber::nginx_custom_location { "rams_backend-static-cached":
@@ -83,6 +95,7 @@ class uber::nginx (
     vhost            => "rams-normal",
     subdir           => "static/",
     cached           => true,
+    proxy_set_header => $proxy_set_header,
   }
 
   uber::nginx_custom_location { "rams_backend-staticviews-cached":
@@ -91,6 +104,7 @@ class uber::nginx (
     vhost            => "rams-normal",
     subdir           => "static_views/",
     cached           => true,
+    proxy_set_header => $proxy_set_header,
   }
 
   if ($ssl_ca_crt != undef) {
@@ -129,8 +143,9 @@ class uber::nginx (
       location_custom_cfg_prepend => {
         'if ($ssl_client_verify != "SUCCESS")' => '{ return 403; } # only allow client-cert authenticated requests',
       },
-      proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
+      proxy_redirect => 'http://localhost/ $scheme://$http_host/',
       notify => Service["nginx"],
+      proxy_set_header => $proxy_set_header,
     }
   }
 
@@ -155,6 +170,7 @@ define uber::nginx_custom_location(
   $backend_base_url,
   $subdir,
   $vhost,
+  $proxy_set_header = [],
   $cached = false,
 ) {
 
@@ -188,7 +204,8 @@ define uber::nginx_custom_location(
     location_custom_cfg_append => {
       'if (-f $document_root/maintenance.html)' => '{ return 503; }',
     },
-    proxy_redirect => 'http://localhost/ $scheme://$host:$server_port/',
+    proxy_redirect => 'http://localhost/ $scheme://$http_host/',
+    proxy_set_header => $proxy_set_header,
   }
 
   create_resources(nginx::resource::location, $params, $defaults)
