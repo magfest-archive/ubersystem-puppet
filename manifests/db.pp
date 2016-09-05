@@ -17,7 +17,9 @@ class uber::db (
 
   if $db_replication_mode == 'slave' {
     include uber::db_replication_slave
-  } else if $db_replication_mode == 'master' {
+  }
+
+  if $db_replication_mode == 'master' {
     include uber::db_replication_master
   }
 }
