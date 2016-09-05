@@ -1,5 +1,4 @@
 class uber::db_replication_master (
-  $dbname = hiera("uber::config::db_name"),
   $replication_user = 'replicator',
   $replication_password,
   $allow_to_hosts,

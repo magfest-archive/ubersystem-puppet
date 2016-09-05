@@ -4,8 +4,6 @@ class uber::db_replication_slave (
   $replicate_from,
   $uber_db_util_path = '/usr/local/uberdbutil'
 ) {
-  require uber::db
-
   if $replication_password == '' {
     fail("can't do database replication without setting a replication passwd")
   }
@@ -14,12 +12,8 @@ class uber::db_replication_slave (
     fail("can't do DB slave replication without a hostname")
   }
 
-  postgresql::server::config_entry {
-    'wal_level':            value => 'hot_standby';
-    'max_wal_senders':      value => '3';
-    'checkpoint_segments':  value => '8';
-    'wal_keep_segments':    value => '8';
-    'hot_standby':          value => 'on';
+  class { 'uber::db_replication_slave_config':
+    notify  => Service['postgresql'],
   }
 
   file { "${uber_db_util_path}":
@@ -57,3 +51,12 @@ class uber::db_replication_slave (
   }
 }
 
+class uber::db_replication_slave_config {
+  postgresql::server::config_entry {
+    'wal_level':            value => 'hot_standby';
+    'max_wal_senders':      value => '3';
+    'checkpoint_segments':  value => '8';
+    'wal_keep_segments':    value => '8';
+    'hot_standby':          value => 'on';
+  }
+}
