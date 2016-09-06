@@ -26,7 +26,7 @@ class uber::db_replication_master (
 
 class uber::db_replication_master_config {
   postgresql::server::config_entry {
-     # 'listen_address':       value => "*";
+     'listen_address':       value => "*";
      'wal_level':            value => 'hot_standby';
      'max_wal_senders':      value => '3';
      'checkpoint_segments':  value => '8';
