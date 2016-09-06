@@ -1,8 +1,10 @@
-# helper profile that includes all stuff needed to setup a fully-functional
+# helper profile that includes all stuff needed to setup a fully-functional ubersystem server
 
 class uber::profile_rams_full_stack (
 
 ) {
+  include nginx
+
   require ::uber::firewall
   require ::uber::permissions
   require ::uber::db
