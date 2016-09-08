@@ -9,6 +9,8 @@ class uber::nginx (
   $event_name = hiera("uber::config::event_name"),
   $year = hiera("uber::config::year"),
   $url_prefix = hiera("uber::config::url_prefix"),
+  $onsite_uber_address = "",
+  $redirect_all_traffic_onsite = false,
 ) {
 
   $ssl_crt_filename = "${nginx::params::conf_dir}/ssl-certificate.crt"
@@ -43,6 +45,21 @@ class uber::nginx (
     'X-Forwarded-Proto $scheme',
   ]
 
+  $_vhost_cfg_prepend = {
+    'error_page' => '503 @maintenance',
+    'root' => '/var/www',  # slightly hacky. need this for maintenance page.
+  }
+
+  if ($redirect_all_traffic_onsite) {
+    $redirect_line = "301 ${onsite_uber_address}\$request_uri"
+    $redirect_cfg = {
+      'return' => $redirect_line
+    }
+    $vhost_cfg_prepend = merge($_vhost_cfg_prepend, $redirect_cfg)
+  } else {
+    $vhost_cfg_prepend = $_vhost_cfg_prepend
+  }
+
   # port 80 and $ssl_port(usually 443) vhosts
   nginx::resource::vhost { "rams-normal":
     server_name       => [$hostname],
@@ -54,10 +71,7 @@ class uber::nginx (
     ssl_port          => $ssl_port,
     notify            => Service["nginx"],
     rewrite_rules    => ['^/robots.txt$ /uber/static/robots.txt last'],
-    vhost_cfg_prepend => {
-      'error_page' => '503 @maintenance',
-      'root' => '/var/www',  # slightly hacky. need this for maintenance page.
-    },
+    vhost_cfg_prepend => $vhost_cfg_prepend,
   }
 
   # if maintenance.html exists, it will cause everything to redirect there
