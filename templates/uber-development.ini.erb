@@ -329,3 +329,33 @@ path = "<%= checklist_section[1]["path"] %>"
 <% @volunteer_checklist.each do |vc| %>
 <%= vc[0] %> = "<%= vc[1] %>"
 <% end %>
+
+<% if @age_groups %>
+[age_groups]
+<% Array(@age_groups).each do |age_group_section| -%>
+
+[[<%= age_group_section[0] %>]]
+<% if age_group_section[1]["desc"] -%>
+desc = "<%= age_group_section[1]["desc"] %>"
+<% end -%>
+<% if age_group_section[1]["min_age"] -%>
+min_age = <%= age_group_section[1]["min_age"] %>
+<% end -%>
+<% if age_group_section[1]["max_age"] -%>
+max_age = <%= age_group_section[1]["max_age"] %>
+<% end -%>
+<% if age_group_section[1]["discount"] -%>
+discount = <%= age_group_section[1]["discount"] %>
+<% end -%>
+<% if age_group_section[1]["can_volunteer"] -%>
+can_volunteer = <%= age_group_section[1]["can_volunteer"] %>
+<% end -%>
+<% if age_group_section[1]["consent_form"] -%>
+consent_form = <%= age_group_section[1]["consent_form"] %>
+<% end -%>
+<% if age_group_section[1]["wristband_color"] -%>
+wristband_color = "<%= age_group_section[1]["wristband_color"] %>"
+<% end -%>
+
+<% end -%>
+<% end -%>
