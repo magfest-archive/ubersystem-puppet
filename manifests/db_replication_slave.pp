@@ -1,27 +1,19 @@
-
-class uber::db-replication-slave (
-  $dbname,
+class uber::db_replication_slave (
   $replication_user = 'replicator',
   $replication_password,
-  $master_ip,
+  $replicate_from,
   $uber_db_util_path = '/usr/local/uberdbutil'
 ) {
-  require uber::db
-
-  if $db_replication_password == '' {
+  if $replication_password == '' {
     fail("can't do database replication without setting a replication passwd")
   }
 
-  if $db_replication_master_ip == '' {
-    fail("can't do DB slave replication without a master IP address")
+  if $replicate_from == '' {
+    fail("can't do DB slave replication without a hostname")
   }
 
-  postgresql::server::config_entry {
-    'wal_level':            value => 'hot_standby';
-    'max_wal_senders':      value => '3';
-    'checkpoint_segments':  value => '8';
-    'wal_keep_segments':    value => '8';
-    'hot_standby':          value => 'on';
+  class { 'uber::db_replication_slave_config':
+    notify  => Service['postgresql'],
   }
 
   file { "${uber_db_util_path}":
@@ -55,7 +47,16 @@ class uber::db-replication-slave (
     owner    => "postgres",
     group    => "postgres",
     mode     => 700,
-    content  => template('uber/pg-sync.sh.erb'),
+    content  => template('uber/pg-sync-to-master.sh.erb'),
   }
 }
 
+class uber::db_replication_slave_config {
+  postgresql::server::config_entry {
+    'wal_level':            value => 'hot_standby';
+    'max_wal_senders':      value => '3';
+    'checkpoint_segments':  value => '8';
+    'wal_keep_segments':    value => '8';
+    'hot_standby':          value => 'on';
+  }
+}
