@@ -132,6 +132,7 @@ class uber::config (
   $dept_head_overrides = [],
   $dept_head_checklist = [],
   $volunteer_checklist = [],
+  $age_groups = [],
   $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
   $stops_sig = "Brent Smart\nStaff Operations\nMAGFest\nhttp://magfest.org",
   $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",
