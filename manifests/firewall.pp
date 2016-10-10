@@ -32,8 +32,11 @@ class uber::firewall_deny_rules($deny_ips_list)
   }
   create_resources(ufw::deny, $rule_hash, $rule_defaults)
 
-  # (the IP is blocked if it initiates 6 or more connections within 30 seconds):
-  ufw::limit { 22: }
+  # the IP is blocked if it initiates 6 or more connections within 30 seconds.
+  # don't do this with vagrant deploys because vagrant tries to repeatedly connect at startup.
+  if (!$::is_vagrant) {
+    ufw::limit { 22: }
+  }
 }
 
 class uber::firewall_allow_rules(
