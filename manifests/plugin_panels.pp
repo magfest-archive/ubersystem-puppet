@@ -11,6 +11,7 @@ class uber::plugin_panels (
   $event_location = undef,
   $panel_rooms = undef,
   $panel_app_deadline = undef,
+  $alt_schedule_url = undef,
 ) {
   uber::repo { "${uber::plugins_dir}/panels":
     source   => $git_repo,
