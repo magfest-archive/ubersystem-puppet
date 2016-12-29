@@ -17,6 +17,11 @@ event_location = "<%= @event_location %>"
 panel_rooms = <%= @panel_rooms %>
 <% end -%>
 
+<% if @alt_schedule_url %>
+alt_schedule_url = <%= @alt_schedule_url %>
+<% end -%>
+
+
 <% if @panel_app_deadline %>
 [dates]
 panel_app_deadline = "<%= @panel_app_deadline %>"

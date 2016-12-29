@@ -57,6 +57,7 @@ class uber::config (
   $group_discount = 10,
   $numbered_badges = true,
   $one_days_enabled = true,
+  $presell_one_days = true,
   $at_the_con = false,
   $post_con = false,
   $max_badge_sales = 9999999,
