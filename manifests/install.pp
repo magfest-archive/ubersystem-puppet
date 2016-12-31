@@ -54,6 +54,21 @@ class uber::install {
     }
   }
 
+  # for treepoem
+  if defined(Package['libjpeg-dev']) == false {
+    package { 'libjpeg-dev':
+      ensure => present,
+    }
+  }
+
+
+  # for treepoem
+  if defined(Package['ghostscript']) == false {
+    package { 'ghostscript':
+      ensure => present,
+    }
+  }
+
   class { '::python':
     # ensure   => present,
     version    => $uber::python_ver,
