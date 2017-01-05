@@ -121,6 +121,23 @@ class uber::nginx (
     proxy_set_header => $proxy_set_header,
   }
 
+  $blackhole_config = {
+    'access_log' => 'off',
+    'deny'       => 'all'
+  }
+
+  # disable a particular page when in "at the con mode" that was causing issues.
+  # after m2017, kill this. or, keep it.
+  nginx::resource::location { "at_con_mode_hack":
+    location => "/${url_prefix}/signups/jobs",
+    ensure   => present,
+    vhost    => "rams-normal",
+    notify   => Service["nginx"],
+    www_root => '/crap_ignore',
+    ssl      => true,
+    location_cfg_append => $blackhole_config,
+  }
+
   if ($ssl_ca_crt != undef) {
     ensure_resource('file', "${nginx::params::conf_dir}/jsonrpc-client.crt", {
       owner  => $nginx::params::daemon_user,
