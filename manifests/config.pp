@@ -29,6 +29,7 @@ class uber::config (
   $event_venue_address = '',
 
   $event_qr_id = '',
+  $use_checkin_barcode = '',
 
   $show_custom_badge_input = true,
   $shirt_sales_enabled = true,
