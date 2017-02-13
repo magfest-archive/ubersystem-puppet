@@ -126,17 +126,18 @@ class uber::nginx (
     'deny'       => 'all'
   }
 
-  # disable a particular page when in "at the con mode" that was causing issues.
+  # disable a particular page when in "at the con mode" that was causing issues
+  # (javascript causing page to refresh constantly effectively DDOS'ing us)
   # after m2017, kill this. or, keep it.
-  nginx::resource::location { "at_con_mode_hack":
-    location => "/${url_prefix}/signups/jobs",
-    ensure   => present,
-    vhost    => "rams-normal",
-    notify   => Service["nginx"],
-    www_root => '/crap_ignore',
-    ssl      => true,
-    location_cfg_append => $blackhole_config,
-  }
+  #nginx::resource::location { "at_con_mode_hack":
+  #  location => "/${url_prefix}/signups/jobs",
+  #  ensure   => present,
+  #  vhost    => "rams-normal",
+  #  notify   => Service["nginx"],
+  #  www_root => '/crap_ignore',
+  #  ssl      => true,
+  #  location_cfg_append => $blackhole_config,
+  #}
 
   if ($ssl_ca_crt != undef) {
     ensure_resource('file', "${nginx::params::conf_dir}/jsonrpc-client.crt", {
