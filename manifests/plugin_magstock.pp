@@ -15,6 +15,11 @@ class uber::plugin_magstock (
   $camping_types = undef,
   $coming_as_types = undef,
 ) {
+  uber::repo { "${uber::plugins_dir}/magstock":
+    source   => $git_repo,
+    revision => $git_branch,
+    require  => File["${uber::plugins_dir}"],
+  }
 
   file { "${uber::plugins_dir}/magstock/development.ini":
     ensure  => present,
