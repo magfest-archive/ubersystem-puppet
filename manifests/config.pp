@@ -155,14 +155,6 @@ class uber::config (
   $student_discount = 0,
   $collect_interests = true,
 
-  # magstock-specific stuff
-  $noise_levels = undef,
-  $shirt_colors = undef,
-  $site_types = undef,
-  $camping_types = undef,
-  $coming_as_types = undef,
-  $food_stock      = undef,
-  $food_price      = undef,
 
   $log_to_stdout = true,
   $log_to_syslog = false,
