@@ -37,6 +37,7 @@ class uber::config (
   #$group_reg_available = True,
   #$group_reg_open = True,
   $send_emails = false,
+  $use_checkin_barcode = true,
   $aws_access_key = '',
   $aws_secret_key = '',
   $stripe_secret_key = '',
