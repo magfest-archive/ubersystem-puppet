@@ -40,8 +40,9 @@ class uber::config (
   $use_checkin_barcode = true,
   $aws_access_key = '',
   $aws_secret_key = '',
-  $stripe_secret_key = '',
-  $stripe_public_key = '',
+  # Test stripe keys associated with our test stripe account
+  $stripe_secret_key = 'sk_test_QHnlImUs68dQFxgTfVauz5Ue',
+  $stripe_public_key = 'pk_test_q4kSJVwk6LXKv2ahxuVn7VOK',
   $dev_box = false,
   $collect_exact_birthdate = false,
   $collect_full_address = false,
