@@ -103,6 +103,16 @@ class uber::nginx (
     proxy_set_header => $proxy_set_header,
   }
 
+  # adds a root "location /profiler/" for viewing of cherrypy profiler stats
+  uber::nginx_custom_location { "rams_backend-profiler-dontcache":
+    url_prefix       => "profiler",
+    backend_base_url => $backend_base_url,
+    vhost            => "rams-normal",
+    subdir           => "",
+    cached           => false,
+    proxy_set_header => $proxy_set_header,
+  }
+
   uber::nginx_custom_location { "rams_backend-static-cached":
     url_prefix       => $url_prefix,
     backend_base_url => $backend_base_url,
