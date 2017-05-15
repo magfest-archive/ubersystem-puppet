@@ -38,6 +38,7 @@ class uber::config (
   #$group_reg_open = True,
   $send_emails = false,
   $use_checkin_barcode = true,
+  $api_enabled = true,
   $aws_access_key = '',
   $aws_secret_key = '',
   # Test stripe keys associated with our test stripe account
