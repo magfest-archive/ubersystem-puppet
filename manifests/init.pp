@@ -3,6 +3,8 @@ class uber {
 
   $uber_path = hiera('uber::path')
 
+  $db_name = hiera('uber::db::dbname')
+
   $venv_path = "${uber_path}/env"
   $venv_bin = "${venv_path}/bin"
   $venv_python = "${venv_bin}/python"
@@ -33,5 +35,18 @@ class uber {
   $plugin_defaults = {
     'user'        => $user,
     'group'       => $group,
+  }
+
+  # facter facts for fabfile.py
+  file { "/etc/facter/facts.d/db_name.txt":
+    ensure  => present,
+    mode    => 644,
+    content => "db_name=${db_name}"
+  }
+
+  file { "/etc/facter/facts.d/uber_path.txt":
+    ensure  => present,
+    mode    => 644,
+    content => "uber_path=${uber_path}"
   }
 }
