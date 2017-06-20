@@ -7,6 +7,7 @@ hostname = "<%= @hostname %>"
 dev_box = <%= @dev_box %>
 send_emails = <%= @send_emails %>
 use_checkin_barcode = <%= @use_checkin_barcode %>
+badge_promo_codes_enabled = <%= @badge_promo_codes_enabled %>
 api_enabled = <%= @api_enabled %>
 collect_exact_birthdate = <%= @collect_exact_birthdate %>
 event_name = "<%= @event_name %>"
@@ -45,10 +46,10 @@ guest_email_signature = '''<%= @guest_sig %>'''
 
 # url_root should be the public-facing root of what you type
 # to get to this uber instance. do not include the url_prefix/path here.
-# 
+#
 # if you are behind a proxy like apache, this should be the PUBLIC
 # facing address and NOT the internal cherrypy server.
-# 
+#
 # # example if not behind apache/nginx proxy:
 # url_root = "http://public.facing.domain.com:4321"
 #
@@ -132,7 +133,7 @@ dealer_payment_due  = '<%= @dealer_payment_due %>'
 
 badge_price_waived = '<%= @badge_price_waived %>'
 
-[badge_ranges] 
+[badge_ranges]
 <% @badge_types.each do |badge_type| -%>
 <%= badge_type[0] %> = <%= badge_type[1]["range_start"] %>, <%= badge_type[1]["range_end"] %>
 <% end -%>
