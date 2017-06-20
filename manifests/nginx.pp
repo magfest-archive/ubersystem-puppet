@@ -94,6 +94,13 @@ class uber::nginx (
     notify => Service["nginx"],
   })
 
+  ensure_resource('file', "/etc/nginx/rams-microcache.conf", {
+    owner  => $nginx::params::daemon_user,
+    mode   => '0444',
+    source => 'puppet:///modules/uber/rams-microcache.conf',
+    notify => Service["nginx"],
+  })
+
   uber::nginx_custom_location { "rams_backend-dontcache":
     url_prefix       => $url_prefix,
     backend_base_url => $backend_base_url,
@@ -101,6 +108,17 @@ class uber::nginx (
     subdir           => "",
     cached           => false,
     proxy_set_header => $proxy_set_header,
+  }
+
+  # adds microcaching for "location /uber/preregistration/form"
+  uber::nginx_custom_location { "rams_backend-preregistration-microcache":
+    url_prefix        => $url_prefix,
+    backend_base_url  => $backend_base_url,
+    vhost             => "rams-normal",
+    subdir            => "preregistration/form",
+    microcached       => true,
+    location_modifier => "=",
+    proxy_set_header  => $proxy_set_header,
   }
 
   # adds a root "location /profiler/" for viewing of cherrypy profiler stats
@@ -214,6 +232,8 @@ define uber::nginx_custom_location(
   $vhost,
   $proxy_set_header = [],
   $cached = false,
+  $microcached = false,
+  $location_modifier = false,
 ) {
 
   if ($cached) {
@@ -222,6 +242,15 @@ define uber::nginx_custom_location(
         location_custom_cfg_prepend => {
           'proxy_ignore_headers' => 'Cache-Control Set-Cookie;',
           'proxy_hide_header' => 'Set-Cookie;', # important: static requests should NOT return Set-Cookie to client
+        },
+      }
+    }
+  } elsif ($microcached) {
+    $params = {
+      "uber-nginx-location-$name" => {
+        location_custom_cfg_prepend => {
+          'proxy_ignore_headers' => 'Cache-Control Set-Cookie;',
+          'proxy_hide_header' => ['Cache-Control;', 'Set-Cookie;',],
         },
       }
     }
@@ -235,13 +264,25 @@ define uber::nginx_custom_location(
     }
   }
 
+  if ($microcached) {
+    $include = ["/etc/nginx/rams-microcache.conf"]
+  } else {
+    $include = ["/etc/nginx/rams.conf"]
+  }
+
+  if ($location_modifier) {
+    $location = "$location_modifier /${url_prefix}/$subdir"
+  } else {
+    $location = "/${url_prefix}/$subdir"
+  }
+
   $defaults = {
-    location => "/${url_prefix}/$subdir",
+    location => $location,
     ensure   => present,
     proxy    => "${backend_base_url}/${url_prefix}/$subdir",
     vhost    => $vhost,
     ssl      => true,
-    include  => ["/etc/nginx/rams.conf"],
+    include  => $include,
     notify   => Service["nginx"],
     location_custom_cfg_append => {
       'if (-f $document_root/maintenance.html)' => '{ return 503; }',
