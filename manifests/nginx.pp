@@ -271,7 +271,7 @@ define uber::nginx_custom_location(
   }
 
   if ($location_modifier) {
-    $location = "$location_modifier /${url_prefix}/$subdir"
+    $location = "${location_modifier} /${url_prefix}/$subdir"
   } else {
     $location = "/${url_prefix}/$subdir"
   }
