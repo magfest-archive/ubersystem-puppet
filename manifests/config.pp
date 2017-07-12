@@ -39,6 +39,7 @@ class uber::config (
   $send_emails = false,
   $use_checkin_barcode = true,
   $badge_promo_codes_enabled = false,
+  $prereg_confirm_email_enabled = false,
   $api_enabled = true,
   $aws_access_key = '',
   $aws_secret_key = '',
