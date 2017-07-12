@@ -40,6 +40,8 @@ class uber::config (
   $use_checkin_barcode = true,
   $badge_promo_codes_enabled = false,
   $prereg_confirm_email_enabled = false,
+  $prereg_request_hotel_info_duration = 0,
+
   $api_enabled = true,
   $aws_access_key = '',
   $aws_secret_key = '',
