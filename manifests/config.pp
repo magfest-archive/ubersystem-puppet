@@ -140,6 +140,7 @@ class uber::config (
   $food_restriction = [],
   $shiftless_depts = undef,
   $interest_list = [],
+  $dealer_wares = [],
   $event_locations = [],
   $dept_head_overrides = [],
   $dept_head_checklist = [],
