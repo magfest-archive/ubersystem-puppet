@@ -222,6 +222,11 @@ no_ribbon = "no ribbon"
 <%= interest_item[0] %> = "<%= interest_item[1] %>"
 <% end -%>
 
+[[dealer_wares]]
+<% @dealer_wares.each do |dealer_ware| -%>
+<%= dealer_ware[0] %> = "<%= dealer_ware[1] %>"
+<% end -%>
+
 [[event_location]]
 <% @event_locations.each do |event_location| -%>
 <%= event_location[0] %> = "<%= event_location[1] %>"
