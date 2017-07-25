@@ -114,6 +114,7 @@ class uber::config (
   $volunteer_form_visible = false,
   $consent_form_url = '',
   $code_of_conduct,
+  $prereg_faq_url,
   $contact_url,
   $donations_enabled = true,
   $supporter_deadline = "2014-12-26",
