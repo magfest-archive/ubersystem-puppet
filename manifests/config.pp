@@ -41,6 +41,8 @@ class uber::config (
   $badge_promo_codes_enabled = false,
   $prereg_confirm_email_enabled = false,
   $prereg_request_hotel_info_duration = 0,
+  $prereg_hotel_info_email_sender = 'Do Not Reply <noreply@magfest.org>',
+  $prereg_hotel_info_email_signature = 'MAGFest',
 
   $api_enabled = true,
   $aws_access_key = '',
