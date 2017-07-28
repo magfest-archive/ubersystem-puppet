@@ -127,6 +127,7 @@ class uber::config (
     "'no shirt' = 0",
   ],
   $out_of_shirts = false,
+  $shirts_per_staffer = 2,
   $initial_attendee = 50,
   $max_dealers = 20,
   $max_dealer_apps = 0,
