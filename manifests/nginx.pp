@@ -132,6 +132,17 @@ class uber::nginx (
     proxy_set_header  => $proxy_set_header,
   }
 
+  # adds microcaching for "location /uber/panel_applications/index"
+  uber::nginx_custom_location { "rams_backend-panel-applications-microcache":
+    url_prefix        => $url_prefix,
+    backend_base_url  => $backend_base_url,
+    vhost             => "rams-normal",
+    subdir            => "panel_applications/index",
+    microcached       => true,
+    location_modifier => "=",
+    proxy_set_header  => $proxy_set_header,
+  }
+
   # adds a root "location /profiler/" for viewing of cherrypy profiler stats
   uber::nginx_custom_location { "rams_backend-profiler-dontcache":
     url_prefix       => "profiler",
