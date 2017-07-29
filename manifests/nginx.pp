@@ -133,7 +133,7 @@ class uber::nginx (
   }
 
   # adds microcaching for "location /uber/panel_applications/index" canonical URL
-  uber::nginx_custom_location { "rams_backend-panel-applications-microcache":
+  uber::nginx_custom_location { "rams_backend-panel-applications-canonical-microcache":
     url_prefix        => $url_prefix,
     backend_base_url  => $backend_base_url,
     vhost             => "rams-normal",
@@ -144,7 +144,7 @@ class uber::nginx (
   }
 
   # adds microcaching for "location /uber/panel_applications/" with trailing slash
-  uber::nginx_custom_location { "rams_backend-panel-applications-microcache":
+  uber::nginx_custom_location { "rams_backend-panel-applications-trailing-slash-microcache":
     url_prefix        => $url_prefix,
     backend_base_url  => $backend_base_url,
     vhost             => "rams-normal",
@@ -155,7 +155,7 @@ class uber::nginx (
   }
 
   # adds microcaching for "location /uber/panel_applications" no trailing slash
-  uber::nginx_custom_location { "rams_backend-panel-applications-microcache":
+  uber::nginx_custom_location { "rams_backend-panel-applications-no-trailing-slash-microcache":
     url_prefix        => $url_prefix,
     backend_base_url  => $backend_base_url,
     vhost             => "rams-normal",
