@@ -132,7 +132,7 @@ class uber::nginx (
     proxy_set_header  => $proxy_set_header,
   }
 
-  # adds microcaching for "location /uber/panel_applications/index"
+  # adds microcaching for "location /uber/panel_applications/index" canonical URL
   uber::nginx_custom_location { "rams_backend-panel-applications-microcache":
     url_prefix        => $url_prefix,
     backend_base_url  => $backend_base_url,
@@ -140,6 +140,28 @@ class uber::nginx (
     subdir            => "panel_applications/index",
     microcached       => true,
     location_modifier => "=",
+    proxy_set_header  => $proxy_set_header,
+  }
+
+  # adds microcaching for "location /uber/panel_applications/" with trailing slash
+  uber::nginx_custom_location { "rams_backend-panel-applications-microcache":
+    url_prefix        => $url_prefix,
+    backend_base_url  => $backend_base_url,
+    vhost             => "rams-normal",
+    subdir            => "panel_applications/",
+    microcached       => true,
+    location_modifier => "=",  # Restrict to an exact match, so we don't cache every child page
+    proxy_set_header  => $proxy_set_header,
+  }
+
+  # adds microcaching for "location /uber/panel_applications" no trailing slash
+  uber::nginx_custom_location { "rams_backend-panel-applications-microcache":
+    url_prefix        => $url_prefix,
+    backend_base_url  => $backend_base_url,
+    vhost             => "rams-normal",
+    subdir            => "panel_applications",
+    microcached       => true,
+    location_modifier => "=",  # Restrict to an exact match, so we don't cache every child page
     proxy_set_header  => $proxy_set_header,
   }
 
