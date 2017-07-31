@@ -22,3 +22,11 @@ alt_schedule_url = <%= @alt_schedule_url %>
 [dates]
 panel_app_deadline = "<%= @panel_app_deadline %>"
 <% end -%>
+
+[enums]
+<% if @presentation_enums -%>
+[[presentation]]
+<% @presentation_enums.each do |enum| -%>
+<%= enum[0] %> = "<%= enum[1] %>"
+<% end -%>
+<% end -%>

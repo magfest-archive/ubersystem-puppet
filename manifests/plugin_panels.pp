@@ -6,6 +6,9 @@ class uber::plugin_panels (
   $git_branch = "master",
 
   # INI settings below
+
+  $presentation_enums = undef,
+
   $hide_schedule = true,
   $expected_response = undef,
   $panel_rooms = undef,
