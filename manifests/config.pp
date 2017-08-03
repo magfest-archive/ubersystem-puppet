@@ -131,6 +131,7 @@ class uber::config (
   $shirts_per_staffer = 2,
   $initial_attendee = 50,
   $max_dealers = 20,
+  $shirts_per_staffer = undef,
   $max_dealer_apps = 0,
   $dealer_badge_price = 40,
   $default_table_price = 100,

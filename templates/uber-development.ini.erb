@@ -84,6 +84,11 @@ out_of_shirts = "<%= @out_of_shirts %>"
 shirts_per_staffer = <%= @shirts_per_staffer %>
 max_badge_sales = "<%= @max_badge_sales %>"
 donations_enabled = <%= @donations_enabled %>
+
+<% if @shirts_per_staffer -%>
+shirts_per_staffer = <%= @shirts_per_staffer %>
+<% end -%>
+
 max_dealers = <%= @max_dealers %>
 max_dealer_apps = <%= @max_dealer_apps %>
 
