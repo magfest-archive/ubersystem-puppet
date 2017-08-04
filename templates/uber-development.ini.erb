@@ -82,11 +82,11 @@ at_the_con = "<%= @at_the_con %>"
 post_con = "<%= @post_con %>"
 out_of_shirts = "<%= @out_of_shirts %>"
 
-<% if @shirts_per_staffer -%>
+<% unless @shirts_per_staffer.nil? -%>
 shirts_per_staffer = <%= @shirts_per_staffer %>
 <% end -%>
 
-<% if @staff_eligible_for_swag_shirt -%>
+<% unless @staff_eligible_for_swag_shirt.nil? -%>
 staff_eligible_for_swag_shirt = <%= @staff_eligible_for_swag_shirt %>
 <% end -%>
 
