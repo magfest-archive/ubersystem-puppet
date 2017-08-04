@@ -129,6 +129,7 @@ class uber::config (
   ],
   $out_of_shirts = false,
   $shirts_per_staffer = undef,
+  $staff_eligible_for_swag_shirt = undef,
   $initial_attendee = 50,
   $max_dealers = 20,
   $max_dealer_apps = 0,

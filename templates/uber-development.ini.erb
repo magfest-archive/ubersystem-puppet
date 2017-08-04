@@ -81,9 +81,15 @@ url_base = "<%= @url_base %>"
 at_the_con = "<%= @at_the_con %>"
 post_con = "<%= @post_con %>"
 out_of_shirts = "<%= @out_of_shirts %>"
+
 <% if @shirts_per_staffer -%>
 shirts_per_staffer = <%= @shirts_per_staffer %>
 <% end -%>
+
+<% if @staff_eligible_for_swag_shirt -%>
+staff_eligible_for_swag_shirt = <%= @staff_eligible_for_swag_shirt %>
+<% end -%>
+
 max_badge_sales = "<%= @max_badge_sales %>"
 donations_enabled = <%= @donations_enabled %>
 
