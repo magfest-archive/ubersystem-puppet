@@ -16,6 +16,9 @@ tools.proxy.debug = False
 server.thread_pool = 100
 server.socket_timeout = 1
 
+[loggers]
+cherrypy.access = "DEBUG"
+
 [handlers]
 
 <% if @log_to_syslog %>
