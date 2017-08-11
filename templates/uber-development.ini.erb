@@ -14,6 +14,12 @@ prereg_confirm_email_enabled = <%= @prereg_confirm_email_enabled %>
 # checkbox will be available
 prereg_request_hotel_info_duration = <%= @prereg_request_hotel_info_duration %>
 
+# This will be used as the sender for the hotel booking info email.
+prereg_hotel_info_email_sender = <%= @prereg_hotel_info_email_sender %>
+
+# This will be used as the signature for the hotel booking info email.
+prereg_hotel_info_email_signature = <%= @prereg_hotel_info_email_signature %>
+
 api_enabled = <%= @api_enabled %>
 collect_exact_birthdate = <%= @collect_exact_birthdate %>
 event_name = "<%= @event_name %>"
@@ -33,6 +39,7 @@ numbered_badges = <%= @numbered_badges %>
 
 consent_form_url = "<%= @consent_form_url %>"
 code_of_conduct_url = "<%= @code_of_conduct %>"
+prereg_faq_url = "<%= @prereg_faq_url %>"
 contact_url = "<%= @contact_url %>"
 
 event_timezone = "<%= @event_timezone %>"
@@ -74,8 +81,18 @@ url_base = "<%= @url_base %>"
 at_the_con = "<%= @at_the_con %>"
 post_con = "<%= @post_con %>"
 out_of_shirts = "<%= @out_of_shirts %>"
+
+<% unless @shirts_per_staffer.nil? -%>
+shirts_per_staffer = <%= @shirts_per_staffer %>
+<% end -%>
+
+<% unless @staff_eligible_for_swag_shirt.nil? -%>
+staff_eligible_for_swag_shirt = <%= @staff_eligible_for_swag_shirt %>
+<% end -%>
+
 max_badge_sales = "<%= @max_badge_sales %>"
 donations_enabled = <%= @donations_enabled %>
+
 max_dealers = <%= @max_dealers %>
 max_dealer_apps = <%= @max_dealer_apps %>
 
@@ -90,6 +107,7 @@ preassigned_badge_types = ,     # empty list
 
 
 collect_full_address = <%= @collect_full_address %>
+collect_extra_donation = <%= @collect_extra_donation %>
 collect_interests = <%= @collect_interests %>
 volunteer_form_visible = <%= @volunteer_form_visible %>
 
@@ -199,7 +217,6 @@ supporter_stock = <%= @supporter_stock %>
 <% end -%>
 
 [[ribbon]]
-no_ribbon = "no ribbon"
 <% if @extra_ribbon_types %>
 <% @extra_ribbon_types.each do |ribbon_type| -%>
 <%= ribbon_type[0] %> = "<%= ribbon_type[1] %>"
