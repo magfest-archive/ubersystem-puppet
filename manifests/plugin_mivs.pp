@@ -7,6 +7,7 @@ class uber::plugin_mivs (
 
   # INI settings below
   $round_one_deadline = undef,
+  $video_response_expected = undef,
   $round_two_deadline = undef,
   $judging_deadline = undef,
   $round_two_complete = undef,
