@@ -22,6 +22,25 @@ class uber::plugin_guests (
   $band_badges_deadline = '',
   $band_stage_plot_deadline = '',
 ) {
+
+  # The following two "file" definitions rename an existing "bands" plugin
+  # directory to "guests". This will absolutely break if we ever create
+  # another plugin named "bands".
+
+  file { "${uber::plugins_dir}/guests":
+    ensure  => 'directory',
+    source  => "file://${uber::plugins_dir}/bands",
+    recurse => true,
+    before  => File["${uber::plugins_dir}/bands"],
+  }
+
+  file { "${uber::plugins_dir}/bands":
+    ensure  => 'absent',
+    purge   => true,
+    recurse => true,
+    force   => true,
+  }
+
   uber::repo { "${uber::plugins_dir}/guests":
     source   => $git_repo,
     revision => $git_branch,
