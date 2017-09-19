@@ -29,9 +29,10 @@ class uber::plugin_guests (
 
   file { "${uber::plugins_dir}/guests":
     ensure  => 'directory',
-    source  => "file://${uber::plugins_dir}/bands",
+    source  => ["file://${uber::plugins_dir}/bands", "file://${uber::plugins_dir}/guests"],
+    sourceselect => 'first',
     recurse => true,
-    require => File["${uber::plugins_dir}"],
+    replace => false,
     before  => File["${uber::plugins_dir}/bands"],
   }
 
