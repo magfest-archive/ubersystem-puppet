@@ -42,6 +42,13 @@ class uber::plugin_guests (
     force   => true,
   }
 
+  file_line { "guests_git_config":
+    path   => "${uber::plugins_dir}/bands/.git/config",
+    line   => "    url = $git_repo",
+    match  => "^    url = https://github.com/magfest/.*",
+    before => Uber::Repo["${uber::plugins_dir}/guests"],
+  }
+
   uber::repo { "${uber::plugins_dir}/guests":
     source   => $git_repo,
     revision => $git_branch,
