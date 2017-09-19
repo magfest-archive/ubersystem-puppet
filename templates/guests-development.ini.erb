@@ -8,7 +8,7 @@ band_email='<%= @band_email %>'
 band_email_signature='<%= @band_email_signature %>'
 <% end -%>
 
-require_dedicated_band_table_presence=<%= @require_dedicated_band_table_presence %>
+require_dedicated_guest_table_presence=<%= @require_dedicated_guest_table_presence %>
 
 [dates]
 # if any of these are unset or '', the corresponding section will not show up in the band checklist
@@ -23,9 +23,9 @@ band_badges_deadline = '<%= @band_badges_deadline %>'
 band_stage_plot_deadline = '<%= @band_stage_plot_deadline %>'
 
 [enums]
-<% if @band_merch_enums -%>
-[[band_merch]]
-<% @band_merch_enums.each do |enum| -%>
+<% if @guest_merch_enums -%>
+[[guest_merch]]
+<% @guest_merch_enums.each do |enum| -%>
 <%= enum[0] %> = "<%= enum[1] %>"
 <% end -%>
 <% end -%>
