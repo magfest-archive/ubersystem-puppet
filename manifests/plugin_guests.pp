@@ -23,8 +23,8 @@ class uber::plugin_guests (
   $band_stage_plot_deadline = '',
 ) {
 
-  # The following two "file" definitions rename an existing "bands" plugin
-  # directory to "guests". This will absolutely break if we ever create
+  # The following "file" and "file_line" definitions rename an existing "bands"
+  # plugin directory to "guests". This will absolutely break if we ever create
   # another plugin named "bands".
 
   file { "${uber::plugins_dir}/guests":
@@ -43,7 +43,7 @@ class uber::plugin_guests (
   }
 
   file_line { "guests_git_config":
-    path   => "${uber::plugins_dir}/bands/.git/config",
+    path   => "${uber::plugins_dir}/guests/.git/config",
     line   => "    url = $git_repo",
     match  => "^    url = https://github.com/magfest/.*",
     before => Uber::Repo["${uber::plugins_dir}/guests"],
