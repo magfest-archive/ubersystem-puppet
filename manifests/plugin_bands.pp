@@ -15,12 +15,12 @@ class uber::plugin_bands (
   $auction_start = '',
   $band_panel_deadline = '',
   $band_bio_deadline = '',
-  $band_agreement_deadline = '',
-  $band_w9_deadline = '',
+  $band_info_deadline = '',
+  $band_taxes_deadline = '',
   $band_merch_deadline = '',
   $band_charity_deadline = '',
-  $band_badge_deadline = '',
-  $stage_agreement_deadline = '',
+  $band_badges_deadline = '',
+  $band_stage_plot_deadline = '',
 ) {
   uber::repo { "${uber::plugins_dir}/bands":
     source   => $git_repo,
