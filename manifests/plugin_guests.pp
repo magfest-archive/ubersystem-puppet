@@ -31,7 +31,8 @@ class uber::plugin_guests (
     ensure  => 'directory',
     source  => "file://${uber::plugins_dir}/bands",
     recurse => true,
-    before  => File["${uber::plugins_dir}/bands"],
+    require  => File["${uber::plugins_dir}"],
+    before  => [File["${uber::plugins_dir}/bands"], Uber::Repo["${uber::plugins_dir}/guests"]],
   }
 
   file { "${uber::plugins_dir}/bands":
