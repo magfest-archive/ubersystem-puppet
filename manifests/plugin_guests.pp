@@ -31,8 +31,8 @@ class uber::plugin_guests (
     ensure  => 'directory',
     source  => "file://${uber::plugins_dir}/bands",
     recurse => true,
-    require  => File["${uber::plugins_dir}"],
-    before  => [File["${uber::plugins_dir}/bands"], File_line["guests_git_config"]],
+    require => File["${uber::plugins_dir}"],
+    before  => File["${uber::plugins_dir}/bands"],
   }
 
   file { "${uber::plugins_dir}/bands":
@@ -40,12 +40,13 @@ class uber::plugin_guests (
     purge   => true,
     recurse => true,
     force   => true,
+    before  => File_line["guests_git_config"],
   }
 
   file_line { "guests_git_config":
     path   => "${uber::plugins_dir}/guests/.git/config",
     line   => "        url = $git_repo",
-    match  => "\s*url\s*=\s*https:\/\/github.com\/magfest\/.*",
+    match  => "\s*url\s*=\s*https://github.com/magfest/.*",
     before => Uber::Repo["${uber::plugins_dir}/guests"],
   }
 
