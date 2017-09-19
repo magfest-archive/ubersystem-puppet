@@ -44,8 +44,8 @@ class uber::plugin_guests (
 
   file_line { "guests_git_config":
     path   => "${uber::plugins_dir}/guests/.git/config",
-    line   => "    url = $git_repo",
-    match  => "^    url = https://github.com/magfest/.*",
+    line   => "        url = $git_repo",
+    match  => "^        url = https://github.com/magfest/.*",
     before => Uber::Repo["${uber::plugins_dir}/guests"],
   }
 
