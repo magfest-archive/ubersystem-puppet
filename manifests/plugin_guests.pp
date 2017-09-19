@@ -32,7 +32,7 @@ class uber::plugin_guests (
     source  => "file://${uber::plugins_dir}/bands",
     recurse => true,
     require  => File["${uber::plugins_dir}"],
-    before  => [File["${uber::plugins_dir}/bands"], Uber::Repo["${uber::plugins_dir}/guests"]],
+    before  => [File["${uber::plugins_dir}/bands"], File_Line["guests_git_config"]],
   }
 
   file { "${uber::plugins_dir}/bands":
