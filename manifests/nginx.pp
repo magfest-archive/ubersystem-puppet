@@ -211,6 +211,28 @@ class uber::nginx (
   #  location_cfg_append => $blackhole_config,
   #}
 
+  nginx::resource::location { "rams_backend-bands_to_guests":
+    location => "~* /${url_prefix}/band(.*)",
+    ensure   => present,
+    proxy    => "${backend_base_url}/${url_prefix}/guest\$1",
+    vhost    => "rams-normal",
+    ssl      => true,
+    location_custom_cfg_prepend => {
+      'if ($args ~* band_id=(.+))' => '{ set $args guest_id=$1; }',
+      'if (-f $document_root/maintenance.html)' => '{ return 503; }',
+      'proxy_no_cache' => '"1";',
+    },
+    proxy_redirect => 'http://localhost/ $scheme://$http_host/',
+    proxy_set_header => $proxy_set_header,
+    include  => ["/etc/nginx/rams.conf"],
+    notify => Service["nginx"],
+    rewrite_rules    => [
+      '^/uber/band_admin/(.*?)band(.*)$ /uber/guest_admin/$1group$2 last',
+      '^/uber/band_admin/(.*)$ /uber/guest_admin/$1 last',
+      '^/uber/bands/(.*)$ /uber/guests/$1 last',
+    ],
+  }
+
   if ($ssl_ca_crt != undef) {
     ensure_resource('file', "${nginx::params::conf_dir}/jsonrpc-client.crt", {
       owner  => $nginx::params::daemon_user,
