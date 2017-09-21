@@ -21,6 +21,15 @@ class uber::plugin_guests (
   $band_charity_deadline = '',
   $band_badges_deadline = '',
   $band_stage_plot_deadline = '',
+  $guest_panel_deadline = '',
+  $guest_bio_deadline = '',
+  $guest_info_deadline = '',
+  $guest_merch_deadline = '',
+  $guest_charity_deadline = '',
+  $guest_badge_deadline = '',
+  $guest_autograph_deadline = '',
+  $guest_interview_deadline = '',
+  $guest_travel_plans_deadline = '',
 ) {
 
   # The following "file" and "file_line" definitions rename an existing "bands"
