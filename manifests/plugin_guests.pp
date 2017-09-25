@@ -24,6 +24,7 @@ class uber::plugin_guests (
   $guest_panel_deadline = '',
   $guest_bio_deadline = '',
   $guest_info_deadline = '',
+  $guest_taxes_deadline = '',
   $guest_merch_deadline = '',
   $guest_charity_deadline = '',
   $guest_badge_deadline = '',
