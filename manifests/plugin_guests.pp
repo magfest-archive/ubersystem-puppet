@@ -32,35 +32,6 @@ class uber::plugin_guests (
   $guest_interview_deadline = '',
   $guest_travel_plans_deadline = '',
 ) {
-
-  # The following "file" and "file_line" definitions rename an existing "bands"
-  # plugin directory to "guests". This will absolutely break if we ever create
-  # another plugin named "bands".
-
-  file { "${uber::plugins_dir}/guests":
-    ensure  => 'directory',
-    source  => ["file://${uber::plugins_dir}/bands", "file://${uber::plugins_dir}/guests"],
-    sourceselect => 'first',
-    recurse => true,
-    replace => false,
-    before  => File["${uber::plugins_dir}/bands"],
-  }
-
-  file { "${uber::plugins_dir}/bands":
-    ensure  => 'absent',
-    purge   => true,
-    recurse => true,
-    force   => true,
-    before  => File_line["guests_git_config"],
-  }
-
-  file_line { "guests_git_config":
-    path   => "${uber::plugins_dir}/guests/.git/config",
-    line   => "        url = $git_repo",
-    match  => "\s*url\s*=\s*https://github.com/magfest/(bands|guests)",
-    before => Uber::Repo["${uber::plugins_dir}/guests"],
-  }
-
   uber::repo { "${uber::plugins_dir}/guests":
     source   => $git_repo,
     revision => $git_branch,
