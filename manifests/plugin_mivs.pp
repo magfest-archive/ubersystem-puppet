@@ -8,11 +8,13 @@ class uber::plugin_mivs (
   # INI settings below
   $round_one_deadline = undef,
   $video_response_expected = undef,
+  $round_two_start = undef,
   $round_two_deadline = undef,
   $judging_deadline = undef,
   $round_two_complete = undef,
   $mivs_confirm_deadline = undef,
-  $allow_game_submission = false,
+  $submission_grace_period = undef,
+  $mivs_start_year = undef,
 ) {
   uber::repo { "${uber::plugins_dir}/mivs":
     source   => $git_repo,
