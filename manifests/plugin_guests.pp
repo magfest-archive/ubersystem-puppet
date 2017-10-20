@@ -13,6 +13,7 @@ class uber::plugin_guests (
   $guest_merch_enums = undef,
 
   $auction_start = '',
+  $rock_island_groups = undef,
   $band_panel_deadline = '',
   $band_bio_deadline = '',
   $band_info_deadline = '',
