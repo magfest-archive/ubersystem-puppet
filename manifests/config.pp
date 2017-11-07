@@ -157,7 +157,7 @@ class uber::config (
   $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",
   $peglegs_sig = " - Tim Macneil,\nMAGFest Panels Department",
   $guest_sig = " - Steph Prader,\nMAGFest Guest Coordinator",
-  $admin_email = "MAGFest Software <code@magfest.org>",
+  $admin_email = "MAGFest Sys Admins <sysadmin@magfest.org>",
   $regdesk_email = "MAGFest Registration <regdesk@magfest.org>",
   $staff_email = "MAGFest Staffing <stops@magfest.org>",
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
