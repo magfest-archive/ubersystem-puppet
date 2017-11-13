@@ -6,7 +6,7 @@ class uber::config (
   $url_base = '%(url_root)s%(path)s',
   $socket_port = hiera('uber::socket_port'),
   $socket_host = '0.0.0.0',
-  $engine_autoreload = true,
+  $engine_autoreload = hiera('uber::engine_autoreload'),
   $ssl_port = hiera('uber::ssl_port'),
 
   $hardcore_optimizations_enabled = false,
