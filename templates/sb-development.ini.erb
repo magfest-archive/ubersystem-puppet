@@ -8,6 +8,7 @@ priority_plugins = <%= @priority_plugins %>
 [cherrypy]
 server.socket_host = <%= @socket_host %>
 server.socket_port = <%= @socket_port %>
+engine.autoreload.on = <%= @engine_autoreload %>
 tools.sessions.timeout = 4320  # 30 days (in minutes)
 
 tools.proxy.on = True
