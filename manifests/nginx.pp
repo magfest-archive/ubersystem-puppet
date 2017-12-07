@@ -166,7 +166,7 @@ class uber::nginx (
   }
 
   # adds a root "location /stats/" for viewing of cherrypy profiler stats
-  uber::nginx_custom_location { "rams_backend-profiler-dontcache":
+  uber::nginx_custom_location { "rams_backend-stats-dontcache":
     url_prefix       => "stats",
     backend_base_url => $backend_base_url,
     vhost            => "rams-normal",
