@@ -14,8 +14,8 @@ class uber::plugin_panels (
   $panel_rooms = undef,
   $panel_app_deadline = undef,
   $alt_schedule_url = undef,
-  $twilio_sid = '',
-  $twilio_token = '',
+  $panels_twilio_sid = '',
+  $panels_twilio_token = '',
 ) {
   uber::repo { "${uber::plugins_dir}/panels":
     source   => $git_repo,
