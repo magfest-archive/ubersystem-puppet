@@ -6,6 +6,7 @@ class uber::plugin_tabletop (
   $git_branch = "master",
 
   # INI settings below
+  $twilio_number = undef,
   $twilio_sid = '',
   $twilio_token = '',
 ) {
