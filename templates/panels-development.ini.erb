@@ -17,6 +17,13 @@ panel_rooms = <%= @panel_rooms %>
 alt_schedule_url = <%= @alt_schedule_url %>
 <% end -%>
 
+<% if @attractions_email %>
+attractions_email = <%= @attractions_email %>
+<% end -%>
+
+<% if @panels_twilio_number %>
+panels_twilio_number = <%= @panels_twilio_number %>
+<% end -%>
 
 <% if @panel_app_deadline %>
 [dates]
@@ -30,3 +37,7 @@ panel_app_deadline = "<%= @panel_app_deadline %>"
 <%= enum[0] %> = "<%= enum[1] %>"
 <% end -%>
 <% end -%>
+
+[secret]
+panels_twilio_sid = '<%= @panels_twilio_sid %>'
+panels_twilio_token = '<%= @panels_twilio_token %>'
