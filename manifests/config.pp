@@ -57,6 +57,7 @@ class uber::config (
   $collect_full_address = false,
   $collect_extra_donation = false,
   $kiosk_cc_enabled = false,
+  $only_prepay_at_door = false,
   #$supporter_badge_type_enabled = True,
   $prereg_open = '',
   $hide_prereg_open_date = false,
