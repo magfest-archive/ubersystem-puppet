@@ -271,8 +271,12 @@ supporter_stock = <%= @supporter_stock %>
 [donation_tier_descriptions]
 <% @donation_tier_descriptions.each do |donation_tier_description| -%>
 [[<%= donation_tier_description[0] %>]]
-<% donation_tier_description[1].each do |entry| -%>
-<%= entry[0] %> = '<%= entry[1] %>'
+<% donation_tier_description[1].each do |key, val| -%>
+<% if val.is_a?(Array) -%>
+<%= key %> = "<%= val.join('","') %>"
+<% else -%>
+<%= key %> = '<%= val %>'
+<% end -%>
 <% end -%>
 
 <% end -%>
