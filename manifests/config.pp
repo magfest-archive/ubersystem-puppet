@@ -38,6 +38,7 @@ class uber::config (
   #$group_reg_available = True,
   #$group_reg_open = True,
   $send_emails = false,
+  $send_sms = false,
   $use_checkin_barcode = true,
   $badge_promo_codes_enabled = false,
   $prereg_confirm_email_enabled = false,
