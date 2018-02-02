@@ -207,4 +207,13 @@ class uber::config (
     mode    => 660,
     content => template('uber/uber-development.ini.erb'),
   }
+  
+  # plugins that have been merged into uber
+  file {'remove_barcode':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/barcode",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
 }
