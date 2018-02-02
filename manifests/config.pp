@@ -173,10 +173,13 @@ class uber::config (
   $student_discount = 0,
   $collect_interests = true,
 
-
   $log_to_stdout = true,
   $log_to_syslog = false,
   $log_force_multiline_indent = false,
+
+  $barcode_key = "",
+  $barcode_salt = 0,
+  $barcode_event_id = 0,
 ) {
 
   require uber::plugins
