@@ -216,4 +216,20 @@ class uber::config (
     purge   => true,
     force   => true,
   }
+
+  file {'remove_reports':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/reports",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
+
+  file {'remove_uber_analytics':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/uber_analytics",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
 }
