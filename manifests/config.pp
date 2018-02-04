@@ -234,4 +234,12 @@ class uber::config (
     purge   => true,
     force   => true,
   }
+
+  file {'remove_hotel':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/hotel",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
 }
