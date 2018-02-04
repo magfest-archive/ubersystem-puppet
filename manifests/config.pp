@@ -180,6 +180,8 @@ class uber::config (
   $barcode_key = "",
   $barcode_salt = 0,
   $barcode_event_id = 0,
+  
+  $hotel_req_hours = undef,
 ) {
 
   require uber::plugins
@@ -228,6 +230,14 @@ class uber::config (
   file {'remove_uber_analytics':
     ensure  => absent,
     path    => "${uber::plugins_dir}/uber_analytics",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
+
+  file {'remove_hotel':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/hotel",
     recurse => true,
     purge   => true,
     force   => true,
