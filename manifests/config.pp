@@ -180,6 +180,8 @@ class uber::config (
   $barcode_key = "",
   $barcode_salt = 0,
   $barcode_event_id = 0,
+  
+  $hotel_req_hours = undef,
 ) {
 
   require uber::plugins
