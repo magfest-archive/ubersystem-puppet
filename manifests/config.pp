@@ -242,4 +242,12 @@ class uber::config (
     purge   => true,
     force   => true,
   }
+
+  file {'remove_attendee_tournaments':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/attendee_tournaments",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
 }
