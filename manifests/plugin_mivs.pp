@@ -6,14 +6,14 @@ class uber::plugin_mivs (
   $git_branch = "master",
 
   # INI settings below
-  $round_one_deadline = undef,
-  $video_response_expected = undef,
-  $round_two_start = undef,
-  $round_two_deadline = undef,
-  $judging_deadline = undef,
-  $round_two_complete = undef,
+  $mivs_round_one_deadline = undef,
+  $mivs_video_response_expected = undef,
+  $mivs_round_two_start = undef,
+  $mivs_round_two_deadline = undef,
+  $mivs_judging_deadline = undef,
+  $mivs_round_two_complete = undef,
   $mivs_confirm_deadline = undef,
-  $submission_grace_period = undef,
+  $mivs_submission_grace_period = undef,
   $mivs_start_year = undef,
 ) {
   uber::repo { "${uber::plugins_dir}/mivs":
