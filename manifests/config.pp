@@ -244,13 +244,13 @@ class uber::config (
     force   => true,
   }
 
-  file {'remove_uber_analytics':
-    ensure  => absent,
-    path    => "${uber::plugins_dir}/uber_analytics",
-    recurse => true,
-    purge   => true,
-    force   => true,
-  }
+  # file {'remove_uber_analytics':
+  #   ensure  => absent,
+  #   path    => "${uber::plugins_dir}/uber_analytics",
+  #   recurse => true,
+  #   purge   => true,
+  #   force   => true,
+  # }
 
   file {'remove_hotel':
     ensure  => absent,
