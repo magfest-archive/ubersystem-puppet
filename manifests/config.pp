@@ -177,11 +177,28 @@ class uber::config (
   $log_to_syslog = false,
   $log_force_multiline_indent = false,
 
+  # barcode
   $barcode_key = "",
   $barcode_salt = 0,
   $barcode_event_id = 0,
   
+  # hotel
   $hotel_req_hours = undef,
+  
+  # mivs
+  $mivs_round_one_deadline = undef,
+  $mivs_video_response_expected = undef,
+  $mivs_round_two_start = undef,
+  $mivs_round_two_deadline = undef,
+  $mivs_judging_deadline = undef,
+  $mivs_round_two_complete = undef,
+  $mivs_confirm_deadline = undef,
+  $mivs_submission_grace_period = undef,
+  $mivs_start_year = undef,
+  
+  # magfest
+  $treasury_dept_checklist_form_url = '',
+  $techops_dept_checklist_form_url = '',
 ) {
 
   require uber::plugins
@@ -246,6 +263,30 @@ class uber::config (
   file {'remove_attendee_tournaments':
     ensure  => absent,
     path    => "${uber::plugins_dir}/attendee_tournaments",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
+
+  file {'remove_mivs':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/mivs",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
+
+  file {'remove_mits':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/mits",
+    recurse => true,
+    purge   => true,
+    force   => true,
+  }
+
+  file {'remove_magfest':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/magfest",
     recurse => true,
     purge   => true,
     force   => true,

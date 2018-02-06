@@ -132,6 +132,21 @@ shift_custom_badges = <%= @shift_custom_badges %>
 
 hide_prereg_open_date = <%= @hide_prereg_open_date %>
 
+
+mivs_video_response_expected = '<%= @mivs_video_response_expected %>'
+mivs_confirm_deadline = <%= @mivs_confirm_deadline %>
+mivs_submission_grace_period = <%= @mivs_submission_grace_period %>
+mivs_start_year = <%= @mivs_start_year %>
+
+
+<% if @treasury_dept_checklist_form_url %>
+treasury_dept_checklist_form_url='<%= @treasury_dept_checklist_form_url %>'
+<% end -%>
+<% if @techops_dept_checklist_form_url %>
+techops_dept_checklist_form_url='<%= @techops_dept_checklist_form_url %>'
+<% end -%>
+
+
 [secret]
 sqlalchemy_url = "postgresql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>:<%= @db_port %>/<%= @db_name %>"
 
@@ -146,6 +161,7 @@ qr_code_password = "<%= @qr_code_password %>"
 barcode_key = "<%= @barcode_key %>"
 barcode_salt = <%= @barcode_salt %>
 barcode_event_id = <%= @barcode_event_id %>
+
 
 [dates]
 prereg_open = '<%= @prereg_open %>'
@@ -167,6 +183,14 @@ dealer_reg_shutdown = '<%= @dealer_reg_shutdown %>'
 dealer_payment_due  = '<%= @dealer_payment_due %>'
 
 badge_price_waived = '<%= @badge_price_waived %>'
+
+
+mivs_round_one_deadline = '<%= @mivs_round_one_deadline %>'
+mivs_round_two_start = '<%= @mivs_round_two_start %>'
+mivs_round_two_deadline = '<%= @mivs_round_two_deadline %>'
+mivs_judging_deadline = '<%= @mivs_judging_deadline %>'
+mivs_round_two_complete = '<%= @mivs_round_two_complete %>'
+
 
 [badge_ranges]
 <% @badge_types.each do |badge_type| -%>
