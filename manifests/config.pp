@@ -268,21 +268,21 @@ class uber::config (
     force   => true,
   }
 
-  file {'remove_mivs':
-    ensure  => absent,
-    path    => "${uber::plugins_dir}/mivs",
-    recurse => true,
-    purge   => true,
-    force   => true,
-  }
+  # file {'remove_mivs':
+  #   ensure  => absent,
+  #   path    => "${uber::plugins_dir}/mivs",
+  #   recurse => true,
+  #   purge   => true,
+  #   force   => true,
+  # }
 
-  file {'remove_mits':
-    ensure  => absent,
-    path    => "${uber::plugins_dir}/mits",
-    recurse => true,
-    purge   => true,
-    force   => true,
-  }
+  # file {'remove_mits':
+  #   ensure  => absent,
+  #   path    => "${uber::plugins_dir}/mits",
+  #   recurse => true,
+  #   purge   => true,
+  #   force   => true,
+  # }
 
   file {'remove_magfest':
     ensure  => absent,
