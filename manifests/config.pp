@@ -186,15 +186,15 @@ class uber::config (
   $hotel_req_hours = undef,
   
   # mivs
-  $mivs_round_one_deadline = undef,
-  $mivs_video_response_expected = undef,
-  $mivs_round_two_start = undef,
-  $mivs_round_two_deadline = undef,
-  $mivs_judging_deadline = undef,
-  $mivs_round_two_complete = undef,
-  $mivs_confirm_deadline = undef,
-  $mivs_submission_grace_period = undef,
-  $mivs_start_year = undef,
+  $mivs_round_one_deadline = '',
+  $mivs_video_response_expected = '',
+  $mivs_round_two_start = '',
+  $mivs_round_two_deadline = '',
+  $mivs_judging_deadline = '',
+  $mivs_round_two_complete = '',
+  $mivs_confirm_deadline = '',
+  $mivs_submission_grace_period = '',
+  $mivs_start_year = '',
   
   # magfest
   $treasury_dept_checklist_form_url = '',
