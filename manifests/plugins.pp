@@ -85,7 +85,7 @@ class uber::plugins
     file { 'copy_mivs_game_images':
       ensure  => 'directory',
       recurse => true,
-      source  => ["${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images", "${uber::plugins_dir}/mivs/screenshots"],
+      source  => ["${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images", "${uber::plugins_dir}/mivs/screenshots", "file:///dev/null"],
       sourceselect => 'all',
       path    => "${uber::plugins_dir}/uber/uploaded_files/mivs_game_images",
       before  => File['remove_mivs'],
@@ -102,7 +102,7 @@ class uber::plugins
     file { 'copy_mits_game_images':
       ensure  => 'directory',
       recurse => true,
-      source  => ["${uber::plugins_dir}/mits/pictures"],
+      source  => ["${uber::plugins_dir}/mits/pictures", "file:///dev/null"],
       sourceselect => 'all',
       path    => "${uber::plugins_dir}/uber/uploaded_files/mits_game_images",
       before  => File['remove_mits'],
