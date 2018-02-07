@@ -79,6 +79,7 @@ class uber::plugins
 
     file { "${uber::plugins_dir}/uber/uploaded_files":
       ensure  => 'directory',
+      before  => [File['copy_mivs_game_images'], File['copy_mits_game_images']],
     }
 
     file { 'copy_mivs_game_images':
