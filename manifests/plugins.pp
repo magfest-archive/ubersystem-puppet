@@ -79,7 +79,7 @@ class uber::plugins
 
     file { "${uber::plugins_dir}/mivs/screenshots":
       ensure  => 'directory',
-      before  => File["${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images"],
+      before  => File['copy_mivs_game_images'],
     }
 
     file { "${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images":
