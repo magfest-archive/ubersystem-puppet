@@ -22,4 +22,81 @@ class uber::plugins
     if $extra_plugins {
       create_resources(uber::plugin, $extra_plugins, $uber::plugin_defaults)
     }
+
+    # ===========================================
+    # plugins that have been merged into uber
+    # ===========================================
+
+    file {'remove_barcode':
+      ensure  => absent,
+      path    => "${uber::plugins_dir}/barcode",
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
+
+    file {'remove_reports':
+      ensure  => absent,
+      path    => "${uber::plugins_dir}/reports",
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
+    
+    if defined(File["${uber::plugins_dir}/uber_analytics/uber_analytics/static/analytics/extra-attendance-data.json"]) {
+      file { 'copy_uber_analytics':
+        ensure  => 'present',
+        path    => "${uber::plugins_dir}/uber/uber/static/analytics/extra-attendance-data.json",
+        source  => "${uber::plugins_dir}/uber_analytics/uber_analytics/static/analytics/extra-attendance-data.json",
+        before  => File['remove_uber_analytics'],
+      }
+    }
+
+    file {'remove_uber_analytics':
+      ensure  => absent,
+      path    => "${uber::plugins_dir}/uber_analytics",
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
+
+    file {'remove_hotel':
+      ensure  => absent,
+      path    => "${uber::plugins_dir}/hotel",
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
+
+    file {'remove_attendee_tournaments':
+      ensure  => absent,
+      path    => "${uber::plugins_dir}/attendee_tournaments",
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
+
+    # file {'remove_mivs':
+    #   ensure  => absent,
+    #   path    => "${uber::plugins_dir}/mivs",
+    #   recurse => true,
+    #   purge   => true,
+    #   force   => true,
+    # }
+
+    # file {'remove_mits':
+    #   ensure  => absent,
+    #   path    => "${uber::plugins_dir}/mits",
+    #   recurse => true,
+    #   purge   => true,
+    #   force   => true,
+    # }
+
+    file {'remove_magfest':
+      ensure  => absent,
+      path    => "${uber::plugins_dir}/magfest",
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
 }
