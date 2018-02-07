@@ -90,7 +90,7 @@ class uber::plugins
     file { 'copy_mivs_game_images':
       ensure  => 'directory',
       recurse => true,
-      source  => ["${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images", "${uber::plugins_dir}/mivs/screenshots"],
+      source  => ["${uber::plugins_dir}/mivs/screenshots", "${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images"],
       sourceselect => 'all',
       path    => "${uber::plugins_dir}/uber/uploaded_files/mivs_game_images",
       before  => File['remove_mivs'],
