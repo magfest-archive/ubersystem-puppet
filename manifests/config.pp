@@ -192,9 +192,9 @@ class uber::config (
   $mivs_round_two_deadline = '',
   $mivs_judging_deadline = '',
   $mivs_round_two_complete = '',
-  $mivs_confirm_deadline = '',
-  $mivs_submission_grace_period = '',
-  $mivs_start_year = '',
+  $mivs_confirm_deadline = 14,
+  $mivs_submission_grace_period = 10,
+  $mivs_start_year = 2015,
   
   # magfest
   $treasury_dept_checklist_form_url = '',
