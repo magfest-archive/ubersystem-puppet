@@ -77,26 +77,30 @@ class uber::plugins
       force   => true,
     }
 
-    $mivs_screenshots_source = file("${uber::plugins_dir}/mivs/screenshots", '/dev/null')
-    if($mivs_screenshots_source != '') {
-      file { 'copy_mivs_screenshots':
-        ensure  => 'directory',
-        recurse => true,
-        path    => "${uber::plugins_dir}/uber/uploaded_files/mivs_game_images",
-        source  => "${uber::plugins_dir}/mivs/screenshots",
-        before  => File['remove_mivs'],
-      }
+    file { "${uber::plugins_dir}/mivs/screenshots":
+      ensure  => 'directory',
+      before  => File['copy_mivs_screenshots'],
     }
 
-    $mivs_game_images_source = file("${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images", '/dev/null')
-    if($mivs_game_images_source != '') {
-      file { 'copy_mivs_game_images':
-        ensure  => 'directory',
-        recurse => true,
-        path    => "${uber::plugins_dir}/uber/uploaded_files/mivs_game_images",
-        source  => "${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images",
-        before  => File['remove_mivs'],
-      }
+    file { 'copy_mivs_screenshots':
+      ensure  => 'directory',
+      recurse => true,
+      source  => "${uber::plugins_dir}/mivs/screenshots",
+      path    => "${uber::plugins_dir}/uber/uploaded_files/mivs_game_images",
+      before  => File["${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images"],
+    }
+
+    file { "${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images":
+      ensure  => 'directory',
+      before  => File['copy_mivs_game_images'],
+    }
+
+    file { 'copy_mivs_game_images':
+      ensure  => 'directory',
+      recurse => true,
+      source  => "${uber::plugins_dir}/mivs/uploaded_files/mivs_game_images",
+      path    => "${uber::plugins_dir}/uber/uploaded_files/mivs_game_images",
+      before  => File['remove_mivs'],
     }
 
     file {'remove_mivs':
