@@ -77,6 +77,10 @@ class uber::plugins
       force   => true,
     }
 
+    file { "${uber::plugins_dir}/uber/uploaded_files":
+      ensure  => 'directory',
+    }
+
     file { 'copy_mivs_game_images':
       ensure  => 'directory',
       recurse => true,
