@@ -94,13 +94,22 @@ class uber::plugins
       force   => true,
     }
 
-    # file {'remove_mits':
-    #   ensure  => absent,
-    #   path    => "${uber::plugins_dir}/mits",
-    #   recurse => true,
-    #   purge   => true,
-    #   force   => true,
-    # }
+    file { 'copy_mits_game_images':
+      ensure  => 'directory',
+      recurse => true,
+      source  => ["${uber::plugins_dir}/mits/pictures"],
+      sourceselect => 'all',
+      path    => "${uber::plugins_dir}/uber/uploaded_files/mits_game_images",
+      before  => File['remove_mits'],
+    }
+
+    file {'remove_mits':
+      ensure  => absent,
+      path    => "${uber::plugins_dir}/mits",
+      recurse => true,
+      purge   => true,
+      force   => true,
+    }
 
     file {'remove_magfest':
       ensure  => absent,
