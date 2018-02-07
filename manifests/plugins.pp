@@ -42,8 +42,9 @@ class uber::plugins
       purge   => true,
       force   => true,
     }
-    
-    if defined(File["${uber::plugins_dir}/uber_analytics/uber_analytics/static/analytics/extra-attendance-data.json"]) {
+
+    $uber_analytics_source = file("${uber::plugins_dir}/uber_analytics/uber_analytics/static/analytics/extra-attendance-data.json", '/dev/null')
+    if($uber_analytics_source != '') {
       file { 'copy_uber_analytics':
         ensure  => 'present',
         path    => "${uber::plugins_dir}/uber/uber/static/analytics/extra-attendance-data.json",
