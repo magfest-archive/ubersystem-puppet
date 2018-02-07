@@ -186,12 +186,12 @@ class uber::config (
   $hotel_req_hours = undef,
   
   # mivs
-  $mivs_round_one_deadline = undef,
-  $mivs_video_response_expected = undef,
-  $mivs_round_two_start = undef,
-  $mivs_round_two_deadline = undef,
-  $mivs_judging_deadline = undef,
-  $mivs_round_two_complete = undef,
+  $mivs_round_one_deadline = '1970-01-01',
+  $mivs_video_response_expected = '1970-01-01',
+  $mivs_round_two_start = '1970-01-01',
+  $mivs_round_two_deadline = '1970-01-01',
+  $mivs_judging_deadline = '1970-01-01',
+  $mivs_round_two_complete = '1970-01-01',
   $mivs_confirm_deadline = 14,
   $mivs_submission_grace_period = 10,
   $mivs_start_year = 2015,
