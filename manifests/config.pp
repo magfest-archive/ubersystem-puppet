@@ -295,6 +295,7 @@ class uber::config (
   file { "${uber::plugins_dir}/uber/uploaded_files":
     ensure  => 'directory',
     before  => [File['copy_mivs_game_images'], File['copy_mits_game_images']],
+    require => File["${uber::uber_path}/plugins/uber/development.ini"],
   }
 
   file { 'copy_mivs_game_images':
