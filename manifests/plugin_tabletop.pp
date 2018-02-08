@@ -6,9 +6,9 @@ class uber::plugin_tabletop (
   $git_branch = "master",
 
   # INI settings below
-  $twilio_number = undef,
-  $twilio_sid = '',
-  $twilio_token = '',
+  $tabletop_twilio_number = undef,
+  $tabletop_twilio_sid = '',
+  $tabletop_twilio_token = '',
 ) {
   uber::repo { "${uber::plugins_dir}/tabletop":
     source   => $git_repo,
