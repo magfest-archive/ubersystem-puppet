@@ -199,6 +199,49 @@ class uber::config (
   # magfest
   $treasury_dept_checklist_form_url = '',
   $techops_dept_checklist_form_url = '',
+  
+  # panels
+  $presentation_enums = undef,
+  $hide_schedule = true,
+  $expected_response = undef,
+  $panel_rooms = undef,
+  $panel_app_deadline = undef,
+  $alt_schedule_url = undef,
+  $attractions_email = undef,
+  $panels_twilio_number = undef,
+  $panels_twilio_sid = '',
+  $panels_twilio_token = '',
+  
+  # tabletop
+  $tabletop_twilio_number = undef,
+  $tabletop_twilio_sid = '',
+  $tabletop_twilio_token = '',
+  
+  # guests
+  $band_email = undef,
+  $band_email_signature = undef,
+  $require_dedicated_guest_table_presence = true,
+  $guest_merch_enums = undef,
+  $auction_start = '',
+  $rock_island_groups = ',',
+  $band_panel_deadline = '',
+  $band_bio_deadline = '',
+  $band_info_deadline = '',
+  $band_taxes_deadline = '',
+  $band_merch_deadline = '',
+  $band_charity_deadline = '',
+  $band_badges_deadline = '',
+  $band_stage_plot_deadline = '',
+  $guest_panel_deadline = '',
+  $guest_bio_deadline = '',
+  $guest_info_deadline = '',
+  $guest_taxes_deadline = '',
+  $guest_merch_deadline = '',
+  $guest_charity_deadline = '',
+  $guest_badges_deadline = '',
+  $guest_autograph_deadline = '',
+  $guest_interview_deadline = '',
+  $guest_travel_plans_deadline = '',
 ) {
 
   require uber::plugins
@@ -298,6 +341,24 @@ class uber::config (
     require => File["${uber::uber_path}/plugins/uber/development.ini"],
   }
 
+  file { 'copy_mits_game_images':
+    ensure  => 'directory',
+    recurse => true,
+    source  => ["${uber::plugins_dir}/mits/pictures", "/tmp/empty_dir"],
+    sourceselect => 'all',
+    path    => "${uber::plugins_dir}/uber/uploaded_files/mits_game_images",
+    before  => File['remove_mits'],
+  }
+
+  file {'remove_mits':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/mits",
+    recurse => true,
+    purge   => true,
+    force   => true,
+    before  => File['remove_mivs'],
+  }
+
   file { 'copy_mivs_game_images':
     ensure  => 'directory',
     recurse => true,
@@ -315,26 +376,71 @@ class uber::config (
     force   => true,
   }
 
-  file { 'copy_mits_game_images':
-    ensure  => 'directory',
-    recurse => true,
-    source  => ["${uber::plugins_dir}/mits/pictures", "/tmp/empty_dir"],
-    sourceselect => 'all',
-    path    => "${uber::plugins_dir}/uber/uploaded_files/mits_game_images",
-    before  => File['remove_mits'],
-  }
-
-  file {'remove_mits':
+  file {'remove_magfest':
     ensure  => absent,
-    path    => "${uber::plugins_dir}/mits",
+    path    => "${uber::plugins_dir}/magfest",
     recurse => true,
     purge   => true,
     force   => true,
   }
 
-  file {'remove_magfest':
+  file { 'copy_guests_bio_pics':
+    ensure  => 'directory',
+    recurse => true,
+    source  => ["${uber::plugins_dir}/guests/uploaded_files/bio_pics", "/tmp/empty_dir"],
+    sourceselect => 'all',
+    path    => "${uber::plugins_dir}/uber/uploaded_files/guests_bio_pics",
+    before  => File['remove_guests'],
+  }
+
+  file { 'copy_guests_inventory':
+    ensure  => 'directory',
+    recurse => true,
+    source  => ["${uber::plugins_dir}/guests/uploaded_files/inventory", "/tmp/empty_dir"],
+    sourceselect => 'all',
+    path    => "${uber::plugins_dir}/uber/uploaded_files/guests_inventory",
+    before  => File['remove_guests'],
+  }
+
+  file { 'copy_guests_stage_plots':
+    ensure  => 'directory',
+    recurse => true,
+    source  => ["${uber::plugins_dir}/guests/uploaded_files/stage_plots", "/tmp/empty_dir"],
+    sourceselect => 'all',
+    path    => "${uber::plugins_dir}/uber/uploaded_files/guests_stage_plots",
+    before  => File['remove_guests'],
+  }
+
+  file { 'copy_guests_w9_forms':
+    ensure  => 'directory',
+    recurse => true,
+    source  => ["${uber::plugins_dir}/guests/uploaded_files/w9_forms", "/tmp/empty_dir"],
+    sourceselect => 'all',
+    path    => "${uber::plugins_dir}/uber/uploaded_files/guests_w9_forms",
+    before  => File['remove_guests'],
+  }
+
+  file {'remove_guests':
     ensure  => absent,
-    path    => "${uber::plugins_dir}/magfest",
+    path    => "${uber::plugins_dir}/guests",
+    recurse => true,
+    purge   => true,
+    force   => true,
+    before  => File['remove_panels'],
+  }
+
+  file {'remove_tabletop':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/tabletop",
+    recurse => true,
+    purge   => true,
+    force   => true,
+    before  => File['remove_panels'],
+  }
+
+  file {'remove_panels':
+    ensure  => absent,
+    path    => "${uber::plugins_dir}/panels",
     recurse => true,
     purge   => true,
     force   => true,
