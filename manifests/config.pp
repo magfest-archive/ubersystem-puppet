@@ -208,6 +208,7 @@ class uber::config (
   $panel_app_deadline = undef,
   $alt_schedule_url = undef,
   $attractions_email = undef,
+  $attractions_enabled = false,
   $panels_twilio_number = undef,
   $panels_twilio_sid = '',
   $panels_twilio_token = '',
