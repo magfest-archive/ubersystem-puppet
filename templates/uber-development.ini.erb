@@ -224,7 +224,10 @@ epoch = '<%= @epoch %>'
 eschaton  = '<%= @eschaton %>'
 prereg_takedown  = '<%= @prereg_takedown %>'
 group_prereg_takedown = '<%= @group_prereg_takedown %>'
+
+<% if @printed_badge_deadline %>
 printed_badge_deadline = '<%= @printed_badge_deadline %>'
+<% end -%>
 
 dealer_reg_start = '<%= @dealer_reg_start %>'
 dealer_reg_deadline = '<%= @dealer_reg_deadline %>'
