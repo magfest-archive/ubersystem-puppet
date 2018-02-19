@@ -81,7 +81,7 @@ class uber::config (
   $hotel_req_hours = 24,
   $shift_custom_badges = true,
   $preassigned_badge_types = "'staff_badge', 'supporter_badge'",
-  $printed_badge_deadline = '',
+  $printed_badge_deadline = undef,
 
   $uber_shut_down = false,
 
