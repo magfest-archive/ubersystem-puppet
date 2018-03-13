@@ -14,7 +14,7 @@ class uber::config (
   # ubersystem config file settings only below
   $url_prefix = 'uber',
 
-  $celery_brokerurl = 'pyamqp://localhost//',
+  $celery_broker_url = 'amqp://localhost//',
 
   $db_user = 'rams',
   $db_pass = 'rams',

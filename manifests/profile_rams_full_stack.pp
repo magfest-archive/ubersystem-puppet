@@ -4,7 +4,7 @@ class uber::profile_rams_full_stack (
 
 ) {
   include nginx
-  require ::rabbitmq
+  include rabbitmq
 
   require ::uber::firewall
   require ::uber::permissions
