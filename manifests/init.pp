@@ -7,6 +7,7 @@ class uber {
 
   $venv_path = "${uber_path}/env"
   $venv_bin = "${venv_path}/bin"
+  $venv_celery = "${venv_bin}/celery"
   $venv_python = "${venv_bin}/python"
 
   $venv_paver = "${venv_bin}/paver"

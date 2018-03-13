@@ -4,12 +4,15 @@ class uber::profile_rams_full_stack (
 
 ) {
   include nginx
+  require ::rabbitmq
 
   require ::uber::firewall
   require ::uber::permissions
   require ::uber::db
   require ::uber::app
   require ::uber::nginx
+  require ::uber::celery_beat
+  require ::uber::celery_worker
   require ::uber::daemon
   require ::uber::log-filebeat
 
