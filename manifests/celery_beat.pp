@@ -10,7 +10,7 @@ class uber::celery_beat (
     supervisor::program { $celery_beat_name :
       ensure        => present,
       enable        => true,
-      command       => "${uber::venv_celery} -A uber.tasks worker",
+      command       => "${uber::venv_celery} -A uber.tasks beat",
       directory     => $uber::uber_path,
       user          => $user,
       group         => $group,
