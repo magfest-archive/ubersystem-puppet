@@ -2,7 +2,7 @@ class uber::celery_beat (
   $user = hiera("uber::user"),
   $group = hiera("uber::group"),
   $celery_beat_name = hiera("uber::celery_beat_name"),
-  $celery_beat_logfile = hiera("uber::celery_beat_logfile")
+  $celery_beat_logfile = hiera("uber::celery_beat_logfile"),
 ) {
   require uber::app
 
@@ -10,7 +10,7 @@ class uber::celery_beat (
     supervisor::program { $celery_beat_name :
       ensure        => present,
       enable        => true,
-      command       => "${uber::venv_celery} -A uber.tasks beat",
+      command       => "${uber::venv_celery} -A uber.tasks beat --loglevel=info",
       directory     => $uber::uber_path,
       user          => $user,
       group         => $group,

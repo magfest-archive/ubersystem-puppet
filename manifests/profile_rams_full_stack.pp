@@ -3,10 +3,17 @@
 class uber::profile_rams_full_stack (
 
 ) {
+  require ::uber::firewall
+
+  # workaround puppet waiting to apply 'ufw enable' til later on in the process
+  # if this gives you errors later, disable it, or move ::uber::firewall to happen last in the sequence above
+  if !hiera('debugONLY_dont_init_python_or_git_repos_or_plugins') {
+    Exec['ufw-enable'] -> Class['uber::app']
+  }
+
   include nginx
   include rabbitmq
 
-  require ::uber::firewall
   require ::uber::permissions
   require ::uber::db
   require ::uber::app
@@ -15,10 +22,4 @@ class uber::profile_rams_full_stack (
   require ::uber::celery_worker
   require ::uber::daemon
   require ::uber::log-filebeat
-
-  # workaround puppet waiting to apply 'ufw enable' til later on in the process
-  # if this gives you errors later, disable it, or move ::uber::firewall to happen last in the sequence above
-  if !hiera('debugONLY_dont_init_python_or_git_repos_or_plugins') {
-    Exec['ufw-enable'] -> Class['uber::app']
-  }
 }

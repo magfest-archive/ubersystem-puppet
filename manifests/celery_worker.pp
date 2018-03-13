@@ -10,7 +10,7 @@ class uber::celery_worker (
     supervisor::program { $celery_worker_name :
       ensure        => present,
       enable        => true,
-      command       => "${uber::venv_celery} -A uber.tasks worker",
+      command       => "${uber::venv_celery} -A uber.tasks worker --loglevel=info",
       directory     => $uber::uber_path,
       user          => $user,
       group         => $group,
