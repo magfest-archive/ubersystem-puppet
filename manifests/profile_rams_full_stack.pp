@@ -12,6 +12,7 @@ class uber::profile_rams_full_stack (
   require ::uber::db
   require ::uber::app
   require ::uber::nginx
+  require ::uber::rabbitmq
   require ::uber::celery_beat
   require ::uber::celery_worker
   require ::uber::daemon
