@@ -5,8 +5,14 @@ class uber::install {
   # TODO install UTF lcoale stuff from Eli's Vagrant script
 
   if defined(Package['git']) == false {
-    package { 'git': 
-      ensure => present 
+    package { 'git':
+      ensure => present
+    }
+  }
+
+  if defined(Package['rabbitmq-server']) == false {
+    package { 'rabbitmq-server':
+      ensure => present,
     }
   }
 
@@ -33,7 +39,7 @@ class uber::install {
       ensure => present,
     }
   }
-  
+
   if defined(Package['python3-tk']) == false {
     package { 'python3-tk':
       ensure => present,
