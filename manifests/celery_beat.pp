@@ -11,7 +11,7 @@ class uber::celery_beat (
       ensure        => present,
       enable        => true,
       command       => "${uber::venv_celery} -A uber.tasks beat --loglevel=info",
-      directory     => $uber::uber_path,
+      directory     => "${uber::uber_path}/data",
       user          => $user,
       group         => $group,
       logdir_mode   => '0770',
