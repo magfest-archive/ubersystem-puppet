@@ -68,4 +68,26 @@ class uber::firewall_allow_rules(
   ufw::allow { 'allow-ssh-from-all':
     port => 22,
   }
+
+  ufw::allow { 'allow-rabbitmq-from-localhost':
+    port => 5672,
+    from => "127.0.0.1",
+  }
+
+  ufw::allow { 'allow-rabbitmq-admin-from-localhost':
+    port => 15672,
+    from => "127.0.0.1",
+  }
+
+  # Only needed for clustering
+  ufw::allow { 'allow-rabbitmq-empd-from-localhost':
+    port => 4369,
+    from => "127.0.0.1",
+  }
+
+  # Only needed for clustering
+  ufw::allow { 'allow-rabbitmq-clustering-from-localhost':
+    port => 35197,
+    from => "127.0.0.1",
+  }
 }

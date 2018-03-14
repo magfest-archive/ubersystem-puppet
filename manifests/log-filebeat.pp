@@ -3,7 +3,9 @@
 class uber::log-filebeat (
   $server_name_and_port = '',
   $daemon_name = hiera("uber::daemon_name"),
-  $app_logfile_name = hiera("uber::app_logfile_name")
+  $app_logfile_name = hiera("uber::app_logfile_name"),
+  $celery_worker_logfile = hiera("uber::celery_worker_logfile"),
+  $celery_beat_logfile = hiera("uber::celery_beat_logfile"),
 ) {
   if ($server_name_and_port) {
     class { 'filebeat':
@@ -52,6 +54,17 @@ class uber::log-filebeat (
       },
     }
 
+    filebeat::prospector { 'rabbitmqlogs':
+      paths         => [
+        '/var/log/rabbitmq/*.log',
+      ],
+      doc_type      => 'log',
+      exclude_files => $exclude_files,
+      fields        => {
+        'log_source' => 'rabbitmq',
+      },
+    }
+
     filebeat::prospector { 'applogs':
       paths         => [
         '/var/log/supervisor/*',
@@ -61,6 +74,19 @@ class uber::log-filebeat (
       exclude_files => $exclude_files,
       fields        => {
         'log_source' => 'app',
+      },
+      multiline => $multiline,
+    }
+
+    filebeat::prospector { 'celerylogs':
+      paths         => [
+        "${celery_worker_logfile}",
+        "${celery_beat_logfile}"
+      ],
+      doc_type      => 'log',
+      exclude_files => $exclude_files,
+      fields        => {
+        'log_source' => 'celery',
       },
       multiline => $multiline,
     }

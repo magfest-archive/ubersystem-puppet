@@ -14,6 +14,10 @@ class uber::config (
   # ubersystem config file settings only below
   $url_prefix = 'uber',
 
+  $celery_broker_url = 'amqp://localhost//',
+  $celery_beat_schedule_dir = '${uber::path}data',
+  $celery_beat_schedule_filename = '${celery_beat_schedule_dir}/celerybeat-schedule',
+
   $db_user = 'rams',
   $db_pass = 'rams',
   $db_name = 'rams',
@@ -182,10 +186,10 @@ class uber::config (
   $barcode_key = "",
   $barcode_salt = 0,
   $barcode_event_id = 0,
-  
+
   # hotel
   $hotel_req_hours = undef,
-  
+
   # mivs
   $mivs_round_one_deadline = '1970-01-01',
   $mivs_video_response_expected = '1970-01-01',
@@ -196,11 +200,11 @@ class uber::config (
   $mivs_confirm_deadline = 14,
   $mivs_submission_grace_period = 10,
   $mivs_start_year = 2015,
-  
+
   # magfest
   $treasury_dept_checklist_form_url = '',
   $techops_dept_checklist_form_url = '',
-  
+
   # panels
   $presentation_enums = undef,
   $hide_schedule = true,
@@ -213,12 +217,12 @@ class uber::config (
   $panels_twilio_number = undef,
   $panels_twilio_sid = '',
   $panels_twilio_token = '',
-  
+
   # tabletop
   $tabletop_twilio_number = undef,
   $tabletop_twilio_sid = '',
   $tabletop_twilio_token = '',
-  
+
   # guests
   $band_email = undef,
   $band_email_signature = undef,
@@ -272,10 +276,15 @@ class uber::config (
     content => template('uber/uber-development.ini.erb'),
   }
 
+  # uber's development.ini
+  file { "${celery_beat_schedule_dir}":
+    ensure  => 'directory',
+  }
+
   # ====================================================================
   # Plugins that have been merged into uber.
   #
-  # TODO: This belongs somewhere else, but I can't get it to work 
+  # TODO: This belongs somewhere else, but I can't get it to work
   #       anywhere but here.
   # ====================================================================
 
@@ -328,7 +337,7 @@ class uber::config (
     purge   => true,
     force   => true,
   }
-  
+
   file { "/tmp/empty_dir":
     ensure  => 'directory',
     recurse => true,
