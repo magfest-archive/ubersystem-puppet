@@ -59,6 +59,8 @@ staff_email = "<%= @staff_email %>"
 marketplace_email = "<%= @marketplace_email %>"
 panels_email = "<%= @panels_email %>"
 developer_email = "<%= @developer_email %>"
+security_email = "<%= @security_email %>"
+guest_email = "<%= @guest_email %>"
 
 regdesk_email_signature = '''<%= @regdesk_sig %>'''
 stops_email_signature = '''<%= @stops_sig %>'''
@@ -98,6 +100,8 @@ shirts_per_staffer = <%= @shirts_per_staffer %>
 <% unless @staff_eligible_for_swag_shirt.nil? -%>
 staff_eligible_for_swag_shirt = <%= @staff_eligible_for_swag_shirt %>
 <% end -%>
+
+separate_staff_merch = "<%= @separate_staff_merch %>"
 
 max_badge_sales = "<%= @max_badge_sales %>"
 donations_enabled = <%= @donations_enabled %>
