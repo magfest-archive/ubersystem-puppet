@@ -138,6 +138,7 @@ class uber::config (
   $out_of_shirts = false,
   $shirts_per_staffer = undef,
   $staff_eligible_for_swag_shirt = undef,
+  $separate_staff_merch = false,
   $initial_attendee = 50,
   $max_dealers = 20,
   $max_dealer_apps = 0,
@@ -171,6 +172,7 @@ class uber::config (
   $marketplace_email = "MAGFest Marketplace <marketplace@magfest.org>",
   $panels_email = "MAGFest Panels <panels@magfest.org>",
   $developer_email = "MAGFest Software <code@magfest.org>",
+  $security_email = 'MAGFest Security <security@magfest.org>',
 
   $supporter_stock = undef,
 
@@ -224,6 +226,7 @@ class uber::config (
   $tabletop_twilio_token = '',
 
   # guests
+  $guest_email = undef,
   $band_email = undef,
   $band_email_signature = undef,
   $require_dedicated_guest_table_presence = true,
