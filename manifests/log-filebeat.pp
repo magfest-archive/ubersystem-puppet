@@ -54,6 +54,17 @@ class uber::log-filebeat (
       },
     }
 
+    filebeat::prospector { 'redislogs':
+      paths         => [
+        '/var/log/redis/*.log',
+      ],
+      doc_type      => 'log',
+      exclude_files => $exclude_files,
+      fields        => {
+        'log_source' => 'redis',
+      },
+    }
+
     filebeat::prospector { 'rabbitmqlogs':
       paths         => [
         '/var/log/rabbitmq/*.log',

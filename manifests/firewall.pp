@@ -69,6 +69,11 @@ class uber::firewall_allow_rules(
     port => 22,
   }
 
+  ufw::allow { 'allow-redis-from-localhost':
+    port => 6379,
+    from => "127.0.0.1",
+  }
+
   ufw::allow { 'allow-rabbitmq-from-localhost':
     port => 5672,
     from => "127.0.0.1",
