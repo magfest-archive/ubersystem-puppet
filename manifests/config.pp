@@ -7,6 +7,10 @@ class uber::config (
   $socket_port = hiera('uber::socket_port'),
   $socket_host = '0.0.0.0',
   $engine_autoreload = true,
+  $sessions_storage_type = 'redis',
+  $sessions_host = 'localhost',
+  $sessions_port = '6379',
+  $sessions_password = 'uber',
   $ssl_port = hiera('uber::ssl_port'),
 
   $hardcore_optimizations_enabled = false,
