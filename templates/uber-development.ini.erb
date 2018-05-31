@@ -200,6 +200,9 @@ require_dedicated_guest_table_presence=<%= @require_dedicated_guest_table_presen
 rock_island_groups = <%= @rock_island_groups %>
 <% end -%>
 
+default_loadin_minutes = <%= @default_loadin_minutes %>
+default_performance_minutes = <%= @default_performance_minutes %>
+
 [celery]
 beat_schedule_filename = '<%= @celery_beat_schedule_filename %>'
 

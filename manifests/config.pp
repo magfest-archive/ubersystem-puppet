@@ -241,6 +241,8 @@ class uber::config (
   $guest_merch_enums = undef,
   $auction_start = '',
   $rock_island_groups = ',',
+  $default_loadin_minutes = 20,
+  $default_performance_minutes = 40,
   $band_panel_deadline = '',
   $band_bio_deadline = '',
   $band_info_deadline = '',
