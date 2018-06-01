@@ -166,9 +166,15 @@ hide_schedule = <%= @hide_schedule %>
 expected_response = "<%= @expected_response %>"
 <% end -%>
 
+<% if @panel_rooms %>
 panel_rooms = <%= @panel_rooms %>
+<% end -%>
+<% if @tabletop_locations %>
 tabletop_locations = <%= @tabletop_locations %>
+<% end -%>
+<% if @music_rooms %>
 music_rooms = <%= @music_rooms %>
+<% end -%>
 
 <% if @alt_schedule_url %>
 alt_schedule_url = <%= @alt_schedule_url %>
