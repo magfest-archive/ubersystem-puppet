@@ -228,9 +228,9 @@ class uber::config (
   $panels_twilio_token = '',
   
   # schedule
-  $panel_rooms = [],
-  $tabletop_locations = [],
-  $music_rooms = [],
+  $panel_rooms = undef,
+  $tabletop_locations = undef,
+  $music_rooms = undef,
 
   # tabletop
   $tabletop_twilio_number = undef,
