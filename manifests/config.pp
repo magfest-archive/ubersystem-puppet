@@ -219,7 +219,6 @@ class uber::config (
   $presentation_enums = undef,
   $hide_schedule = true,
   $expected_response = undef,
-  $panel_rooms = undef,
   $panel_app_deadline = undef,
   $alt_schedule_url = undef,
   $attractions_email = undef,
@@ -227,6 +226,11 @@ class uber::config (
   $panels_twilio_number = undef,
   $panels_twilio_sid = '',
   $panels_twilio_token = '',
+  
+  # schedule
+  $panel_rooms = [],
+  $tabletop_locations = [],
+  $music_rooms = [],
 
   # tabletop
   $tabletop_twilio_number = undef,
