@@ -265,6 +265,7 @@ class uber::config (
   $guest_autograph_deadline = '',
   $guest_interview_deadline = '',
   $guest_travel_plans_deadline = '',
+  $rock_island_deadline = '',
 ) {
 
   require uber::plugins
