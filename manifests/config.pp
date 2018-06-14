@@ -170,7 +170,7 @@ class uber::config (
   $volunteer_checklist = [],
   $age_groups = [],
   $regdesk_sig = " - Victoria Earl,\nMAGFest Registration Chair",
-  $stops_sig = "Brent Smart\nStaff Operations\nMAGFest\nhttp://magfest.org",
+  $stops_sig = "Staff Operations\nMAGFest\nhttp://magfest.org",
   $marketplace_sig = " - Danielle Pomfrey,\nMAGFest Marketplace Coordinator",
   $peglegs_sig = " - Tim Macneil,\nMAGFest Panels Department",
   $guest_sig = " - Steph Prader,\nMAGFest Guest Coordinator",
