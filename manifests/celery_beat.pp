@@ -2,7 +2,7 @@ class uber::celery_beat (
   $user = hiera("uber::user"),
   $group = hiera("uber::group"),
   $celery_beat_name = hiera("uber::celery_beat_name"),
-  $celery_beat_logfile = hiera("uber::celery_beat_logfile"),
+  $app_logfile_name = hiera("uber::celery_beat_logfile"),
 ) {
   require uber::app
 
@@ -22,7 +22,7 @@ class uber::celery_beat (
       stderr_logfile_maxsize   => '0',
       stderr_logfile_backups   => 0,
 
-      stdout_logfile => $celery_beat_logfile,
+      stdout_logfile => $app_logfile_name,
       stderr_logfile => "",
       redirect_stderr => true,
     }
