@@ -2,7 +2,7 @@ class uber::celery_worker (
   $user = hiera("uber::user"),
   $group = hiera("uber::group"),
   $celery_worker_name = hiera("uber::celery_worker_name"),
-  $celery_worker_logfile = hiera("uber::celery_worker_logfile")
+  $app_logfile_name = hiera("uber::celery_worker_logfile")
 ) {
   require uber::app
 
@@ -22,7 +22,7 @@ class uber::celery_worker (
       stderr_logfile_maxsize   => '0',
       stderr_logfile_backups   => 0,
 
-      stdout_logfile => $celery_worker_logfile,
+      stdout_logfile => $app_logfile_name,
       stderr_logfile => "",
       redirect_stderr => true,
     }

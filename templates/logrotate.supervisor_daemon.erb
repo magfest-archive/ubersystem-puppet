@@ -9,27 +9,3 @@
     notifempty
     create 644 root root
 }
-
-<%= @celery_beat_logfile -%> {
-    daily
-    su root syslog
-    missingok
-    rotate 52
-    compress
-    delaycompress
-    copytruncate
-    notifempty
-    create 644 root root
-}
-
-<%= @celery_worker_logfile -%> {
-    daily
-    su root syslog
-    missingok
-    rotate 52
-    compress
-    delaycompress
-    copytruncate
-    notifempty
-    create 644 root root
-}
