@@ -33,6 +33,10 @@ hotel_req_hours = <%= @hotel_req_hours %>
 hours_for_refund = <%= @hours_for_refund %>
 <% end -%>
 
+<% if @volunteer_agreement_enabled %>
+volunteer_agreement_enabled = <%= @volunteer_agreement_enabled %>
+<% end -%>
+
 api_enabled = <%= @api_enabled %>
 collect_exact_birthdate = <%= @collect_exact_birthdate %>
 event_name = "<%= @event_name %>"
