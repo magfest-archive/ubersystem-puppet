@@ -74,6 +74,7 @@ class uber::config (
   #$supporter_badge_type_enabled = True,
   $prereg_open = '',
   $hide_prereg_open_date = false,
+  $volunteer_agreement_enabled = false,
   $shifts_created = '',
   $prereg_takedown = '',
   $group_prereg_takedown = '',
