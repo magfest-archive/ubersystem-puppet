@@ -1,4 +1,8 @@
-Magfest ubersystem puppet module
+# THIS REPOSITORY IS ARCHIVED
+
+For the current Reggie salt formula, see https://github.com/magfest/reggie-formula
+
+# Magfest ubersystem puppet module
 
 This module is the latest version that works with uber2.0 (post-Magfest 8.5)
 
